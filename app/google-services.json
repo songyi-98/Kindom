@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "542779497090",
+    "firebase_url": "https://kindom-b754e.firebaseio.com",
+    "project_id": "kindom-b754e",
+    "storage_bucket": "kindom-b754e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:542779497090:android:bbc0748fb9092f88bc329b",
+        "android_client_info": {
+          "package_name": "com.example.kindom"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "542779497090-gje0mnem7pr5v1m668vd8p42j3dvs8ub.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC3PC4zZVTlz5HmtbzQsEJkQNb1MEEbaF8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "542779497090-gje0mnem7pr5v1m668vd8p42j3dvs8ub.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
