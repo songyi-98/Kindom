@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "479291371310",
+    "firebase_url": "https://kindom-20.firebaseio.com",
+    "project_id": "kindom-20",
+    "storage_bucket": "kindom-20.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:479291371310:android:270dfc1737425de17a94bf",
+        "android_client_info": {
+          "package_name": "com.example.kindom"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "479291371310-iib1njvkg0iakfclgfitbi6ef7kuethd.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.kindom",
+            "certificate_hash": "d63698c82951698e4a4bc47e67af4f5695b069fb"
+          }
+        },
+        {
+          "client_id": "479291371310-japi787oojgg9ljue05lfkjqklo3pq1q.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBPJE-eo-jtlBy5vl8YEGVwiaaNP2017-w"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "479291371310-japi787oojgg9ljue05lfkjqklo3pq1q.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
