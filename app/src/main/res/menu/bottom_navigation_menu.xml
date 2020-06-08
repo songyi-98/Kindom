@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/nav_home"
+        android:icon="@drawable/ic_round_home_24"
+        android:title="Home" />
+
+
+    <item
+        android:id="@+id/nav_help_me"
+        android:icon="@drawable/ic_round_emoji_people_24"
+        android:title="Help Me!" />
+
+    <item
+        android:id="@+id/nav_chat"
+        android:icon="@drawable/ic_round_chat_24"
+        android:title="Chat" />
+
+    <item
+        android:id="@+id/nav_event"
+        android:icon="@drawable/ic_round_event_24"
+        android:title="Event" />
+
+</menu>
