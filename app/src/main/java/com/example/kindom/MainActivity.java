@@ -5,6 +5,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -39,9 +40,10 @@ public class MainActivity extends AppCompatActivity {
             findViewById(R.id.progress_circular).setVisibility(View.GONE);
             findViewById(R.id.sign_in).setVisibility(View.VISIBLE);
 
-            // Assign email and password text fields
+            // Assign text fields and text view
             mEmailField = findViewById(R.id.edit_email);
             mPasswordField = findViewById(R.id.edit_password);
+            TextView mRegisterText = findViewById(R.id.register_prompt);
 
             // Set autofill hints
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -49,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
                 mPasswordField.setAutofillHints(View.AUTOFILL_HINT_PASSWORD);
             }
 
-            // TODO: Check email and password validity
+            // TODO: Check email validity
 
             // Set click listener for sign in button
             Button signInButton = findViewById(R.id.sign_in_button);
@@ -59,6 +61,16 @@ public class MainActivity extends AppCompatActivity {
                     String email = mEmailField.getEditText().getText().toString();
                     String password = mPasswordField.getEditText().getText().toString();
                     signIn(email, password);
+                }
+            });
+
+            // Set click listener for register text
+            mRegisterText.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    // Bring user to Register page
+                    Intent intent = new Intent(MainActivity.this, RegisterActivity.class);
+                    startActivity(intent);
                 }
             });
         } else {
@@ -77,7 +89,7 @@ public class MainActivity extends AppCompatActivity {
                             launchHomePage();
                         } else {
                             // Sign in fail
-                            // TODO: Implement if sign-in fails
+                            // TODO: Implement if sign in fails
                         }
                     }
                 });
