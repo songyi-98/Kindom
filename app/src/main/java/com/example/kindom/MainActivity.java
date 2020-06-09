@@ -1,13 +1,17 @@
 package com.example.kindom;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -22,6 +26,8 @@ public class MainActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private TextInputLayout mEmailField;
     private TextInputLayout mPasswordField;
+    private boolean isValidEmail = false;
+    private boolean isValidPassword = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,7 +48,9 @@ public class MainActivity extends AppCompatActivity {
 
             // Assign text fields and text view
             mEmailField = findViewById(R.id.edit_email);
+            mEmailField.setErrorEnabled(true);
             mPasswordField = findViewById(R.id.edit_password);
+            mPasswordField.setErrorEnabled(true);
             TextView mRegisterText = findViewById(R.id.register_prompt);
 
             // Set autofill hints
@@ -51,16 +59,64 @@ public class MainActivity extends AppCompatActivity {
                 mPasswordField.setAutofillHints(View.AUTOFILL_HINT_PASSWORD);
             }
 
-            // TODO: Check email validity
+            // Check email and password validity
+            mEmailField.getEditText().addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                    // Do nothing
+                }
+
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+                    // Do nothing
+                }
+
+                @Override
+                public void afterTextChanged(Editable s) {
+                    if (Validation.isValidEmail(s)) {
+                        isValidEmail = true;
+                        mEmailField.setError(null);
+                    } else {
+                        isValidEmail = false;
+                        mEmailField.setError(getString(R.string.error_invalid_email));
+                    }
+                }
+            });
+            mPasswordField.getEditText().addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                    // Do nothing
+                }
+
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+                    // Do nothing
+                }
+
+                @Override
+                public void afterTextChanged(Editable s) {
+                    if (Validation.isNonEmptyPassword(s)) {
+                        isValidPassword = true;
+                        mPasswordField.setError(null);
+                    } else {
+                        isValidPassword = false;
+                        mPasswordField.setError(getString(R.string.error_empty_password));
+                    }
+                }
+            });
 
             // Set click listener for sign in button
             Button signInButton = findViewById(R.id.sign_in_button);
             signInButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    String email = mEmailField.getEditText().getText().toString();
-                    String password = mPasswordField.getEditText().getText().toString();
-                    signIn(email, password);
+                    if (isValidEmail && isValidPassword) {
+                        String email = mEmailField.getEditText().getText().toString();
+                        String password = mPasswordField.getEditText().getText().toString();
+                        signIn(email, password);
+                    } else {
+                        showAlertDialog();
+                    }
                 }
             });
 
@@ -79,6 +135,11 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Signs in the user with Firebase Authentication
+     * @param email email of the user
+     * @param password password of the user
+     */
     private void signIn(String email, String password) {
         mAuth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
@@ -89,16 +150,33 @@ public class MainActivity extends AppCompatActivity {
                             launchHomePage();
                         } else {
                             // Sign in fail
-                            // TODO: Implement if sign in fails
+                            showAlertDialog();
                         }
                     }
                 });
     }
 
+    /**
+     * Launches the home page of the app
+     */
     private void launchHomePage() {
-        // Bring user to Home page
         Intent intent = new Intent(this, HomeActivity.class);
         startActivity(intent);
+    }
+
+    /**
+     * Shows alert dialog
+     */
+    private void showAlertDialog() {
+        new AlertDialog.Builder(this)
+                .setMessage(R.string.error_sign_in)
+                .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        // User clicked OK button
+                    }
+                })
+                .show();
     }
 
     @Override
