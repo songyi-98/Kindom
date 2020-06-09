@@ -14,7 +14,7 @@ import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
-public class RegisterActivity extends AppCompatActivity {
+public class RegisterAccountActivity extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
     private TextInputLayout mEmailField;
@@ -23,7 +23,7 @@ public class RegisterActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_register);
+        setContentView(R.layout.activity_register_account);
 
         mAuth = FirebaseAuth.getInstance();
 
@@ -50,7 +50,7 @@ public class RegisterActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             // Sign up success. Bring user to Home page.
-                            Intent intent = new Intent(RegisterActivity.this, HomeActivity.class);
+                            Intent intent = new Intent(RegisterAccountActivity.this, HomeActivity.class);
                             startActivity(intent);
                         } else {
                             // Sign up fail
@@ -58,5 +58,11 @@ public class RegisterActivity extends AppCompatActivity {
                         }
                     }
                 });
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        finishAffinity();
     }
 }

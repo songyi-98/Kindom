@@ -69,7 +69,7 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
                     // Bring user to Register page
-                    Intent intent = new Intent(MainActivity.this, RegisterActivity.class);
+                    Intent intent = new Intent(MainActivity.this, RegisterProfileActivity.class);
                     startActivity(intent);
                 }
             });
@@ -99,5 +99,11 @@ public class MainActivity extends AppCompatActivity {
         // Bring user to Home page
         Intent intent = new Intent(this, HomeActivity.class);
         startActivity(intent);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        finishAffinity();
     }
 }
