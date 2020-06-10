@@ -12,7 +12,9 @@
     <string name="user_group_user_button">User</string>
     <string name="next_label">Next</string>
     <string name="error_name">Name cannot be empty</string>
-    <string name="error_postal_code">Postal code cannot be empty</string>
+    <string name="error_postal_code_empty">Postal code cannot be empty</string>
+    <string name="error_postal_code_length">Postal code must be 6 digits long</string>
+    <string name="error_user_group">Please select if you are registering as an admin or a user</string>
     <string name="error_profile">Please check your inputs</string>
     <string name="confirm_password_label">Confirm Password</string>
     <string name="sign_up_label">Sign Up</string>

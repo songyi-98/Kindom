@@ -136,7 +136,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * Signs in the user with Firebase Authentication
+     * Sign in the user with Firebase Authentication
      * @param email email of the user
      * @param password password of the user
      */
@@ -157,7 +157,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * Launches the home page of the app
+     * Launch the home page of the app
      */
     private void launchHomePage() {
         Intent intent = new Intent(this, HomeActivity.class);
@@ -165,7 +165,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * Shows alert dialog
+     * Show alert dialog
      */
     private void showAlertDialog() {
         new AlertDialog.Builder(this)

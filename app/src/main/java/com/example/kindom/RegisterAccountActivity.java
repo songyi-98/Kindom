@@ -17,10 +17,16 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class RegisterAccountActivity extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
+    private DatabaseReference mUserDatabase;
+    private String mName;
+    private int mPostalCode;
+    private String mUserGroup;
     private TextInputLayout mEmailField;
     private TextInputLayout mPasswordField;
     private TextInputLayout mConfirmPasswordField;
@@ -33,7 +39,16 @@ public class RegisterAccountActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register_account);
 
+        // Retrieve data from intent
+        Intent intent = getIntent();
+        if (intent != null) {
+            mName = intent.getStringExtra("USER_NAME");
+            mPostalCode = intent.getIntExtra("USER_POSTAL_CODE", 0);
+            mUserGroup = intent.getStringExtra("USER_GROUP");
+        }
+
         mAuth = FirebaseAuth.getInstance();
+        mUserDatabase = FirebaseDatabase.getInstance().getReference().child("users");
 
         mEmailField = findViewById(R.id.edit_email_register);
         mPasswordField = findViewById(R.id.edit_password_register);
@@ -128,17 +143,21 @@ public class RegisterAccountActivity extends AppCompatActivity {
     }
 
     /**
-     * Creates an account with Firebase Authentication
+     * Create an account with Firebase Authentication
      * @param email email of the user
      * @param password password of the user
      */
-    private void createAccount(String email, String password) {
+    private void createAccount(final String email, String password) {
         mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            // Sign up success. Bring user to Home page.
+                            // Sign up success. Add user to database.
+                            User user = new User(mName, mUserGroup, mPostalCode, email);
+                            mUserDatabase.push().setValue(user);
+
+                            // Bring user to Home page.
                             Intent intent = new Intent(RegisterAccountActivity.this, HomeActivity.class);
                             startActivity(intent);
                         } else {
@@ -150,7 +169,7 @@ public class RegisterAccountActivity extends AppCompatActivity {
     }
 
     /**
-     * Shows alert dialog
+     * Show alert dialog
      */
     private void showAlertDialog() {
         new AlertDialog.Builder(this)
