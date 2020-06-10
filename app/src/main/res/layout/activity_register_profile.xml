@@ -63,7 +63,7 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <TextView
-            android:id="@+id/user_group_toggle"
+            android:id="@+id/user_group_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
@@ -71,6 +71,7 @@
             android:textSize="16sp" />
 
         <com.google.android.material.button.MaterialButtonToggleGroup
+            android:id="@+id/user_group_toggle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
