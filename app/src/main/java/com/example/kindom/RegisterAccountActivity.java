@@ -98,7 +98,7 @@ public class RegisterAccountActivity extends AppCompatActivity {
             @Override
             public void afterTextChanged(Editable s) {
                 String password = mPasswordField.getEditText().getText().toString();
-                if (!Validation.isNonEmptyPassword(password)) {
+                if (!Validation.isNonEmpty(password)) {
                     isValidConfirmPassword = false;
                     mConfirmPasswordField.setError("Please enter a password in the above box first");
                 } else if (!password.contentEquals(s)) {

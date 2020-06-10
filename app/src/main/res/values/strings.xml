@@ -7,7 +7,13 @@
     <string name="register_profile_welcome">Be a part of Kindom!</string>
     <string name="name_label">Name</string>
     <string name="postal_code_label">Postal Code</string>
+    <string name="user_group_text">Register as:</string>
+    <string name="user_group_admin_button">Admin</string>
+    <string name="user_group_user_button">User</string>
     <string name="next_label">Next</string>
+    <string name="error_name">Name cannot be empty</string>
+    <string name="error_postal_code">Postal code cannot be empty</string>
+    <string name="error_profile">Please check your inputs</string>
     <string name="confirm_password_label">Confirm Password</string>
     <string name="sign_up_label">Sign Up</string>
     <string name="error_invalid_email">Invalid email</string>

@@ -19,11 +19,11 @@ public class Validation {
         return (!TextUtils.isEmpty(target) && Patterns.EMAIL_ADDRESS.matcher(target).matches());
     }
 
-    public static boolean isNonEmptyPassword(CharSequence target) {
+    public static boolean isNonEmpty(CharSequence target) {
         return !TextUtils.isEmpty(target);
     }
 
     public static boolean isValidPassword(CharSequence targert) {
-        return isNonEmptyPassword(targert) && PATTERN_PASSWORD.matcher(targert).matches();
+        return isNonEmpty(targert) && PATTERN_PASSWORD.matcher(targert).matches();
     }
 }

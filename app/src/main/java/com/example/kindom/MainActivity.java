@@ -95,7 +95,7 @@ public class MainActivity extends AppCompatActivity {
 
                 @Override
                 public void afterTextChanged(Editable s) {
-                    if (Validation.isNonEmptyPassword(s)) {
+                    if (Validation.isNonEmpty(s)) {
                         isValidPassword = true;
                         mPasswordField.setError(null);
                     } else {
