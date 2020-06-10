@@ -1,4 +1,32 @@
 <resources>
     <string name="app_name">Kindom</string>
-    <string name="sign_out_menu_label">Sign Out</string>
+    <string name="email_label">Email</string>
+    <string name="password_label">Password</string>
+    <string name="sign_in_label">Sign In</string>
+    <string name="register_prompt">Not registered yet? Click here!</string>
+    <string name="register_profile_welcome">Be a part of Kindom!</string>
+    <string name="name_label">Name</string>
+    <string name="postal_code_label">Postal Code</string>
+    <string name="user_group_text">Register as:</string>
+    <string name="user_group_admin_button">Admin</string>
+    <string name="user_group_user_button">User</string>
+    <string name="next_label">Next</string>
+    <string name="error_name">Name cannot be empty</string>
+    <string name="error_postal_code_empty">Postal code cannot be empty</string>
+    <string name="error_postal_code_length">Postal code must be 6 digits long</string>
+    <string name="error_user_group">Please select if you are registering as an admin or a user</string>
+    <string name="error_profile">Please check your inputs</string>
+    <string name="confirm_password_label">Confirm Password</string>
+    <string name="sign_up_label">Sign Up</string>
+    <string name="error_invalid_email">Invalid email</string>
+    <string name="error_empty_password">Password cannot be empty</string>
+    <string name="error_sign_in">Invalid email or password</string>
+    <string name="ok">OK</string>
+    <string name="password_policy">Password must: \n• have at least 8 characters \n• include at least 1 uppercase letter (A–Z) \n• include at least 1 lowercase letter (a–z) \n• include at least 1 number (0–9)</string>
+    <string name="error_password_requirements">Password does not meet requirements</string>
+    <string name="menu_sign_out_label">Sign Out</string>
+    <string name="navigation_home">Home</string>
+    <string name="navigation_help_me">Help Me!</string>
+    <string name="navigation_chat">Chat</string>
+    <string name="navigation_events">Events</string>
 </resources>
