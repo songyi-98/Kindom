@@ -29,4 +29,7 @@
     <string name="navigation_help_me">Help Me!</string>
     <string name="navigation_chat">Chat</string>
     <string name="navigation_events">Events</string>
+    <string name="fab_content_desc">Add</string>
+    <string name="help_me_list_item_image_desc">Listing Image</string>
+    <string name="help_me_list_item_details_button">Details</string>
 </resources>

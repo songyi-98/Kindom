@@ -23,7 +23,7 @@ import com.google.firebase.database.FirebaseDatabase;
 public class RegisterAccountActivity extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
-    private DatabaseReference mUserDatabase;
+    private DatabaseReference mUserDatabaseReference;
     private String mName;
     private int mPostalCode;
     private String mUserGroup;
@@ -48,7 +48,7 @@ public class RegisterAccountActivity extends AppCompatActivity {
         }
 
         mAuth = FirebaseAuth.getInstance();
-        mUserDatabase = FirebaseDatabase.getInstance().getReference().child("users");
+        mUserDatabaseReference = FirebaseDatabase.getInstance().getReference().child("users");
 
         mEmailField = findViewById(R.id.edit_email_register);
         mPasswordField = findViewById(R.id.edit_password_register);
@@ -155,7 +155,7 @@ public class RegisterAccountActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             // Sign up success. Add user to database.
                             User user = new User(mName, mUserGroup, mPostalCode, email);
-                            mUserDatabase.push().setValue(user);
+                            mUserDatabaseReference.push().setValue(user);
 
                             // Bring user to Home page.
                             Intent intent = new Intent(RegisterAccountActivity.this, HomeActivity.class);
