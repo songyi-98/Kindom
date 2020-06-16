@@ -1,16 +1,18 @@
-package com.example.kindom;
+package com.example.kindom.chat;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
+import android.widget.Button;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.kindom.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -19,7 +21,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class ChatFragment extends Fragment {
 
@@ -38,20 +39,30 @@ public class ChatFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         chatList = new ArrayList<>();
-
-        initializeRecyclerView();
-        getUserChatList();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_chat, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_chat, container, false);
+
+        mChatList = rootView.findViewById(R.id.chatList);
+
+        //bug identified!! dont let the chatIds be the same or else messages wont display correctly
+        for(int i = 0; i < 1; i++) {
+            chatList.add(new ChatObject("Joshua", "iaggsddiuahs&^(&("));
+            chatList.add(new ChatObject("Joshua", "joshuahusoajsdoa"));
+        }
+        initializeRecyclerView();
+        getUserChatList();
+
+        return rootView;
     }
 
+    //retrieves the users' chatList from the database
     private void getUserChatList() {
-        DatabaseReference mUserChatDB = FirebaseDatabase.getInstance().getReference().child("user").child(FirebaseAuth.getInstance().getUid()).child("chat");
+        DatabaseReference mUserChatDB = FirebaseDatabase.getInstance().getReference().child("users").child(FirebaseAuth.getInstance().getUid()).child("chatList");
 
         mUserChatDB.addValueEventListener(new ValueEventListener() {
             @Override
@@ -59,7 +70,7 @@ public class ChatFragment extends Fragment {
                 if (dataSnapshot.exists()) {
                     for (DataSnapshot childSnapshot : dataSnapshot.getChildren()) {
                         //might be swapped for the chatId and the title
-                        ChatObject mChat = new ChatObject(childSnapshot.getKey(), "");
+                        ChatObject mChat = new ChatObject("test",childSnapshot.getKey());
                         chatList.add(mChat);
                         mChatListAdapter.notifyDataSetChanged();
                     }
@@ -72,11 +83,10 @@ public class ChatFragment extends Fragment {
             }
         });
     }
+
     private void initializeRecyclerView() {
-        mChatList = getView().findViewById(R.id.chatList);
         mChatList.setNestedScrollingEnabled(false);
         mChatList.setHasFixedSize(false);
-        //this line below could cause problems
         mChatListLayoutManager = new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false);
         mChatList.setLayoutManager(mChatListLayoutManager);
         mChatListAdapter = new ChatListAdapter(chatList);
