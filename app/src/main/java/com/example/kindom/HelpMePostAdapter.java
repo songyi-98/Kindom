@@ -1,6 +1,7 @@
 package com.example.kindom;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,12 +11,14 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.button.MaterialButton;
 import com.google.android.material.chip.Chip;
 
 import java.util.ArrayList;
 
 public class HelpMePostAdapter extends RecyclerView.Adapter<HelpMePostAdapter.HelpMePostViewHolder> {
 
+    private Context mContext;
     private final ArrayList<HelpMePost> mPostList;
     private LayoutInflater mInflater;
 
@@ -25,8 +28,9 @@ public class HelpMePostAdapter extends RecyclerView.Adapter<HelpMePostAdapter.He
         public Chip categoryChip;
         public TextView titleTextView;
         public TextView locationTextView;
+        public TextView dateTextView;
         public TextView timeTextView;
-        public TextView userTextView;
+        public MaterialButton detailsButton;
 
         public HelpMePostViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -34,12 +38,14 @@ public class HelpMePostAdapter extends RecyclerView.Adapter<HelpMePostAdapter.He
             categoryChip = itemView.findViewById(R.id.help_me_list_item_category);
             titleTextView = itemView.findViewById(R.id.help_me_list_item_title);
             locationTextView = itemView.findViewById(R.id.help_me_list_item_location);
+            dateTextView = itemView.findViewById(R.id.help_me_list_item_date);
             timeTextView = itemView.findViewById(R.id.help_me_list_item_time);
-            userTextView = itemView.findViewById(R.id.help_me_list_item_user);
+            detailsButton = itemView.findViewById(R.id.help_me_list_item_details);
         }
     }
 
     public HelpMePostAdapter(Context context, ArrayList<HelpMePost> postList) {
+        mContext = context;
         mInflater =LayoutInflater.from(context);
         mPostList = postList;
     }
@@ -53,13 +59,21 @@ public class HelpMePostAdapter extends RecyclerView.Adapter<HelpMePostAdapter.He
 
     @Override
     public void onBindViewHolder(@NonNull HelpMePostViewHolder holder, int position) {
-        HelpMePost currPost = mPostList.get(position);
+        final HelpMePost currPost = mPostList.get(position);
         //holder.imageView.setImageURI(currPost.getImage());
         holder.categoryChip.setText(currPost.getCategory());
         holder.titleTextView.setText(currPost.getTitle());
         holder.locationTextView.setText(currPost.getLocation());
+        holder.dateTextView.setText(currPost.getDate());
         holder.timeTextView.setText(currPost.getTime());
-        holder.userTextView.setText(currPost.getUser());
+        holder.detailsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(mContext, HelpMePostDetailsActivity.class);
+                intent.putExtra("Post", currPost);
+                mContext.startActivity(intent);
+            }
+        });
     }
 
     @Override
