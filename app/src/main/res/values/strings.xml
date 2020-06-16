@@ -32,4 +32,10 @@
     <string name="fab_content_desc">Add</string>
     <string name="help_me_list_item_image_desc">Listing Image</string>
     <string name="help_me_list_item_details_button">Details</string>
+    <string name="help_me_post_details_label">Post Details</string>
+    <string name="menu_report_listing_label">Report Listing</string>
+    <string name="help_me_post_location_header">Location of Help Required:</string>
+    <string name="help_me_post_date_time_header">Date and Time of Help Required:</string>
+    <string name="help_me_post_user_header">User requiring help:</string>
+    <string name="help_me_post_description_header">Description:</string>
 </resources>
