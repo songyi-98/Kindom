@@ -1,4 +1,4 @@
-package com.example.kindom;
+package com.example.kindom.chat;
 
 public class ChatObject {
 

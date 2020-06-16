@@ -1,5 +1,7 @@
-package com.example.kindom;
+package com.example.kindom.chat;
 
+import android.content.Intent;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,6 +11,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.kindom.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -34,17 +37,22 @@ public class ChatListAdapter extends RecyclerView.Adapter<ChatListAdapter.ChatLi
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ChatListViewHolder holder, final int position) {
-        holder.mTitle.setText(chatList.get(position).getTitle());
+    public void onBindViewHolder(@NonNull final ChatListViewHolder holder, final int position) {
+        holder.mTitle.setText(chatList.get(position).getChatId());
 
         holder.mLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             //not sure if this part would be correct,
             public void onClick(View v) {
-                String key = FirebaseDatabase.getInstance().getReference().child("chat").push().getKey();
+                Intent intent = new Intent(v.getContext(), ChatActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putString("chatID", chatList.get(holder.getAdapterPosition()).getChatId());
+                intent.putExtras(bundle);
+                v.getContext().startActivity(intent);
+                /*String key = FirebaseDatabase.getInstance().getReference().child("chat").push().getKey();
 
                 FirebaseDatabase.getInstance().getReference().child("users").child(FirebaseAuth.getInstance().getUid()).child("chat").child(key).setValue(true);
-                FirebaseDatabase.getInstance().getReference().child("users").child(chatList.get(position).getChatId()).child("chat").child(key).setValue(true);
+                FirebaseDatabase.getInstance().getReference().child("users").child(chatList.get(position).getChatId()).child("chat").child(key).setValue(true);*/
 
             }
         });
@@ -61,7 +69,7 @@ public class ChatListAdapter extends RecyclerView.Adapter<ChatListAdapter.ChatLi
         public ChatListViewHolder(View view) {
             super(view);
             mTitle = view.findViewById(R.id.chatTitle);
-            mLayout = view.findViewById(R.id.mLayout);
+            mLayout = view.findViewById(R.id.chatLayout);
         }
     }
 

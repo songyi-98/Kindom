@@ -30,4 +30,8 @@
     <string name="navigation_chat">Chat</string>
     <string name="navigation_events">Events</string>
     <string name="chatTitle">title</string>
+    <string name="message">message</string>
+    <string name="messageHint">message…</string>
+    <string name="sendBtn">send</string>
+    <string name="addMediaBtn">+</string>
 </resources>
