@@ -46,8 +46,12 @@
     <string name="help_me_post_add_date">Date of help required</string>
     <string name="help_me_post_add_time_button">Set Time</string>
     <string name="help_me_post_add_time">Time of help required</string>
-    <string name="error_time">Time cannot be in the past</string>
     <string name="help_me_post_add_description">Description</string>
     <string name="optional_label">Optional</string>
     <string name="help_me_post_add_button">Add</string>
+    <string name="error_category">Please select a category</string>
+    <string name="error_title">Title cannot be empty</string>
+    <string name="error_date">Please select a date</string>
+    <string name="error_time">Time cannot be in the past</string>
+    <string name="error_empty_time">Please select a time</string>
 </resources>
