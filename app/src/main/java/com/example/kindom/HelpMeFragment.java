@@ -1,5 +1,6 @@
 package com.example.kindom;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +11,8 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 
@@ -55,5 +58,15 @@ public class HelpMeFragment extends Fragment {
 
         // Give the RecyclerView a default layout manager.
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+
+        // Set click listener for FAB
+        FloatingActionButton fab = getActivity().findViewById(R.id.help_me_fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), HelpMePostAddActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 }
