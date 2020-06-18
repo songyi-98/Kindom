@@ -31,8 +31,13 @@
     <string name="error_confirm_password">Please confirm your password</string>
     <string name="error_profile_image_upload">Upload of profile image failed. Try uploading the profile image again under the profile settings.</string>
     <string name="menu_sign_out_label">Sign Out</string>
+    <string name="menu_my_profile_label">My Profile</string>
+    <string name="profile_settings_label">Profile settings</string>
     <string name="navigation_home">Home</string>
     <string name="navigation_help_me">Help Me!</string>
     <string name="navigation_chat">Chat</string>
     <string name="navigation_events">Events</string>
+    <string name="my_profile_email_header">Email:</string>
+    <string name="my_profile_postal_code_header">Postal code:</string>
+    <string name="error_profile_image_load">Profile image cannot be loaded. Please try again later.</string>
 </resources>
