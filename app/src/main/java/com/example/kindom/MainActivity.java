@@ -1,10 +1,14 @@
 package com.example.kindom;
 
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
@@ -28,6 +32,7 @@ public class MainActivity extends AppCompatActivity {
     private TextInputLayout mPasswordField;
     private MaterialButton mSignInButton;
     private TextView mRegisterText;
+    private boolean isConn = false;
     private boolean isValidEmail = false;
     private boolean isValidPassword = false;
 
@@ -44,13 +49,30 @@ public class MainActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
 
-        checkSignIn();
+        checkInternetConnection();
+        if (isConn) {
+            checkSignIn();
+        }
     }
 
     @Override
     protected void onStop() {
         super.onStop();
         finishAffinity();
+    }
+
+    /**
+     * Check if an internet connection is available
+     */
+    private void checkInternetConnection() {
+        Log.i("INTERNET", "CALLED");
+        ConnectivityManager connMgr = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
+        if (networkInfo == null || !networkInfo.isConnected()) {
+            Alert.showAlertDialogAndFinish(this,this, getString(R.string.error_internet_connection));
+        } else {
+            isConn = true;
+        }
     }
 
     /**

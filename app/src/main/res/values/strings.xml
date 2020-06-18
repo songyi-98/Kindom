@@ -5,6 +5,7 @@
     <string name="password_label">Password</string>
     <string name="sign_in_label">Sign In</string>
     <string name="register_prompt">Not registered yet? Click here!</string>
+    <string name="error_internet_connection">Please ensure you have a stable Internet connection before using this app</string>
     <string name="error_email">Invalid email</string>
     <string name="error_empty_password">Password cannot be empty</string>
     <string name="error_sign_in">Invalid email / password</string>
