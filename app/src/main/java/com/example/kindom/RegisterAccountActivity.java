@@ -1,35 +1,45 @@
 package com.example.kindom;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-
-import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
-import android.widget.Button;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
+
+import java.util.Objects;
 
 public class RegisterAccountActivity extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
     private DatabaseReference mUserDatabase;
+    private StorageReference mStorageRef;
+    private String mProfileImage;
     private String mName;
     private int mPostalCode;
     private String mUserGroup;
     private TextInputLayout mEmailField;
     private TextInputLayout mPasswordField;
     private TextInputLayout mConfirmPasswordField;
+    private MaterialButton mSignUpButton;
     private boolean isValidEmail = false;
     private boolean isValidPassword = false;
     private boolean isValidConfirmPassword = false;
@@ -42,20 +52,45 @@ public class RegisterAccountActivity extends AppCompatActivity {
         // Retrieve data from intent
         Intent intent = getIntent();
         if (intent != null) {
-            mName = intent.getStringExtra("USER_NAME");
-            mPostalCode = intent.getIntExtra("USER_POSTAL_CODE", 0);
-            mUserGroup = intent.getStringExtra("USER_GROUP");
+            mProfileImage = intent.getStringExtra(RegisterProfileActivity.USER_PROFILE_IMAGE_TAG);
+            mName = intent.getStringExtra(RegisterProfileActivity.USER_NAME_TAG);
+            mPostalCode = intent.getIntExtra(RegisterProfileActivity.USER_POSTAL_CODE_TAG, 0);
+            mUserGroup = intent.getStringExtra(RegisterProfileActivity.USER_GROUP_TAG);
         }
 
+        // Initialize Firebase Authentication, Database and Storage
         mAuth = FirebaseAuth.getInstance();
         mUserDatabase = FirebaseDatabase.getInstance().getReference().child("users");
+        mStorageRef = FirebaseStorage.getInstance().getReference().child("profileImages");
 
+        // Initialize layout variables
         mEmailField = findViewById(R.id.edit_email_register);
         mPasswordField = findViewById(R.id.edit_password_register);
         mConfirmPasswordField = findViewById(R.id.edit_confirm_password);
+        mSignUpButton = findViewById(R.id.sign_up_button);
 
-        // Check email and password validity
-        mEmailField.getEditText().addTextChangedListener(new TextWatcher() {
+        validateInputs();
+        setSignUpListener();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        finishAffinity();
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent intent = new Intent(RegisterAccountActivity.this, RegisterProfileActivity.class);
+        startActivity(intent);
+    }
+
+    /**
+     * Check email and password validity
+     */
+    private void validateInputs() {
+        Objects.requireNonNull(mEmailField.getEditText()).addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
                 // Do nothing
@@ -68,16 +103,18 @@ public class RegisterAccountActivity extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable s) {
-                if (Validation.isValidEmail(s)) {
+                if (!Validation.isValidEmail(s)) {
+                    isValidEmail = false;
+                    mEmailField.setError(getString(R.string.error_email));
+                } else {
+                    // TODO: Check if email has been registered before
                     isValidEmail = true;
                     mEmailField.setError(null);
-                } else {
-                    isValidEmail = false;
-                    mEmailField.setError(getString(R.string.error_invalid_email));
                 }
             }
         });
-        mPasswordField.getEditText().addTextChangedListener(new TextWatcher() {
+
+        Objects.requireNonNull(mPasswordField.getEditText()).addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
                 // Do nothing
@@ -90,16 +127,17 @@ public class RegisterAccountActivity extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable s) {
-                if (Validation.isValidPassword(s)) {
-                    isValidPassword = true;
-                    mPasswordField.setError(null);
-                } else {
+                if (!Validation.isValidPassword(s)) {
                     isValidPassword = false;
                     mPasswordField.setError(getString(R.string.error_password_requirements));
+                } else {
+                    isValidPassword = true;
+                    mPasswordField.setError(null);
                 }
             }
         });
-        mConfirmPasswordField.getEditText().addTextChangedListener(new TextWatcher() {
+
+        Objects.requireNonNull(mConfirmPasswordField.getEditText()).addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
                 // Do nothing
@@ -115,28 +153,33 @@ public class RegisterAccountActivity extends AppCompatActivity {
                 String password = mPasswordField.getEditText().getText().toString();
                 if (!Validation.isNonEmpty(password)) {
                     isValidConfirmPassword = false;
-                    mConfirmPasswordField.setError("Please enter a password in the above box first");
+                    mConfirmPasswordField.setError(getString(R.string.error_password_empty));
                 } else if (!password.contentEquals(s)) {
                     isValidConfirmPassword = false;
-                    mConfirmPasswordField.setError("Password does not match above");
+                    mConfirmPasswordField.setError(getString(R.string.error_password_match));
                 } else {
                     isValidConfirmPassword = true;
                     mConfirmPasswordField.setError(null);
                 }
             }
         });
+    }
 
-        // Set click listener for sign up button
-        Button signUpButton = findViewById(R.id.sign_up_button);
-        signUpButton.setOnClickListener(new View.OnClickListener() {
+    /**
+     * Set click listener for sign up button
+     */
+    private void setSignUpListener() {
+        mSignUpButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (isValidEmail && isValidPassword && isValidConfirmPassword) {
-                    String email = mEmailField.getEditText().getText().toString();
-                    String password = mPasswordField.getEditText().getText().toString();
-                    createAccount(email, password);
+                if (!isValidEmail || !isValidPassword) {
+                    Alert.showAlertDialog(RegisterAccountActivity.this, getString(R.string.error_sign_in));
+                } else if (!isValidConfirmPassword) {
+                    Alert.showAlertDialog(RegisterAccountActivity.this, getString(R.string.error_confirm_password));
                 } else {
-                    showAlertDialog();
+                    String email = Objects.requireNonNull(mEmailField.getEditText()).getText().toString();
+                    String password = Objects.requireNonNull(mPasswordField.getEditText()).getText().toString();
+                    createAccount(email, password);
                 }
             }
         });
@@ -144,6 +187,7 @@ public class RegisterAccountActivity extends AppCompatActivity {
 
     /**
      * Create an account with Firebase Authentication
+     *
      * @param email email of the user
      * @param password password of the user
      */
@@ -153,46 +197,37 @@ public class RegisterAccountActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            // Sign up success. Add user to database.
-                            User user = new User(mName, mUserGroup, mPostalCode, email);
+                            // Sign up success
+                            FirebaseUser newUser = mAuth.getCurrentUser();
+                            String uid = newUser.getUid();
+
+                            // Add profile image to storage
+                            StorageReference uploadRef = mStorageRef.child(uid);
+                            UploadTask uploadTask = uploadRef.putFile(Uri.parse(mProfileImage));
+                            uploadTask.addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    Alert.showAlertDialog(RegisterAccountActivity.this, getString(R.string.error_profile_image_upload));
+                                }
+                            }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                                @Override
+                                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                                    // Do nothing
+                                }
+                            });
+
+                            // Add user to database
+                            User user = new User(uid, mName, mUserGroup, mPostalCode, email);
                             mUserDatabase.push().setValue(user);
 
-                            // Bring user to Home page.
+                            // Bring user to Home page
                             Intent intent = new Intent(RegisterAccountActivity.this, HomeActivity.class);
                             startActivity(intent);
                         } else {
                             // Sign up fail
-                            showAlertDialog();
+                            Alert.showAlertDialog(RegisterAccountActivity.this, getString(R.string.error_sign_in));
                         }
                     }
                 });
-    }
-
-    /**
-     * Show alert dialog
-     */
-    private void showAlertDialog() {
-        new AlertDialog.Builder(this)
-                .setMessage(R.string.error_sign_in)
-                .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        // User clicked OK button
-                    }
-                })
-                .show();
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        finishAffinity();
-    }
-
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        Intent intent = new Intent(RegisterAccountActivity.this, RegisterProfileActivity.class);
-        startActivity(intent);
     }
 }
