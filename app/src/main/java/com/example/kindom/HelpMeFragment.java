@@ -1,6 +1,5 @@
 package com.example.kindom;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,18 +8,12 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
+import androidx.fragment.app.FragmentStatePagerAdapter;
+import androidx.viewpager.widget.ViewPager;
 
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-
-import java.util.ArrayList;
+import com.google.android.material.tabs.TabLayout;
 
 public class HelpMeFragment extends Fragment {
-
-    private ArrayList<HelpMePost> mHelpMePosts = new ArrayList<>();
-    private RecyclerView mRecyclerView;
-    private HelpMePostAdapter mAdapter;
 
     public HelpMeFragment() {
         // Required empty public constructor
@@ -42,30 +35,41 @@ public class HelpMeFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        for (int i = 0; i < 5; i++) {
-            mHelpMePosts.add(new HelpMePost("Food", "Buy desserts", "Aaron", "Blk 123", "Today" , "10:00 AM", "Test"));
-            mHelpMePosts.add(new HelpMePost("Care", "Pick up child from school", "Patricia","Blk 999", "Tomorrow", "12:00 PM", "Test"));
-        }
+        // Create an instance of the tab layout from the view
+        TabLayout tabLayout = getActivity().findViewById(R.id.help_me_tab_layout);
 
-        // Get a handle to the RecyclerView.
-        mRecyclerView = getActivity().findViewById(R.id.help_me_recycler_view);
+        // Set the text for each tab
+        tabLayout.addTab(tabLayout.newTab().setText(R.string.help_me_all_listing_tab));
+        tabLayout.addTab(tabLayout.newTab().setText(R.string.help_me_my_listing_tab));
 
-        // Create an adapter and supply the data to be displayed.
-        mAdapter = new HelpMePostAdapter(getContext(), mHelpMePosts);
+        // Set the tabs to fill the entire layout
+        tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
 
-        // Connect the adapter with the RecyclerView.
-        mRecyclerView.setAdapter(mAdapter);
+        // Use PagerAdapter to manage page views in fragments.
+        // Each page is represented by its own fragment.
+        final ViewPager viewPager = getActivity().findViewById(R.id.help_me_pager);
+        final HelpMePagerAdapter adapter = new HelpMePagerAdapter(
+                getActivity().getSupportFragmentManager(),
+                FragmentStatePagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT,
+                tabLayout.getTabCount());
+        viewPager.setAdapter(adapter);
 
-        // Give the RecyclerView a default layout manager.
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-
-        // Set click listener for FAB
-        FloatingActionButton fab = getActivity().findViewById(R.id.help_me_fab);
-        fab.setOnClickListener(new View.OnClickListener() {
+        // Setting a listener for clicks.
+        viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
+        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), HelpMePostAddActivity.class);
-                startActivity(intent);
+            public void onTabSelected(TabLayout.Tab tab) {
+                viewPager.setCurrentItem(tab.getPosition());
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+                // Do nothing
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+                // Do nothing
             }
         });
     }
