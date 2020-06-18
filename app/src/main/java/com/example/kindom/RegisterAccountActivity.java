@@ -58,7 +58,7 @@ public class RegisterAccountActivity extends AppCompatActivity {
             mUserGroup = intent.getStringExtra(RegisterProfileActivity.USER_GROUP_TAG);
         }
 
-        // Initialize Firebase Authentication, Database and Storage
+        // Initialize Firebase components
         mAuth = FirebaseAuth.getInstance();
         mUserDatabase = FirebaseDatabase.getInstance().getReference().child("users");
         mStorageRef = FirebaseStorage.getInstance().getReference().child("profileImages");

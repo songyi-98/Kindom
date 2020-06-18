@@ -5,8 +5,8 @@ package com.example.kindom;
  */
 public class User {
 
-    public static final String USER_GROUP_ADMIN = "admin";
-    public static final String USER_GROUP_USER = "user";
+    public static final String USER_GROUP_ADMIN = "Admin";
+    public static final String USER_GROUP_USER = "User";
 
     private String uid;
     private String name;
