@@ -36,6 +36,7 @@ public class HelpMePostAddActivity extends AppCompatActivity {
     private boolean isValidDate = false;
     private boolean isNonEmptyTime = false;
     private boolean isValidTime = false;
+    private boolean isValidDescription = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,7 +89,7 @@ public class HelpMePostAddActivity extends AppCompatActivity {
     }
 
     /**
-     * Set text changed listeners for category and title fields
+     * Set text changed listeners for category, title and description fields
      */
     private void setTextChangedListeners() {
         TextInputLayout categoryField = findViewById(R.id.help_me_post_add_category);
@@ -132,6 +133,30 @@ public class HelpMePostAddActivity extends AppCompatActivity {
                 }
             }
         });
+
+        final TextInputLayout descriptionField = findViewById(R.id.help_me_post_add_description);
+        descriptionField.getEditText().addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                // Do nothing
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                // Do nothing
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (Validation.isNonEmpty(s)) {
+                    isValidDescription = true;
+                    descriptionField.setError(null);
+                } else {
+                    isValidDescription = false;
+                    descriptionField.setError(getString(R.string.error_description));
+                }
+            }
+        });
     }
 
     /**
@@ -164,6 +189,23 @@ public class HelpMePostAddActivity extends AppCompatActivity {
                 newFragment.show(getSupportFragmentManager(), "Time");
             }
         });
+    }
+
+    /**
+     * Hide user's keyboard
+     */
+    private void hideKeyboard() {
+        InputMethodManager imm = (InputMethodManager) getSystemService(Activity.INPUT_METHOD_SERVICE);
+
+        // Find the currently focused view
+        View view = getCurrentFocus();
+
+        // Create a new view if no view currently has focus
+        if (view == null) {
+            view = new View(this);
+        }
+
+        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 
     /**
@@ -250,23 +292,6 @@ public class HelpMePostAddActivity extends AppCompatActivity {
     }
 
     /**
-     * Hide user's keyboard
-     */
-    private void hideKeyboard() {
-        InputMethodManager imm = (InputMethodManager) getSystemService(Activity.INPUT_METHOD_SERVICE);
-
-        // Find the currently focused view
-        View view = getCurrentFocus();
-
-        // Create a new view if no view currently has focus
-        if (view == null) {
-            view = new View(this);
-        }
-
-        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
-    }
-
-    /**
      * Set click listener for add button
      */
     private void setAddClickListener() {
@@ -284,8 +309,10 @@ public class HelpMePostAddActivity extends AppCompatActivity {
                     showAlertDialog(getString(R.string.error_empty_time));
                 } else if (!isValidTime) {
                     showAlertDialog(getString(R.string.error_time));
+                } else if (!isValidDescription){
+                    showAlertDialog(getString(R.string.error_description));
                 } else {
-                    
+
                 }
             }
         });

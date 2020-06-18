@@ -43,8 +43,8 @@ public class HelpMeFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         for (int i = 0; i < 5; i++) {
-            mHelpMePosts.add(new HelpMePost(null, "Food", "Buy desserts", "Blk 123", "Today" , "10 am", "Aaron", ""));
-            mHelpMePosts.add(new HelpMePost(null, "Care", "Pick up child from school", "Blk 999", "Tomorrow", "12 pm", "Patricia", ""));
+            mHelpMePosts.add(new HelpMePost("Food", "Buy desserts", "Aaron", "Blk 123", "Today" , "10:00 AM", "Test"));
+            mHelpMePosts.add(new HelpMePost("Care", "Pick up child from school", "Patricia","Blk 999", "Tomorrow", "12:00 PM", "Test"));
         }
 
         // Get a handle to the RecyclerView.

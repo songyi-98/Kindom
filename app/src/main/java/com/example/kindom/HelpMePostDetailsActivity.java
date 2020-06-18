@@ -69,7 +69,6 @@ public class HelpMePostDetailsActivity extends AppCompatActivity {
     }
 
     private void setText() {
-        ImageView imageView = findViewById(R.id.help_me_post_image);
         Chip categoryChip = findViewById(R.id.help_me_post_category);
         TextView titleTextView = findViewById(R.id.help_me_post_title);
         TextView locationTextView = findViewById(R.id.help_me_post_location);
@@ -78,9 +77,8 @@ public class HelpMePostDetailsActivity extends AppCompatActivity {
         TextView userTextView = findViewById(R.id.help_me_post_user);
         TextView descriptionTextView = findViewById(R.id.help_me_post_description);
 
-        //imageView.setImageURI(mPost.getImage());
-        titleTextView.setText(mPost.getTitle());
         categoryChip.setText(mPost.getCategory());
+        titleTextView.setText(mPost.getTitle());
         locationTextView.setText(mPost.getLocation());
         dateTextView.setText(mPost.getDate());
         timeTextView.setText(mPost.getTime());
