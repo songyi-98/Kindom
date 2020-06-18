@@ -15,7 +15,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
-        tools:context=".HelpMePostAddActivity">
+        tools:context=".HelpMePostEditActivity">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -23,7 +23,7 @@
             android:orientation="vertical">
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/help_me_post_add_category"
+                android:id="@+id/help_me_post_edit_category"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -32,7 +32,7 @@
                 app:startIconDrawable="@drawable/ic_round_category_24">
 
                 <AutoCompleteTextView
-                    android:id="@+id/help_me_post_add_category_dropdown_menu"
+                    android:id="@+id/help_me_post_edit_category_dropdown_menu"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:editable="false"
@@ -41,7 +41,7 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/help_me_post_add_title"
+                android:id="@+id/help_me_post_edit_title"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -58,7 +58,7 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/help_me_post_add_location"
+                android:id="@+id/help_me_post_edit_location"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -82,14 +82,14 @@
                 android:orientation="horizontal">
 
                 <com.google.android.material.button.MaterialButton
-                    android:id="@+id/help_me_post_add_date_button"
+                    android:id="@+id/help_me_post_edit_date_button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/help_me_post_add_date_button"
                     app:icon="@drawable/ic_round_calendar_today_24" />
 
                 <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/help_me_post_add_date"
+                    android:id="@+id/help_me_post_edit_date"
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -97,7 +97,7 @@
                     android:hint="@string/help_me_post_add_date">
 
                     <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/help_me_post_add_date_field"
+                        android:id="@+id/help_me_post_edit_date_field"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:enabled="false" />
@@ -111,14 +111,14 @@
                 android:orientation="horizontal">
 
                 <com.google.android.material.button.MaterialButton
-                    android:id="@+id/help_me_post_add_time_button"
+                    android:id="@+id/help_me_post_edit_time_button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/help_me_post_add_time_button"
                     app:icon="@drawable/ic_round_access_time_24" />
 
                 <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/help_me_post_add_time"
+                    android:id="@+id/help_me_post_edit_time"
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -126,7 +126,7 @@
                     android:hint="@string/help_me_post_add_time">
 
                     <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/help_me_post_add_time_field"
+                        android:id="@+id/help_me_post_edit_time_field"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:enabled="false" />
@@ -134,7 +134,7 @@
             </LinearLayout>
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/help_me_post_add_description"
+                android:id="@+id/help_me_post_edit_description"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -148,11 +148,11 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.button.MaterialButton
-                android:id="@+id/help_me_post_add_button"
+                android:id="@+id/help_me_post_save_button"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:text="@string/help_me_post_add_button" />
+                android:text="@string/help_me_post_save_button" />
         </LinearLayout>
     </ScrollView>
 </LinearLayout>

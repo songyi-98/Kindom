@@ -29,8 +29,10 @@
     <string name="navigation_help_me">Help Me!</string>
     <string name="navigation_chat">Chat</string>
     <string name="navigation_events">Events</string>
+    <string name="help_me_all_listing_tab">All Listing</string>
+    <string name="help_me_my_listing_tab">My Listing</string>
+    <string name="list_item_help_me_all_listing_details">Details</string>
     <string name="fab_content_desc">Add</string>
-    <string name="help_me_list_item_details_button">Details</string>
     <string name="help_me_post_details_label">Post details</string>
     <string name="menu_report_listing_label">Report Listing</string>
     <string name="help_me_post_user_header">User requiring help:</string>
@@ -53,4 +55,8 @@
     <string name="error_time">Time cannot be in the past</string>
     <string name="error_empty_time">Please select a time</string>
     <string name="error_description">Description cannot be empty</string>
+    <string name="list_item_help_me_user_listing_edit">Edit</string>
+    <string name="list_item_help_me_user_listing_delete">Delete</string>
+    <string name="help_me_edit_post_label">Edit post</string>
+    <string name="help_me_post_save_button">Save Changes</string>
 </resources>

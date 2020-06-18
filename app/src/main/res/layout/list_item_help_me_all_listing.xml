@@ -17,7 +17,7 @@
         android:layout_height="wrap_content">
 
         <com.google.android.material.chip.Chip
-            android:id="@+id/help_me_list_item_category"
+            android:id="@+id/list_item_help_me_all_listing_category"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
@@ -29,17 +29,17 @@
             tools:text="Category" />
 
         <TextView
-            android:id="@+id/help_me_list_item_title"
+            android:id="@+id/list_item_help_me_all_listing_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:textAppearance="?attr/textAppearanceHeadline6"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/help_me_list_item_category"
+            app:layout_constraintTop_toBottomOf="@id/list_item_help_me_all_listing_category"
             tools:text="Title" />
 
         <LinearLayout
-            android:id="@+id/help_me_list_item_info"
+            android:id="@+id/list_item_help_me_all_listing_info"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
@@ -47,10 +47,10 @@
             android:layout_marginEnd="16dp"
             android:orientation="horizontal"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/help_me_list_item_title">
+            app:layout_constraintTop_toBottomOf="@id/list_item_help_me_all_listing_title">
 
             <TextView
-                android:id="@+id/help_me_list_item_location"
+                android:id="@+id/list_item_help_me_all_listing_location"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -60,7 +60,7 @@
                 tools:text="Blk 999" />
 
             <TextView
-                android:id="@+id/help_me_list_item_date"
+                android:id="@+id/list_item_help_me_all_listing_date"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
@@ -71,7 +71,7 @@
                 tools:text="Tomorrow" />
 
             <TextView
-                android:id="@+id/help_me_list_item_time"
+                android:id="@+id/list_item_help_me_all_listing_time"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
@@ -83,7 +83,7 @@
         </LinearLayout>
 
         <com.google.android.material.chip.Chip
-            android:id="@+id/help_me_list_item_user"
+            android:id="@+id/list_item_help_me_all_listing_user"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
@@ -91,19 +91,19 @@
             android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
             app:chipIcon="@drawable/ic_round_person_24"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/help_me_list_item_info"
+            app:layout_constraintTop_toBottomOf="@id/list_item_help_me_all_listing_info"
             tools:text="Adam" />
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/help_me_list_item_details"
+            android:id="@+id/list_item_help_me_all_listing_details"
             style="?attr/borderlessButtonStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginBottom="8dp"
-            android:text="@string/help_me_list_item_details_button"
+            android:text="@string/list_item_help_me_all_listing_details"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/help_me_list_item_user" />
+            app:layout_constraintTop_toBottomOf="@id/list_item_help_me_all_listing_user" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </com.google.android.material.card.MaterialCardView>

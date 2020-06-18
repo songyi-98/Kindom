@@ -1,5 +1,11 @@
 package com.example.kindom;
 
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.DialogFragment;
+
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.os.Bundle;
@@ -10,12 +16,6 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.fragment.app.DialogFragment;
-
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
@@ -24,32 +24,30 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.Calendar;
 
-public class HelpMePostAddActivity extends AppCompatActivity {
+public class HelpMePostEditActivity extends AppCompatActivity {
 
     private String[] CATEGORIES = new String[]{"Care", "Food", "Groceries", "Others"};
 
     private DatabaseReference mHelpMePostDatabaseReference;
-    private TextInputLayout mCategoryField;
+    private HelpMePost mPost;
+    private AutoCompleteTextView mCategoryField;
     private TextInputLayout mTitleField;
     private MaterialButton mDateButton;
     private TextInputLayout mDateField;
     private MaterialButton mTimeButton;
     private TextInputLayout mTimeField;
     private TextInputLayout mDescriptionField;
-    private MaterialButton mAddButton;
+    private MaterialButton mSaveButton;
     private int[] mDate;
     private int[] mTime;
-    private boolean isValidCategory = false;
-    private boolean isValidTitle = false;
-    private boolean isValidDate = false;
-    private boolean isNonEmptyTime = false;
-    private boolean isValidTime = false;
-    private boolean isValidDescription = false;
+    private boolean isValidTitle = true;
+    private boolean isValidTime = true;
+    private boolean isValidDescription = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_help_me_post_add);
+        setContentView(R.layout.activity_help_me_post_edit);
 
         // Set toolbar
         Toolbar toolbar = findViewById(R.id.toolbar_main);
@@ -62,19 +60,27 @@ public class HelpMePostAddActivity extends AppCompatActivity {
         assert ab != null;
         ab.setDisplayHomeAsUpEnabled(true);
 
+        // Receive intent
+        if (getIntent().getExtras() != null) {
+            mPost = (HelpMePost) getIntent().getSerializableExtra("Post");
+        }
+
         // Initialize text fields and buttons
-        mCategoryField = findViewById(R.id.help_me_post_add_category);
-        mTitleField = findViewById(R.id.help_me_post_add_title);
-        mDateButton = findViewById(R.id.help_me_post_add_date_button);
-        mDateField = findViewById(R.id.help_me_post_add_date);
-        mTimeButton = findViewById(R.id.help_me_post_add_time_button);
-        mTimeField = findViewById(R.id.help_me_post_add_time);
-        mDescriptionField = findViewById(R.id.help_me_post_add_description);
-        mAddButton = findViewById(R.id.help_me_post_add_button);
+        mCategoryField = findViewById(R.id.help_me_post_edit_category_dropdown_menu);
+        mTitleField = findViewById(R.id.help_me_post_edit_title);
+        mDateButton = findViewById(R.id.help_me_post_edit_date_button);
+        mDateField = findViewById(R.id.help_me_post_edit_date);
+        mTimeButton = findViewById(R.id.help_me_post_edit_time_button);
+        mTimeField = findViewById(R.id.help_me_post_edit_time);
+        mDescriptionField = findViewById(R.id.help_me_post_edit_description);
+        mSaveButton = findViewById(R.id.help_me_post_save_button);
 
         // Initialize user's inputs
         setCategoryDropdownMenu();
         fixLocation();
+        populateInputs();
+        checkDateAndTime();
+        // TODO: Check date and time properly against original inputs
         setTextChangedListeners();
         setButtonsClickListeners();
 
@@ -101,8 +107,7 @@ public class HelpMePostAddActivity extends AppCompatActivity {
      */
     private void setCategoryDropdownMenu() {
         ArrayAdapter<String> categoryAdapter = new ArrayAdapter<>(this, R.layout.list_item_help_me_category, CATEGORIES);
-        AutoCompleteTextView categoryTextView = findViewById(R.id.help_me_post_add_category_dropdown_menu);
-        categoryTextView.setAdapter(categoryAdapter);
+        mCategoryField.setAdapter(categoryAdapter);
     }
 
     /**
@@ -113,26 +118,20 @@ public class HelpMePostAddActivity extends AppCompatActivity {
     }
 
     /**
-     * Set text changed listeners for category, title and description fields
+     * Populate the fields with the current inputs
+     */
+    private void populateInputs() {
+        mCategoryField.setText(mPost.getCategory(), false);
+        mTitleField.getEditText().setText(mPost.getTitle());
+        mDateField.getEditText().setText(mPost.getDate());
+        mTimeField.getEditText().setText(mPost.getTime());
+        mDescriptionField.getEditText().setText(mPost.getDescription());
+    }
+
+    /**
+     * Set text changed listeners for title and description fields
      */
     private void setTextChangedListeners() {
-        mCategoryField.getEditText().addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                // Do nothing
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                // Do nothing
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                isValidCategory = true;
-            }
-        });
-
         mTitleField.getEditText().addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -181,14 +180,14 @@ public class HelpMePostAddActivity extends AppCompatActivity {
     }
 
     /**
-     * Set click listeners for date, time and add buttons
+     * Set click listeners for date, time and save buttons
      */
     private void setButtonsClickListeners() {
         mDateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 hideKeyboard();
-                DialogFragment newFragment = new DatePickerFragment(HelpMePostAddActivity.this);
+                DialogFragment newFragment = new DatePickerFragment(HelpMePostEditActivity.this);
                 newFragment.show(getSupportFragmentManager(), "Date");
             }
         });
@@ -197,22 +196,16 @@ public class HelpMePostAddActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 hideKeyboard();
-                DialogFragment newFragment = new TimePickerFragment(HelpMePostAddActivity.this);
+                DialogFragment newFragment = new TimePickerFragment(HelpMePostEditActivity.this);
                 newFragment.show(getSupportFragmentManager(), "Time");
             }
         });
 
-        mAddButton.setOnClickListener(new View.OnClickListener() {
+        mSaveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!isValidCategory) {
-                    showAlertDialog(getString(R.string.error_category));
-                } else if (!isValidTitle) {
+                if (!isValidTitle) {
                     showAlertDialog(getString(R.string.error_title));
-                } else if (!isValidDate) {
-                    showAlertDialog(getString(R.string.error_date));
-                } else if (!isNonEmptyTime) {
-                    showAlertDialog(getString(R.string.error_empty_time));
                 } else if (!isValidTime) {
                     showAlertDialog(getString(R.string.error_time));
                 } else if (!isValidDescription) {
@@ -249,8 +242,6 @@ public class HelpMePostAddActivity extends AppCompatActivity {
      * @param dayOfMonth the day of month chosen
      */
     public void processDatePickerResult(int year, int month, int dayOfMonth) {
-        isValidDate = true;
-
         // Create date message
         mDate = new int[]{year, month, dayOfMonth};
         String year_string = Integer.toString(year);
@@ -278,8 +269,6 @@ public class HelpMePostAddActivity extends AppCompatActivity {
      * @param minute    the minute chosen
      */
     public void processTimePickerResult(int hourOfDay, int minute) {
-        isNonEmptyTime = true;
-
         // Create time message
         mTime = new int[]{hourOfDay, minute};
         int hour = hourOfDay <= 12 ? hourOfDay : hourOfDay - 12;
