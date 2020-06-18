@@ -16,27 +16,16 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <ImageView
-            android:id="@+id/help_me_list_item_image"
-            android:layout_width="match_parent"
-            android:layout_height="172dp"
-            android:adjustViewBounds="true"
-            android:contentDescription="@string/help_me_list_item_image_desc"
-            android:scaleType="centerCrop"
-            android:src="@drawable/placeholder"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
         <com.google.android.material.chip.Chip
             android:id="@+id/help_me_list_item_category"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:textStyle="bold"
+            android:layout_marginTop="8dp"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
             app:chipBackgroundColor="@color/colorPrimaryLight"
-            app:layout_constraintBottom_toBottomOf="@id/help_me_list_item_image"
-            app:layout_constraintStart_toStartOf="@id/help_me_list_item_image"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
             tools:text="Category" />
 
         <TextView
@@ -44,10 +33,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
             android:textAppearance="?attr/textAppearanceHeadline6"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/help_me_list_item_image"
+            app:layout_constraintTop_toBottomOf="@id/help_me_list_item_category"
             tools:text="Title" />
 
         <LinearLayout
@@ -91,20 +79,31 @@
                 android:drawableStart="@drawable/ic_round_access_time_24"
                 android:drawablePadding="8dp"
                 android:textAppearance="?attr/textAppearanceBody2"
-                tools:text="12 pm" />
+                tools:text="12:00 PM" />
         </LinearLayout>
 
-        <com.google.android.material.button.MaterialButton
-            style="?attr/borderlessButtonStyle"
-            android:id="@+id/help_me_list_item_details"
+        <com.google.android.material.chip.Chip
+            android:id="@+id/help_me_list_item_user"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
+            app:chipIcon="@drawable/ic_round_person_24"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/help_me_list_item_info"
+            tools:text="Adam" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/help_me_list_item_details"
+            style="?attr/borderlessButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
             android:layout_marginBottom="8dp"
             android:text="@string/help_me_list_item_details_button"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/help_me_list_item_info" />
+            app:layout_constraintTop_toBottomOf="@id/help_me_list_item_user" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </com.google.android.material.card.MaterialCardView>

@@ -22,8 +22,6 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <!-- TODO: Add photo picker -->
-
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/help_me_post_add_category"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
@@ -141,8 +139,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:hint="@string/help_me_post_add_description"
-                app:helperText="@string/optional_label">
+                android:hint="@string/help_me_post_add_description">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"

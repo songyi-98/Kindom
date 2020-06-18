@@ -30,13 +30,12 @@
     <string name="navigation_chat">Chat</string>
     <string name="navigation_events">Events</string>
     <string name="fab_content_desc">Add</string>
-    <string name="help_me_list_item_image_desc">Listing image</string>
     <string name="help_me_list_item_details_button">Details</string>
     <string name="help_me_post_details_label">Post details</string>
     <string name="menu_report_listing_label">Report Listing</string>
+    <string name="help_me_post_user_header">User requiring help:</string>
     <string name="help_me_post_location_header">Location of help required:</string>
     <string name="help_me_post_date_time_header">Date and Time of help required:</string>
-    <string name="help_me_post_user_header">User Requiring help:</string>
     <string name="help_me_post_description_header">Description:</string>
     <string name="help_me_add_post_label">Add post</string>
     <string name="help_me_post_add_category">Category</string>
@@ -47,11 +46,11 @@
     <string name="help_me_post_add_time_button">Set Time</string>
     <string name="help_me_post_add_time">Time of help required</string>
     <string name="help_me_post_add_description">Description</string>
-    <string name="optional_label">Optional</string>
     <string name="help_me_post_add_button">Add</string>
     <string name="error_category">Please select a category</string>
     <string name="error_title">Title cannot be empty</string>
     <string name="error_date">Please select a date</string>
     <string name="error_time">Time cannot be in the past</string>
     <string name="error_empty_time">Please select a time</string>
+    <string name="error_description">Description cannot be empty</string>
 </resources>

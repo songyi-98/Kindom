@@ -15,6 +15,8 @@
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/toolbar_main">
 
@@ -22,22 +24,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <ImageView
-                android:id="@+id/help_me_post_image"
-                android:layout_width="match_parent"
-                android:layout_height="194dp"
-                android:adjustViewBounds="true"
-                android:contentDescription="@string/help_me_list_item_image_desc"
-                android:scaleType="fitCenter"
-                android:src="@drawable/placeholder" />
-
             <com.google.android.material.chip.Chip
                 android:id="@+id/help_me_post_category"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_alignBottom="@id/help_me_post_image"
-                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
                 android:textStyle="bold"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
                 app:chipBackgroundColor="@color/colorPrimaryLight"
                 tools:text="Category" />
 
@@ -45,19 +38,35 @@
                 android:id="@+id/help_me_post_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/help_me_post_image"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="16dp"
-                android:textAppearance="?attr/textAppearanceHeadline6"
+                android:layout_below="@id/help_me_post_category"
+                android:textAppearance="?attr/textAppearanceHeadline5"
                 tools:text="Title" />
+
+            <TextView
+                android:id="@+id/help_me_post_user_header"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/help_me_post_title"
+                android:layout_marginTop="8dp"
+                android:text="@string/help_me_post_user_header"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/help_me_post_user"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/help_me_post_user_header"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
+                app:chipIcon="@drawable/ic_round_person_24"
+                tools:text="Adam" />
 
             <TextView
                 android:id="@+id/help_me_post_location_header"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/help_me_post_title"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="8dp"
+                android:layout_below="@id/help_me_post_user"
                 android:text="@string/help_me_post_location_header"
                 android:textSize="14sp"
                 android:textStyle="bold" />
@@ -67,11 +76,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/help_me_post_location_header"
-                android:layout_marginStart="16dp"
                 android:layout_marginTop="8dp"
                 android:drawableStart="@drawable/ic_round_location_on_24"
                 android:drawablePadding="8dp"
-                android:textSize="14sp"
+                android:textSize="18sp"
                 tools:text="Blk 999" />
 
             <TextView
@@ -79,7 +87,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/help_me_post_location"
-                android:layout_marginStart="16dp"
                 android:layout_marginTop="8dp"
                 android:text="@string/help_me_post_date_time_header"
                 android:textSize="14sp"
@@ -90,11 +97,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/help_me_post_date_time_header"
-                android:layout_marginStart="16dp"
                 android:layout_marginTop="8dp"
                 android:drawableStart="@drawable/ic_round_calendar_today_24"
                 android:drawablePadding="8dp"
-                android:textSize="14sp"
+                android:textSize="18sp"
                 tools:text="Tomorrow" />
 
             <TextView
@@ -107,38 +113,14 @@
                 android:layout_toEndOf="@id/help_me_post_date"
                 android:drawableStart="@drawable/ic_round_access_time_24"
                 android:drawablePadding="8dp"
-                android:textSize="14sp"
-                tools:text="12 pm" />
-
-            <TextView
-                android:id="@+id/help_me_post_user_header"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/help_me_post_time"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="8dp"
-                android:text="@string/help_me_post_user_header"
-                android:textSize="14sp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/help_me_post_user"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/help_me_post_user_header"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="8dp"
-                android:drawableStart="@drawable/ic_round_person_24"
-                android:drawablePadding="8dp"
-                android:textSize="14sp"
-                tools:text="Adam" />
+                android:textSize="18sp"
+                tools:text="12:00 PM" />
 
             <TextView
                 android:id="@+id/help_me_post_description_header"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/help_me_post_user"
-                android:layout_marginStart="16dp"
+                android:layout_below="@id/help_me_post_time"
                 android:layout_marginTop="8dp"
                 android:text="@string/help_me_post_description_header"
                 android:textSize="14sp"
@@ -149,9 +131,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/help_me_post_description_header"
-                android:layout_marginStart="16dp"
                 android:layout_marginTop="8dp"
-                android:textSize="14sp"
+                android:textSize="18sp"
                 tools:text="Description of the post goes here." />
         </RelativeLayout>
     </ScrollView>
