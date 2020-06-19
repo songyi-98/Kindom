@@ -206,17 +206,17 @@ public class HelpMePostAddActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (!isValidCategory) {
-                    showAlertDialog(getString(R.string.error_category));
+                    Alert.showAlertDialog(HelpMePostAddActivity.this, getString(R.string.error_category));
                 } else if (!isValidTitle) {
-                    showAlertDialog(getString(R.string.error_title));
+                    Alert.showAlertDialog(HelpMePostAddActivity.this, getString(R.string.error_title));
                 } else if (!isValidDate) {
-                    showAlertDialog(getString(R.string.error_date));
+                    Alert.showAlertDialog(HelpMePostAddActivity.this, getString(R.string.error_date));
                 } else if (!isNonEmptyTime) {
-                    showAlertDialog(getString(R.string.error_empty_time));
+                    Alert.showAlertDialog(HelpMePostAddActivity.this, getString(R.string.error_empty_time));
                 } else if (!isValidTime) {
-                    showAlertDialog(getString(R.string.error_time));
+                    Alert.showAlertDialog(HelpMePostAddActivity.this, getString(R.string.error_time));
                 } else if (!isValidDescription) {
-                    showAlertDialog(getString(R.string.error_description));
+                    Alert.showAlertDialog(HelpMePostAddActivity.this, getString(R.string.error_description));
                 } else {
 
                 }
@@ -321,22 +321,5 @@ public class HelpMePostAddActivity extends AppCompatActivity {
         }
         isValidTime = true;
         mTimeField.setError(null);
-    }
-
-    /**
-     * Show alert dialog
-     *
-     * @param message the message to be displayed in the dialog
-     */
-    private void showAlertDialog(String message) {
-        new AlertDialog.Builder(this)
-                .setMessage(message)
-                .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        // User clicked OK button
-                    }
-                })
-                .show();
     }
 }

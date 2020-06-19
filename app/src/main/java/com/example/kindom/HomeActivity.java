@@ -74,11 +74,15 @@ public class HomeActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
+            case R.id.menu_my_profile:
+                Intent profile = new Intent(HomeActivity.this, MyProfileActivity.class);
+                startActivity(profile);
+                return true;
             case R.id.menu_sign_out:
                 mAuth.signOut();
                 finishAffinity();
-                Intent intent = new Intent(HomeActivity.this, MainActivity.class);
-                startActivity(intent);
+                Intent main = new Intent(HomeActivity.this, MainActivity.class);
+                startActivity(main);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
