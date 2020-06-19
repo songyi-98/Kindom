@@ -52,7 +52,7 @@ public class ChatFragment extends Fragment {
         //bug identified!! dont let the chatIds be the same or else messages wont display correctly
         for(int i = 0; i < 1; i++) {
             chatList.add(new ChatObject("Joshua", "iaggsddiuahs&^(&("));
-            chatList.add(new ChatObject("Joshua", "joshuahusoajsdoa"));
+            chatList.add(new ChatObject("Joshua2", "joshuahusoajsdoa"));
         }
         initializeRecyclerView();
         getUserChatList();
