@@ -21,6 +21,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -76,8 +78,8 @@ public class ChatActivity extends AppCompatActivity {
                     if (dataSnapshot.child("sender").getValue() != null) {
                         sender = dataSnapshot.child("sender").getValue().toString();
                     }
-
-                    MessageObject mMessage = new MessageObject(dataSnapshot.getKey(), sender, text);
+                    Date currentTime = Calendar.getInstance().getTime();
+                    MessageObject mMessage = new MessageObject(dataSnapshot.getKey(), sender, text, currentTime.toString());
                     messageList.add(mMessage);
                     mChatLayoutManager.scrollToPosition(messageList.size()-1);
                     mChatAdapter.notifyDataSetChanged();
@@ -115,6 +117,7 @@ public class ChatActivity extends AppCompatActivity {
             Map newMessageMap = new HashMap<>();
             newMessageMap.put("text", mMessage.getText().toString());
             newMessageMap.put("sender", FirebaseAuth.getInstance().getUid());
+            newMessageMap.put("timestamp", "");
 
             newMessageDb.updateChildren(newMessageMap);
         }
