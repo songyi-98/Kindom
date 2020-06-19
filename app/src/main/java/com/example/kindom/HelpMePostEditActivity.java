@@ -205,11 +205,11 @@ public class HelpMePostEditActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (!isValidTitle) {
-                    showAlertDialog(getString(R.string.error_title));
+                    Alert.showAlertDialog(HelpMePostEditActivity.this, getString(R.string.error_title));
                 } else if (!isValidTime) {
-                    showAlertDialog(getString(R.string.error_time));
+                    Alert.showAlertDialog(HelpMePostEditActivity.this, getString(R.string.error_time));
                 } else if (!isValidDescription) {
-                    showAlertDialog(getString(R.string.error_description));
+                    Alert.showAlertDialog(HelpMePostEditActivity.this, getString(R.string.error_description));
                 } else {
 
                 }
@@ -310,22 +310,5 @@ public class HelpMePostEditActivity extends AppCompatActivity {
         }
         isValidTime = true;
         mTimeField.setError(null);
-    }
-
-    /**
-     * Show alert dialog
-     *
-     * @param message the message to be displayed in the dialog
-     */
-    private void showAlertDialog(String message) {
-        new AlertDialog.Builder(this)
-                .setMessage(message)
-                .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        // User clicked OK button
-                    }
-                })
-                .show();
     }
 }
