@@ -1,9 +1,11 @@
 package com.example.kindom;
 
 import java.io.Serializable;
+import java.util.Date;
 
 public class HelpMePost implements Serializable {
 
+    private long timeCreated;
     private String category;
     private String title;
     private String user;
@@ -17,6 +19,8 @@ public class HelpMePost implements Serializable {
     }
 
     public HelpMePost(String category, String title, String user, String location, String date, String time, String description) {
+        Date dateObj = new Date();
+        this.timeCreated = dateObj.getTime();
         this.category = category;
         this.title = title;
         this.user = user;
@@ -24,6 +28,10 @@ public class HelpMePost implements Serializable {
         this.date = date;
         this.time = time;
         this.description = description;
+    }
+
+    public long getTimeCreated() {
+        return timeCreated;
     }
 
     public String getCategory() {

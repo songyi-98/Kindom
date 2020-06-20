@@ -67,7 +67,7 @@ public class HelpMeUserListingFragment extends Fragment {
 
         // Add all user's posts to list
         mHelpMePosts.clear();
-        userPostsRef.addListenerForSingleValueEvent(new ValueEventListener() {
+        userPostsRef.orderByChild("timeCreated").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
