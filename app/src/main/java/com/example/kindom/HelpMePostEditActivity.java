@@ -1,13 +1,11 @@
 package com.example.kindom;
 
 import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.DialogFragment;
 
 import android.app.Activity;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -17,12 +15,12 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 
 import com.google.android.material.button.MaterialButton;
-import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.Calendar;
+import java.util.Objects;
 
 public class HelpMePostEditActivity extends AppCompatActivity {
 
@@ -122,17 +120,17 @@ public class HelpMePostEditActivity extends AppCompatActivity {
      */
     private void populateInputs() {
         mCategoryField.setText(mPost.getCategory(), false);
-        mTitleField.getEditText().setText(mPost.getTitle());
-        mDateField.getEditText().setText(mPost.getDate());
-        mTimeField.getEditText().setText(mPost.getTime());
-        mDescriptionField.getEditText().setText(mPost.getDescription());
+        Objects.requireNonNull(mTitleField.getEditText()).setText(mPost.getTitle());
+        Objects.requireNonNull(mDateField.getEditText()).setText(mPost.getDate());
+        Objects.requireNonNull(mTimeField.getEditText()).setText(mPost.getTime());
+        Objects.requireNonNull(mDescriptionField.getEditText()).setText(mPost.getDescription());
     }
 
     /**
      * Set text changed listeners for title and description fields
      */
     private void setTextChangedListeners() {
-        mTitleField.getEditText().addTextChangedListener(new TextWatcher() {
+        Objects.requireNonNull(mTitleField.getEditText()).addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
                 // Do nothing
@@ -155,7 +153,7 @@ public class HelpMePostEditActivity extends AppCompatActivity {
             }
         });
 
-        mDescriptionField.getEditText().addTextChangedListener(new TextWatcher() {
+        Objects.requireNonNull(mDescriptionField.getEditText()).addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
                 // Do nothing
@@ -258,7 +256,7 @@ public class HelpMePostEditActivity extends AppCompatActivity {
         String dateMessage = day_string + "/" + month_string + "/" + year_string;
 
         // Set date message
-        mDateField.getEditText().setText(dateMessage);
+        Objects.requireNonNull(mDateField.getEditText()).setText(dateMessage);
         checkDateAndTime();
     }
 

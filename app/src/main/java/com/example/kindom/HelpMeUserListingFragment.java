@@ -2,7 +2,6 @@ package com.example.kindom;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -14,14 +13,19 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class HelpMeUserListingFragment extends Fragment {
 
     private ArrayList<HelpMePost> mHelpMePosts = new ArrayList<>();
-    private RecyclerView mRecyclerView;
-    private HelpMeUserListingAdapter mAdapter;
+    private DatabaseReference userPostsRef;
 
     public HelpMeUserListingFragment() {
         // Required empty public constructor
@@ -30,6 +34,9 @@ public class HelpMeUserListingFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        // Initialize Firebase Database
+        userPostsRef = FirebaseDatabase.getInstance().getReference().child("helpMe").child(FirebaseHandler.getUserUid());
     }
 
     @Override
@@ -43,25 +50,8 @@ public class HelpMeUserListingFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        for (int i = 0; i < 5; i++) {
-            mHelpMePosts.add(new HelpMePost("Food", "Buy desserts", "Aaron", "Blk 123", "Today" , "10:00 AM", "Test"));
-            mHelpMePosts.add(new HelpMePost("Care", "Pick up child from school", "Patricia","Blk 999", "Tomorrow", "12:00 PM", "Test"));
-        }
-
-        // Get a handle to the RecyclerView.
-        mRecyclerView = getActivity().findViewById(R.id.help_me_user_listing_recycler_view);
-
-        // Create an adapter and supply the data to be displayed.
-        mAdapter = new HelpMeUserListingAdapter(getContext(), mHelpMePosts);
-
-        // Connect the adapter with the RecyclerView.
-        mRecyclerView.setAdapter(mAdapter);
-
-        // Give the RecyclerView a default layout manager.
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-
         // Set click listener for FAB
-        FloatingActionButton fab = getActivity().findViewById(R.id.help_me_add_fab);
+        FloatingActionButton fab = Objects.requireNonNull(getActivity()).findViewById(R.id.help_me_add_fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -69,5 +59,45 @@ public class HelpMeUserListingFragment extends Fragment {
                 startActivity(intent);
             }
         });
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        // Add all user's posts to list
+        mHelpMePosts.clear();
+        userPostsRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
+                    HelpMePost post = postSnapshot.getValue(HelpMePost.class);
+                    mHelpMePosts.add(post);
+                }
+                show();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                // Do nothing
+            }
+        });
+    }
+
+    /**
+     * Show the list of user's posts
+     */
+    private void show() {
+        // Get a handle to the RecyclerView.
+        RecyclerView mRecyclerView = Objects.requireNonNull(getActivity()).findViewById(R.id.help_me_user_listing_recycler_view);
+
+        // Create an adapter and supply the data to be displayed.
+        HelpMeUserListingAdapter mAdapter = new HelpMeUserListingAdapter(getContext(), mHelpMePosts);
+
+        // Connect the adapter with the RecyclerView.
+        mRecyclerView.setAdapter(mAdapter);
+
+        // Give the RecyclerView a default layout manager.
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
     }
 }

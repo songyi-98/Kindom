@@ -8,7 +8,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
@@ -65,7 +64,6 @@ public class MainActivity extends AppCompatActivity {
      * Check if an internet connection is available
      */
     private void checkInternetConnection() {
-        Log.i("INTERNET", "CALLED");
         ConnectivityManager connMgr = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
         if (networkInfo == null || !networkInfo.isConnected()) {
