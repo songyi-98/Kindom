@@ -21,7 +21,7 @@ public class HelpMeAllListingAdapter extends RecyclerView.Adapter<HelpMeAllListi
     private final ArrayList<HelpMePost> mPostList;
     private LayoutInflater mInflater;
 
-    class HelpMePostViewHolder extends RecyclerView.ViewHolder {
+    static class HelpMePostViewHolder extends RecyclerView.ViewHolder {
 
         public Chip categoryChip;
         public TextView titleTextView;

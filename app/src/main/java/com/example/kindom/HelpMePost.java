@@ -12,6 +12,10 @@ public class HelpMePost implements Serializable {
     private String time;
     private String description;
 
+    public HelpMePost() {
+        // Default constructor required for calls to DataSnapshot.getValue(User.class)
+    }
+
     public HelpMePost(String category, String title, String user, String location, String date, String time, String description) {
         this.category = category;
         this.title = title;

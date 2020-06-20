@@ -1,5 +1,6 @@
 package com.example.kindom;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
@@ -13,7 +14,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.chip.Chip;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class HelpMeUserListingAdapter extends RecyclerView.Adapter<HelpMeUserListingAdapter.HelpMePostViewHolder> {
 
@@ -21,7 +26,7 @@ public class HelpMeUserListingAdapter extends RecyclerView.Adapter<HelpMeUserLis
     private final ArrayList<HelpMePost> mPostList;
     private LayoutInflater mInflater;
 
-    class HelpMePostViewHolder extends RecyclerView.ViewHolder {
+    static class HelpMePostViewHolder extends RecyclerView.ViewHolder {
 
         public Chip categoryChip;
         public TextView titleTextView;
@@ -53,16 +58,26 @@ public class HelpMeUserListingAdapter extends RecyclerView.Adapter<HelpMeUserLis
     @Override
     public HelpMeUserListingAdapter.HelpMePostViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View itemView = mInflater.inflate(R.layout.list_item_help_me_user_listing, parent, false);
-        return new HelpMeUserListingAdapter.HelpMePostViewHolder(itemView);
+        return new HelpMePostViewHolder(itemView);
     }
 
     @Override
+    @SuppressLint("SimpleDateFormat")
     public void onBindViewHolder(@NonNull HelpMeUserListingAdapter.HelpMePostViewHolder holder, int position) {
         final HelpMePost currPost = mPostList.get(position);
+        String date = "";
+        try {
+            Date dateObj = new SimpleDateFormat("dd/MM/yyyy").parse(currPost.getDate());
+            DateFormat dateFormat = new SimpleDateFormat("d MMM");
+            assert dateObj != null;
+            date = dateFormat.format(dateObj);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
         holder.categoryChip.setText(currPost.getCategory());
         holder.titleTextView.setText(currPost.getTitle());
         holder.locationTextView.setText(currPost.getLocation());
-        holder.dateTextView.setText(currPost.getDate());
+        holder.dateTextView.setText(date);
         holder.timeTextView.setText(currPost.getTime());
         holder.editButton.setOnClickListener(new View.OnClickListener() {
             @Override

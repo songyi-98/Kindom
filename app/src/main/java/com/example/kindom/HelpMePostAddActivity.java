@@ -1,34 +1,37 @@
 package com.example.kindom;
 
 import android.app.Activity;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.DialogFragment;
 
 import com.google.android.material.button.MaterialButton;
-import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.Calendar;
+import java.util.Objects;
 
 public class HelpMePostAddActivity extends AppCompatActivity {
 
     private String[] CATEGORIES = new String[]{"Care", "Food", "Groceries", "Others"};
 
-    private DatabaseReference mHelpMePostDatabaseReference;
+    private DatabaseReference mUploadRef;
     private TextInputLayout mCategoryField;
     private TextInputLayout mTitleField;
     private MaterialButton mDateButton;
@@ -79,7 +82,7 @@ public class HelpMePostAddActivity extends AppCompatActivity {
         setButtonsClickListeners();
 
         // Set up database
-        mHelpMePostDatabaseReference = FirebaseDatabase.getInstance().getReference().child("helpMe");
+        mUploadRef = FirebaseDatabase.getInstance().getReference().child("helpMe").child(FirebaseHandler.getUserUid());
     }
 
     @Override
@@ -116,7 +119,7 @@ public class HelpMePostAddActivity extends AppCompatActivity {
      * Set text changed listeners for category, title and description fields
      */
     private void setTextChangedListeners() {
-        mCategoryField.getEditText().addTextChangedListener(new TextWatcher() {
+        Objects.requireNonNull(mCategoryField.getEditText()).addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
                 // Do nothing
@@ -133,7 +136,7 @@ public class HelpMePostAddActivity extends AppCompatActivity {
             }
         });
 
-        mTitleField.getEditText().addTextChangedListener(new TextWatcher() {
+        Objects.requireNonNull(mTitleField.getEditText()).addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
                 // Do nothing
@@ -156,7 +159,7 @@ public class HelpMePostAddActivity extends AppCompatActivity {
             }
         });
 
-        mDescriptionField.getEditText().addTextChangedListener(new TextWatcher() {
+        Objects.requireNonNull(mDescriptionField.getEditText()).addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
                 // Do nothing
@@ -218,7 +221,36 @@ public class HelpMePostAddActivity extends AppCompatActivity {
                 } else if (!isValidDescription) {
                     Alert.showAlertDialog(HelpMePostAddActivity.this, getString(R.string.error_description));
                 } else {
+                    // Retrieve user's data from Firebase Database
+                    DatabaseReference userDatabase = FirebaseDatabase.getInstance().getReference("users");
+                    userDatabase.child(FirebaseHandler.getUserUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            User currUser = dataSnapshot.getValue(User.class);
+                            assert currUser != null;
+                            int postalCode = currUser.getPostalCode();
 
+                            // Create a HelpMePost
+                            String category = Objects.requireNonNull(mCategoryField.getEditText()).getText().toString();
+                            String title = Objects.requireNonNull(mTitleField.getEditText()).getText().toString();
+                            String user = FirebaseHandler.getUser().getDisplayName();
+                            String location = String.valueOf(postalCode);
+                            // TODO: Retrieve block number from postal code
+                            String date = Objects.requireNonNull(mDateField.getEditText()).getText().toString();
+                            String time = Objects.requireNonNull(mTimeField.getEditText()).getText().toString();
+                            String description = Objects.requireNonNull(mDescriptionField.getEditText()).getText().toString();
+                            HelpMePost post = new HelpMePost(category, title, user, location, date, time, description);
+
+                            // Add post to database
+                            mUploadRef.push().setValue(post);
+                            onBackPressed();
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+                            // Do nothing
+                        }
+                    });
                 }
             }
         });
@@ -267,7 +299,7 @@ public class HelpMePostAddActivity extends AppCompatActivity {
         String dateMessage = day_string + "/" + month_string + "/" + year_string;
 
         // Set date message
-        mDateField.getEditText().setText(dateMessage);
+        Objects.requireNonNull(mDateField.getEditText()).setText(dateMessage);
         checkDateAndTime();
     }
 
@@ -297,7 +329,7 @@ public class HelpMePostAddActivity extends AppCompatActivity {
         String timeMessage = hour_string + ":" + minute_string + " " + am_pm_string;
 
         // Set time message
-        mTimeField.getEditText().setText(timeMessage);
+        Objects.requireNonNull(mTimeField.getEditText()).setText(timeMessage);
         checkDateAndTime();
     }
 
