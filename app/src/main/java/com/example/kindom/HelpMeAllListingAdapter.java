@@ -1,5 +1,6 @@
 package com.example.kindom;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
@@ -13,7 +14,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.chip.Chip;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class HelpMeAllListingAdapter extends RecyclerView.Adapter<HelpMeAllListingAdapter.HelpMePostViewHolder> {
 
@@ -57,12 +62,22 @@ public class HelpMeAllListingAdapter extends RecyclerView.Adapter<HelpMeAllListi
     }
 
     @Override
+    @SuppressLint("SimpleDateFormat")
     public void onBindViewHolder(@NonNull HelpMePostViewHolder holder, int position) {
         final HelpMePost currPost = mPostList.get(position);
+        String date = "";
+        try {
+            Date dateObj = new SimpleDateFormat("dd/MM/yyyy").parse(currPost.getDate());
+            DateFormat dateFormat = new SimpleDateFormat("d MMM");
+            assert dateObj != null;
+            date = dateFormat.format(dateObj);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
         holder.categoryChip.setText(currPost.getCategory());
         holder.titleTextView.setText(currPost.getTitle());
         holder.locationTextView.setText(currPost.getLocation());
-        holder.dateTextView.setText(currPost.getDate());
+        holder.dateTextView.setText(date);
         holder.timeTextView.setText(currPost.getTime());
         holder.userChip.setText(currPost.getUser());
         holder.detailsButton.setOnClickListener(new View.OnClickListener() {
