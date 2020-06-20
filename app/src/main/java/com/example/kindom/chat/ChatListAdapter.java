@@ -53,7 +53,6 @@ public class ChatListAdapter extends RecyclerView.Adapter<ChatListAdapter.ChatLi
 
                 FirebaseDatabase.getInstance().getReference().child("users").child(FirebaseAuth.getInstance().getUid()).child("chat").child(key).setValue(true);
                 FirebaseDatabase.getInstance().getReference().child("users").child(chatList.get(position).getChatId()).child("chat").child(key).setValue(true);*/
-
             }
         });
     }

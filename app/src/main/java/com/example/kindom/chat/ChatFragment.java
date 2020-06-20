@@ -21,6 +21,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class ChatFragment extends Fragment {
 
@@ -50,10 +52,13 @@ public class ChatFragment extends Fragment {
         mChatList = rootView.findViewById(R.id.chatList);
 
         //bug identified!! dont let the chatIds be the same or else messages wont display correctly
-        for(int i = 0; i < 1; i++) {
-            chatList.add(new ChatObject("Joshua", "iaggsddiuahs&^(&("));
-            chatList.add(new ChatObject("Joshua2", "joshuahusoajsdoa"));
-        }
+
+        ChatObject tester = new ChatObject("test1", "iaggsddiuahs&^(&(");
+        chatList.add(tester);
+        DatabaseReference chatListRef = FirebaseDatabase.getInstance().getReference().child("chatLists").push();
+        chatListRef.setValue(tester);
+        FirebaseDatabase.getInstance().getReference().child("users").child(FirebaseAuth.getInstance().getUid()).child("chatListKey").push().setValue(chatListRef.getKey());
+
         initializeRecyclerView();
         getUserChatList();
 

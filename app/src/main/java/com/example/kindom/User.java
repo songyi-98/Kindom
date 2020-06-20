@@ -1,5 +1,7 @@
 package com.example.kindom;
 
+import java.util.ArrayList;
+
 public class User {
 
     public static final String USER_GROUP_ADMIN = "admin";
@@ -9,16 +11,18 @@ public class User {
     private String userGroup;
     private int postalCode;
     private String email;
+    private String chatListKey;
 
     public User() {
         // Default constructor required for calls to DataSnapshot.getValue(User.class)
     }
 
-    public User(String name, String userGroup, int postalCode, String email) {
+    public User(String name, String userGroup, int postalCode, String email, String chatListKey) {
         this.name = name;
         this.userGroup = userGroup;
         this.postalCode = postalCode;
         this.email = email;
+        this.chatListKey = chatListKey;
     }
 
     public String getName() {
@@ -37,6 +41,14 @@ public class User {
         if (userGroup == User.USER_GROUP_ADMIN || userGroup == User.USER_GROUP_USER) {
             this.userGroup = userGroup;
         }
+    }
+
+    public void setChatListKey(String chatListKey) {
+        this.chatListKey = chatListKey;
+    }
+
+    public String getChatListKey() {
+        return chatListKey;
     }
 
     public int getPostalCode() {

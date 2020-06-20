@@ -20,6 +20,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.util.ArrayList;
+
 public class RegisterAccountActivity extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
@@ -154,7 +156,12 @@ public class RegisterAccountActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             // Sign up success. Add user to database.
-                            User user = new User(mName, mUserGroup, mPostalCode, email);
+                            //chatList stores the chats that this user will chat with
+                            /*DatabaseReference chatList = FirebaseDatabase.getInstance().getReference().child("chatLists").push();
+                            chatList.setValue(new ArrayList<String>());
+                            String chatListKey = chatList.getKey();*/
+
+                            User user = new User(mName, mUserGroup, mPostalCode, email, "");
                             mUserDatabase.push().setValue(user);
 
                             // Bring user to Home page.
