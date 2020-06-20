@@ -66,6 +66,14 @@ public class ChatActivity extends AppCompatActivity {
         getChatMessages();
     }
 
+    //method to be used when chat is created
+    private void addParticipants() {
+        Map participants = new HashMap<String, String>();
+        String userKey = FirebaseAuth.getInstance().getUid().toString();
+        participants.put(userKey, FirebaseDatabase.getInstance().getReference().child("users").child(userKey).child("name"));
+        mChatDb.updateChildren(participants);
+    }
+
     private void getChatMessages() {
         mChatDb.addChildEventListener(new ChildEventListener() {
             @Override
