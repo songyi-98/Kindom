@@ -14,8 +14,6 @@ import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.chip.Chip;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -28,7 +26,6 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class MyProfileActivity extends AppCompatActivity {
 
-    private FirebaseUser mUser;
     private StorageReference mStorageRef;
     private DatabaseReference mUserDatabase;
     private CircleImageView mProfileImage;
@@ -54,7 +51,6 @@ public class MyProfileActivity extends AppCompatActivity {
         ab.setDisplayHomeAsUpEnabled(true);
 
         // Initialize Firebase components
-        mUser = FirebaseAuth.getInstance().getCurrentUser();
         mStorageRef = FirebaseStorage.getInstance().getReference("profileImages");
         mUserDatabase = FirebaseDatabase.getInstance().getReference("users");
         mUserDatabase.keepSynced(true);
@@ -81,7 +77,7 @@ public class MyProfileActivity extends AppCompatActivity {
      * Populate the fields with the user's information
      */
     private void populateFields() {
-        String uid = mUser.getUid();
+        String uid = FirebaseHandler.getUserUid();
 
         // Retrieve user's profile image from Firebase Storage
         mStorageRef.child(uid).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {

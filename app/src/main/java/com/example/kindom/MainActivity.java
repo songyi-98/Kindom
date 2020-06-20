@@ -69,7 +69,7 @@ public class MainActivity extends AppCompatActivity {
         ConnectivityManager connMgr = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
         if (networkInfo == null || !networkInfo.isConnected()) {
-            Alert.showAlertDialogAndFinish(this,this, getString(R.string.error_internet_connection));
+            Alert.showAlertDialogAndFinish(this, this, getString(R.string.error_internet_connection));
         } else {
             isConn = true;
         }
@@ -79,7 +79,7 @@ public class MainActivity extends AppCompatActivity {
      * Check if the user is already signed in
      */
     private void checkSignIn() {
-        FirebaseUser currentUser = mAuth.getCurrentUser();
+        FirebaseUser currentUser = FirebaseHandler.getUser();
         if (currentUser == null) {
             // User is not signed in yet. Hide progress bar and show sign in layout.
             findViewById(R.id.progress_circular).setVisibility(View.GONE);
@@ -186,7 +186,7 @@ public class MainActivity extends AppCompatActivity {
     /**
      * Sign in user with Firebase Authentication
      *
-     * @param email email of the user
+     * @param email    email of the user
      * @param password password of the user
      */
     private void signIn(String email, String password) {

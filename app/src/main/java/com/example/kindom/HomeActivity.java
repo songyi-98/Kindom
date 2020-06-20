@@ -53,6 +53,7 @@ public class HomeActivity extends AppCompatActivity {
                         fragment = new EventsFragment();
                         break;
                 }
+                assert fragment != null;
                 getSupportFragmentManager()
                         .beginTransaction()
                         .replace(R.id.fragment_container, fragment)
@@ -66,7 +67,7 @@ public class HomeActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater =getMenuInflater();
+        MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.main_menu, menu);
         return true;
     }

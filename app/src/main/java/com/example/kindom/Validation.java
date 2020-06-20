@@ -10,8 +10,7 @@ import java.util.regex.Pattern;
  */
 public class Validation {
 
-    private static final Pattern PATTERN_PASSWORD = Pattern.compile(
-            "^" +
+    private static final Pattern PATTERN_PASSWORD = Pattern.compile("^" +
             "(?=.*[A-Z])" +    // at least 1 uppercase letter
             "(?=.*[a-z])" +    // at least 1 lowercase letter
             "(?=.*[0-9])" +    // at least 1 number
