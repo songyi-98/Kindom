@@ -33,8 +33,8 @@ public class Alert {
      * Show alert dialog and finish activity
      *
      * @param activity the activity to be finished
-     * @param context the context
-     * @param message the message to be displayed
+     * @param context  the context
+     * @param message  the message to be displayed
      */
     public static void showAlertDialogAndFinish(final Activity activity, Context context, String message) {
         new AlertDialog.Builder(context)
