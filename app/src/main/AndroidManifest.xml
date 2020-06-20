@@ -25,6 +25,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".MyProfileActivity"
+            android:label="@string/profile_settings_label"
+            android:screenOrientation="portrait" />
         <activity android:name=".chat.ChatActivity"
             android:screenOrientation="portrait"/>
     </application>

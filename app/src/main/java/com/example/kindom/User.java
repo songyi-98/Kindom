@@ -1,11 +1,14 @@
 package com.example.kindom;
 
+/**
+ * Represent a user of the app
+ */
 import java.util.ArrayList;
 
 public class User {
 
-    public static final String USER_GROUP_ADMIN = "admin";
-    public static final String USER_GROUP_USER = "user";
+    public static final String USER_GROUP_ADMIN = "Admin";
+    public static final String USER_GROUP_USER = "User";
 
     private String name;
     private String userGroup;
@@ -38,9 +41,7 @@ public class User {
     }
 
     public void setUserGroup(String userGroup) {
-        if (userGroup == User.USER_GROUP_ADMIN || userGroup == User.USER_GROUP_USER) {
-            this.userGroup = userGroup;
-        }
+        this.userGroup = userGroup;
     }
 
     public void setChatListKey(String chatListKey) {
