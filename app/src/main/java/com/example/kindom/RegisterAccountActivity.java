@@ -19,6 +19,7 @@ import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
@@ -188,7 +189,7 @@ public class RegisterAccountActivity extends AppCompatActivity {
     /**
      * Create an account with Firebase Authentication
      *
-     * @param email email of the user
+     * @param email    email of the user
      * @param password password of the user
      */
     private void createAccount(final String email, String password) {
@@ -198,8 +199,13 @@ public class RegisterAccountActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             // Sign up success
-                            FirebaseUser newUser = mAuth.getCurrentUser();
-                            String uid = newUser.getUid();
+                            FirebaseUser user = FirebaseHandler.getUser();
+                            String uid = FirebaseHandler.getUserUid();
+                            UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
+                                    .setDisplayName(mName)
+                                    .setPhotoUri(Uri.parse(mProfileImage))
+                                    .build();
+                            user.updateProfile(profileUpdates);
 
                             // Add profile image to storage
                             StorageReference uploadRef = mStorageRef.child(uid);
@@ -217,8 +223,8 @@ public class RegisterAccountActivity extends AppCompatActivity {
                             });
 
                             // Add user to database
-                            User user = new User(mName, mUserGroup, mPostalCode, email);
-                            mUserDatabase.child(uid).setValue(user);
+                            User addUser = new User(mName, mUserGroup, mPostalCode, email);
+                            mUserDatabase.child(uid).setValue(addUser);
 
                             // Bring user to Home page
                             Intent intent = new Intent(RegisterAccountActivity.this, HomeActivity.class);
