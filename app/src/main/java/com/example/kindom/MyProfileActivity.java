@@ -24,8 +24,6 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
-import java.util.Objects;
-
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class MyProfileActivity extends AppCompatActivity {
@@ -59,6 +57,7 @@ public class MyProfileActivity extends AppCompatActivity {
         mUser = FirebaseAuth.getInstance().getCurrentUser();
         mStorageRef = FirebaseStorage.getInstance().getReference("profileImages");
         mUserDatabase = FirebaseDatabase.getInstance().getReference("users");
+        mUserDatabase.keepSynced(true);
 
         // Initialize layout variables
         mProfileImage = findViewById(R.id.my_profile_image);
@@ -107,19 +106,15 @@ public class MyProfileActivity extends AppCompatActivity {
         });
 
         // Retrieve user's data from Firebase Database
-        mUserDatabase.orderByChild("uid").equalTo(uid).addListenerForSingleValueEvent(new ValueEventListener() {
+        mUserDatabase.child(uid).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                for (DataSnapshot user : dataSnapshot.getChildren()) {
-                    String name = Objects.requireNonNull(user.child("name").getValue()).toString();
-                    String userGroup = Objects.requireNonNull(user.child("userGroup").getValue()).toString();
-                    String email = Objects.requireNonNull(user.child("email").getValue()).toString();
-                    String postalCode = Objects.requireNonNull(user.child("postalCode").getValue()).toString();
-                    mNameField.setText(name);
-                    mUserGroupChip.setText(userGroup);
-                    mEmailField.setText(email);
-                    mPostalCodeField.setText(postalCode);
-                }
+                User user = dataSnapshot.getValue(User.class);
+                assert user != null;
+                mNameField.setText(user.getName());
+                mUserGroupChip.setText(user.getUserGroup());
+                mEmailField.setText(user.getEmail());
+                mPostalCodeField.setText(String.valueOf(user.getPostalCode()));
             }
 
             @Override
