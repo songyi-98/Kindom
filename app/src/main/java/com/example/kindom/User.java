@@ -8,7 +8,6 @@ public class User {
     public static final String USER_GROUP_ADMIN = "Admin";
     public static final String USER_GROUP_USER = "User";
 
-    private String uid;
     private String name;
     private String userGroup;
     private int postalCode;
@@ -18,16 +17,11 @@ public class User {
         // Default constructor required for calls to DataSnapshot.getValue(User.class)
     }
 
-    public User(String uid, String name, String userGroup, int postalCode, String email) {
-        this.uid = uid;
+    public User(String name, String userGroup, int postalCode, String email) {
         this.name = name;
         this.userGroup = userGroup;
         this.postalCode = postalCode;
         this.email = email;
-    }
-
-    public String getUid() {
-        return uid;
     }
 
     public String getName() {
@@ -43,9 +37,7 @@ public class User {
     }
 
     public void setUserGroup(String userGroup) {
-        if (userGroup == User.USER_GROUP_ADMIN || userGroup == User.USER_GROUP_USER) {
-            this.userGroup = userGroup;
-        }
+        this.userGroup = userGroup;
     }
 
     public int getPostalCode() {

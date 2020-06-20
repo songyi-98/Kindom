@@ -217,8 +217,8 @@ public class RegisterAccountActivity extends AppCompatActivity {
                             });
 
                             // Add user to database
-                            User user = new User(uid, mName, mUserGroup, mPostalCode, email);
-                            mUserDatabase.push().setValue(user);
+                            User user = new User(mName, mUserGroup, mPostalCode, email);
+                            mUserDatabase.child(uid).setValue(user);
 
                             // Bring user to Home page
                             Intent intent = new Intent(RegisterAccountActivity.this, HomeActivity.class);
