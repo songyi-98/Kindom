@@ -46,4 +46,5 @@
     <string name="my_profile_email_header">Email:</string>
     <string name="my_profile_postal_code_header">Postal code:</string>
     <string name="error_profile_image_load">Profile image cannot be loaded. Please try again later.</string>
+    <string name="viewMediaBtn">View Media</string>
 </resources>

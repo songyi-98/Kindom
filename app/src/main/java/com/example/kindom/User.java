@@ -14,18 +14,16 @@ public class User {
     private String userGroup;
     private int postalCode;
     private String email;
-    private String chatListKey;
 
     public User() {
         // Default constructor required for calls to DataSnapshot.getValue(User.class)
     }
 
-    public User(String name, String userGroup, int postalCode, String email, String chatListKey) {
+    public User(String name, String userGroup, int postalCode, String email) {
         this.name = name;
         this.userGroup = userGroup;
         this.postalCode = postalCode;
         this.email = email;
-        this.chatListKey = chatListKey;
     }
 
     public String getName() {
@@ -42,14 +40,6 @@ public class User {
 
     public void setUserGroup(String userGroup) {
         this.userGroup = userGroup;
-    }
-
-    public void setChatListKey(String chatListKey) {
-        this.chatListKey = chatListKey;
-    }
-
-    public String getChatListKey() {
-        return chatListKey;
     }
 
     public int getPostalCode() {

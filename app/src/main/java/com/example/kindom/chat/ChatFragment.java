@@ -8,12 +8,14 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.kindom.R;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -53,12 +55,17 @@ public class ChatFragment extends Fragment {
 
         //bug identified!! dont let the chatIds be the same or else messages wont display correctly
         //this chunk of code is dummy code for adding chat for this user/needs a add contact portion
-        ChatObject tester = new ChatObject("test1", "iaggsddiuahs&^(&(");
+        //stuck because if I want to chat with someone, I need to access their key to add this chat to their chatListKeys
+        String testChatID = "iaggsddiuahs&^(&(";
+        String testChatTitle = "test1";
+        ChatObject tester = new ChatObject(testChatTitle, testChatID);
         chatList.add(tester);
+        Map<String, Object> testMap = new HashMap<>();
+        testMap.put(testChatID, testChatTitle);
         DatabaseReference chatListRef = FirebaseDatabase.getInstance().getReference().child("chatLists").push();
-        chatListRef.setValue(tester);
-        FirebaseDatabase.getInstance().getReference().child("users").child(FirebaseAuth.getInstance().getUid()).child("chatListKey").push().setValue(chatListRef.getKey());
-
+        FirebaseDatabase.getInstance().getReference().child("users").child(FirebaseAuth.getInstance().getUid()).child("chatListKeys").updateChildren(testMap);
+        //this will add the chat to that persons chatListKeys
+        FirebaseDatabase.getInstance().getReference().child("users").child("XoHQmpwSx1bseqxFk6bgmduJnAJ2").child("chatListKeys").updateChildren(testMap);
 
         initializeRecyclerView();
         getUserChatList();
@@ -90,6 +97,7 @@ public class ChatFragment extends Fragment {
         });
     }
 
+    //Initializes Chat list with recycler view of Chat Objects
     private void initializeRecyclerView() {
         mChatList.setNestedScrollingEnabled(false);
         mChatList.setHasFixedSize(false);
