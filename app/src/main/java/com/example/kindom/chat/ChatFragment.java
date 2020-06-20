@@ -52,12 +52,13 @@ public class ChatFragment extends Fragment {
         mChatList = rootView.findViewById(R.id.chatList);
 
         //bug identified!! dont let the chatIds be the same or else messages wont display correctly
-
+        //this chunk of code is dummy code for adding chat for this user/needs a add contact portion
         ChatObject tester = new ChatObject("test1", "iaggsddiuahs&^(&(");
         chatList.add(tester);
         DatabaseReference chatListRef = FirebaseDatabase.getInstance().getReference().child("chatLists").push();
         chatListRef.setValue(tester);
         FirebaseDatabase.getInstance().getReference().child("users").child(FirebaseAuth.getInstance().getUid()).child("chatListKey").push().setValue(chatListRef.getKey());
+
 
         initializeRecyclerView();
         getUserChatList();
