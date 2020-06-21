@@ -26,7 +26,7 @@ public class HelpMePostEditActivity extends AppCompatActivity {
 
     private String[] CATEGORIES = new String[]{"Care", "Food", "Groceries", "Others"};
 
-    private DatabaseReference mHelpMePostDatabaseReference;
+    private DatabaseReference mUserPostsRef;
     private HelpMePost mPost;
     private AutoCompleteTextView mCategoryField;
     private TextInputLayout mTitleField;
@@ -78,12 +78,11 @@ public class HelpMePostEditActivity extends AppCompatActivity {
         fixLocation();
         populateInputs();
         checkDateAndTime();
-        // TODO: Check date and time properly against original inputs
         setTextChangedListeners();
         setButtonsClickListeners();
 
-        // Set up database
-        mHelpMePostDatabaseReference = FirebaseDatabase.getInstance().getReference().child("helpMe");
+        // Initialize Firebase Database
+        mUserPostsRef = FirebaseDatabase.getInstance().getReference().child("helpMe").child(FirebaseHandler.getUserUid());
     }
 
     @Override
@@ -209,7 +208,22 @@ public class HelpMePostEditActivity extends AppCompatActivity {
                 } else if (!isValidDescription) {
                     Alert.showAlertDialog(HelpMePostEditActivity.this, getString(R.string.error_description));
                 } else {
+                    // Retrieve updated fields
+                    String category = Objects.requireNonNull(mCategoryField).getText().toString();
+                    String title = Objects.requireNonNull(mTitleField.getEditText()).getText().toString();
+                    String date = Objects.requireNonNull(mDateField.getEditText()).getText().toString();
+                    String time = Objects.requireNonNull(mTimeField.getEditText()).getText().toString();
+                    String description = Objects.requireNonNull(mDescriptionField.getEditText()).getText().toString();
 
+                    // Update in Firebase Database
+                    DatabaseReference uploadRef = mUserPostsRef.child(String.valueOf(mPost.getTimeCreated()));
+                    uploadRef.child("category").setValue(category);
+                    uploadRef.child("title").setValue(title);
+                    uploadRef.child("date").setValue(date);
+                    uploadRef.child("time").setValue(time);
+                    uploadRef.child("description").setValue(description);
+
+                    onBackPressed();
                 }
             }
         });
@@ -284,7 +298,7 @@ public class HelpMePostEditActivity extends AppCompatActivity {
         String timeMessage = hour_string + ":" + minute_string + " " + am_pm_string;
 
         // Set time message
-        mTimeField.getEditText().setText(timeMessage);
+        Objects.requireNonNull(mTimeField.getEditText()).setText(timeMessage);
         checkDateAndTime();
     }
 

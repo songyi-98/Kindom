@@ -3,6 +3,7 @@ package com.example.kindom;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -85,6 +86,15 @@ public class HelpMeUserListingFragment extends Fragment {
     }
 
     /**
+     * Refresh fragment
+     */
+    public void refresh() {
+        assert getFragmentManager() != null;
+        FragmentTransaction ft = getFragmentManager().beginTransaction();
+        ft.detach(this).attach(this).commit();
+    }
+
+    /**
      * Show the list of user's posts
      */
     private void show() {
@@ -92,7 +102,7 @@ public class HelpMeUserListingFragment extends Fragment {
         RecyclerView mRecyclerView = Objects.requireNonNull(getActivity()).findViewById(R.id.help_me_user_listing_recycler_view);
 
         // Create an adapter and supply the data to be displayed.
-        HelpMeUserListingAdapter mAdapter = new HelpMeUserListingAdapter(getContext(), mHelpMePosts);
+        HelpMeUserListingAdapter mAdapter = new HelpMeUserListingAdapter(getContext(), this, mHelpMePosts);
 
         // Connect the adapter with the RecyclerView.
         mRecyclerView.setAdapter(mAdapter);

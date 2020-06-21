@@ -71,4 +71,7 @@
     <string name="list_item_help_me_user_listing_delete">Delete</string>
     <string name="help_me_edit_post_label">Edit post</string>
     <string name="help_me_post_save_button">Save Changes</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="help_me_post_delete">Are you sure you want to delete this post?</string>
 </resources>
