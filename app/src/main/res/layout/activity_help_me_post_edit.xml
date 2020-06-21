@@ -23,7 +23,6 @@
             android:orientation="vertical">
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/help_me_post_edit_category"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -57,24 +56,6 @@
                     android:inputType="textShortMessage" />
             </com.google.android.material.textfield.TextInputLayout>
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/help_me_post_edit_location"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:hint="@string/help_me_post_add_location"
-                app:helperText="Read-only"
-                app:startIconDrawable="@drawable/ic_round_location_on_24">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:enabled="false"
-                    android:inputType="none"
-                    tools:text="Blk 999" />
-            </com.google.android.material.textfield.TextInputLayout>
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -97,7 +78,6 @@
                     android:hint="@string/help_me_post_add_date">
 
                     <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/help_me_post_edit_date_field"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:enabled="false" />
@@ -126,7 +106,6 @@
                     android:hint="@string/help_me_post_add_time">
 
                     <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/help_me_post_edit_time_field"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:enabled="false" />

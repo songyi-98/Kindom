@@ -68,7 +68,7 @@
                 android:drawableStart="@drawable/ic_round_calendar_today_24"
                 android:drawablePadding="8dp"
                 android:textAppearance="?attr/textAppearanceBody2"
-                tools:text="Tomorrow" />
+                tools:text="31 Jan" />
 
             <TextView
                 android:id="@+id/list_item_help_me_all_listing_time"

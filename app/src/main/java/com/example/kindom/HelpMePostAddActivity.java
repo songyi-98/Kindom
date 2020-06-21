@@ -77,12 +77,11 @@ public class HelpMePostAddActivity extends AppCompatActivity {
 
         // Initialize user's inputs
         setCategoryDropdownMenu();
-        fixLocation();
         setTextChangedListeners();
         setButtonsClickListeners();
 
         // Initialize Firebase Database
-        mUploadRef = FirebaseDatabase.getInstance().getReference().child("helpMe").child(FirebaseHandler.getUserUid());
+        mUploadRef = FirebaseDatabase.getInstance().getReference().child("helpMe").child(FirebaseHandler.getCurrentUserUid());
     }
 
     @Override
@@ -109,14 +108,7 @@ public class HelpMePostAddActivity extends AppCompatActivity {
     }
 
     /**
-     * Fix user's location in the text field
-     */
-    private void fixLocation() {
-        // TODO: Fix location in text field
-    }
-
-    /**
-     * Set text changed listeners for category, title and description fields
+     * Set text changed listeners for category, title, location and description fields
      */
     private void setTextChangedListeners() {
         Objects.requireNonNull(mCategoryField.getEditText()).addTextChangedListener(new TextWatcher() {
@@ -223,19 +215,18 @@ public class HelpMePostAddActivity extends AppCompatActivity {
                 } else {
                     // Retrieve user's data from Firebase Database
                     DatabaseReference userDatabase = FirebaseDatabase.getInstance().getReference("users");
-                    userDatabase.child(FirebaseHandler.getUserUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+                    userDatabase.child(FirebaseHandler.getCurrentUserUid()).addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                             User currUser = dataSnapshot.getValue(User.class);
                             assert currUser != null;
-                            int postalCode = currUser.getPostalCode();
+                            int blkNo = currUser.getBlkNo();
 
                             // Create a HelpMePost
                             String category = Objects.requireNonNull(mCategoryField.getEditText()).getText().toString();
                             String title = Objects.requireNonNull(mTitleField.getEditText()).getText().toString();
-                            String user = FirebaseHandler.getUser().getDisplayName();
-                            String location = String.valueOf(postalCode);
-                            // TODO: Retrieve block number from postal code
+                            String user = FirebaseHandler.getCurrentUser().getDisplayName();
+                            String location = getString(R.string.blk) + " " + blkNo;
                             String date = Objects.requireNonNull(mDateField.getEditText()).getText().toString();
                             String time = Objects.requireNonNull(mTimeField.getEditText()).getText().toString();
                             String description = Objects.requireNonNull(mDescriptionField.getEditText()).getText().toString();

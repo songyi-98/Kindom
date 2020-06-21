@@ -11,16 +11,18 @@ public class User {
     private String name;
     private String userGroup;
     private int postalCode;
+    private int blkNo;
     private String email;
 
     public User() {
         // Default constructor required for calls to DataSnapshot.getValue(User.class)
     }
 
-    public User(String name, String userGroup, int postalCode, String email) {
+    public User(String name, String userGroup, int postalCode, int blkNo, String email) {
         this.name = name;
         this.userGroup = userGroup;
         this.postalCode = postalCode;
+        this.blkNo = blkNo;
         this.email = email;
     }
 
@@ -46,6 +48,14 @@ public class User {
 
     public void setPostalCode(int postalCode) {
         this.postalCode = postalCode;
+    }
+
+    public int getBlkNo() {
+        return blkNo;
+    }
+
+    public void setBlkNo(int blkNo) {
+        this.blkNo = blkNo;
     }
 
     public String getEmail() {
