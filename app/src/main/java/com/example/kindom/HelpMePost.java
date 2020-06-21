@@ -19,8 +19,7 @@ public class HelpMePost implements Serializable {
     }
 
     public HelpMePost(String category, String title, String user, String location, String date, String time, String description) {
-        Date dateObj = new Date();
-        this.timeCreated = dateObj.getTime();
+        this.timeCreated = new Date().getTime();
         this.category = category;
         this.title = title;
         this.user = user;
@@ -34,31 +33,63 @@ public class HelpMePost implements Serializable {
         return timeCreated;
     }
 
+    public void setTimeCreated(long timeCreated) {
+        this.timeCreated = timeCreated;
+    }
+
     public String getCategory() {
         return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
     }
 
     public String getTitle() {
         return title;
     }
 
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
     public String getUser() {
         return user;
+    }
+
+    public void setUser(String user) {
+        this.user = user;
     }
 
     public String getLocation() {
         return location;
     }
 
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
     public String getDate() {
         return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
     }
 
     public String getTime() {
         return time;
     }
 
+    public void setTime(String time) {
+        this.time = time;
+    }
+
     public String getDescription() {
         return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 }

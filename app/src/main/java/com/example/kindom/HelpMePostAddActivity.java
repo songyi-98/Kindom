@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
@@ -25,6 +24,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Objects;
 
 public class HelpMePostAddActivity extends AppCompatActivity {
@@ -81,7 +81,7 @@ public class HelpMePostAddActivity extends AppCompatActivity {
         setTextChangedListeners();
         setButtonsClickListeners();
 
-        // Set up database
+        // Initialize Firebase Database
         mUploadRef = FirebaseDatabase.getInstance().getReference().child("helpMe").child(FirebaseHandler.getUserUid());
     }
 
@@ -242,7 +242,8 @@ public class HelpMePostAddActivity extends AppCompatActivity {
                             HelpMePost post = new HelpMePost(category, title, user, location, date, time, description);
 
                             // Add post to database
-                            mUploadRef.push().setValue(post);
+                            long timeCreated = new Date().getTime();
+                            mUploadRef.child(String.valueOf(timeCreated)).setValue(post);
                             onBackPressed();
                         }
 
