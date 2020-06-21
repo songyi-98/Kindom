@@ -1,7 +1,6 @@
 package com.example.kindom;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -11,12 +10,20 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Objects;
 
 public class HelpMeAllListingFragment extends Fragment {
 
     private ArrayList<HelpMePost> mHelpMePosts = new ArrayList<>();
+    private DatabaseReference mAllPostsRef;
 
     public HelpMeAllListingFragment() {
         // Required empty public constructor
@@ -25,6 +32,9 @@ public class HelpMeAllListingFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        // Initialize Firebase Database
+        mAllPostsRef = FirebaseDatabase.getInstance().getReference().child("helpMe");
     }
 
     @Override
@@ -35,14 +45,37 @@ public class HelpMeAllListingFragment extends Fragment {
     }
 
     @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
+    public void onStart() {
+        super.onStart();
 
-        for (int i = 0; i < 5; i++) {
-            mHelpMePosts.add(new HelpMePost("Food", "Buy desserts", "Aaron", "Blk 123", "Today", "10:00 AM", "Test"));
-            mHelpMePosts.add(new HelpMePost("Care", "Pick up child from school", "Patricia", "Blk 999", "Tomorrow", "12:00 PM", "Test"));
-        }
+        // Add all users' (except current user) posts to list
+        mHelpMePosts.clear();
+        mAllPostsRef.orderByChild("timeCreated").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot userSnapshot: dataSnapshot.getChildren()) {
+                    if (!Objects.equals(userSnapshot.getKey(), FirebaseHandler.getUserUid())) {
+                        for (DataSnapshot postSnapshot: userSnapshot.getChildren()) {
+                            HelpMePost post = postSnapshot.getValue(HelpMePost.class);
+                            mHelpMePosts.add(post);
+                        }
+                    }
+                }
+                Collections.reverse(mHelpMePosts);
+                show();
+            }
 
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                // Do nothing
+            }
+        });
+    }
+
+    /**
+     * Show the list of all users' (except current user) posts
+     */
+    private void show() {
         // Get a handle to the RecyclerView.
         RecyclerView mRecyclerView = Objects.requireNonNull(getActivity()).findViewById(R.id.help_me_all_listing_recycler_view);
 
