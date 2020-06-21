@@ -26,7 +26,7 @@ import java.util.Objects;
 public class HelpMeUserListingFragment extends Fragment {
 
     private ArrayList<HelpMePost> mHelpMePosts = new ArrayList<>();
-    private DatabaseReference userPostsRef;
+    private DatabaseReference mUserPostsRef;
 
     public HelpMeUserListingFragment() {
         // Required empty public constructor
@@ -37,7 +37,7 @@ public class HelpMeUserListingFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         // Initialize Firebase Database
-        userPostsRef = FirebaseDatabase.getInstance().getReference().child("helpMe").child(FirebaseHandler.getUserUid());
+        mUserPostsRef = FirebaseDatabase.getInstance().getReference().child("helpMe").child(FirebaseHandler.getUserUid());
     }
 
     @Override
@@ -66,9 +66,9 @@ public class HelpMeUserListingFragment extends Fragment {
     public void onStart() {
         super.onStart();
 
-        // Add all user's posts to list
+        // Add user's posts to list
         mHelpMePosts.clear();
-        userPostsRef.orderByChild("timeCreated").addListenerForSingleValueEvent(new ValueEventListener() {
+        mUserPostsRef.orderByChild("timeCreated").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
