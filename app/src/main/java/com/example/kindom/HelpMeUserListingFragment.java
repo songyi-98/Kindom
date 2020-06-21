@@ -37,7 +37,7 @@ public class HelpMeUserListingFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         // Initialize Firebase Database
-        mUserPostsRef = FirebaseDatabase.getInstance().getReference().child("helpMe").child(FirebaseHandler.getUserUid());
+        mUserPostsRef = FirebaseDatabase.getInstance().getReference().child("helpMe").child(FirebaseHandler.getCurrentUserUid());
     }
 
     @Override

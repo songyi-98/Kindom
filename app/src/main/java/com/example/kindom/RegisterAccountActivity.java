@@ -200,8 +200,8 @@ public class RegisterAccountActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             // Sign up success
-                            FirebaseUser user = FirebaseHandler.getUser();
-                            String uid = FirebaseHandler.getUserUid();
+                            FirebaseUser user = FirebaseHandler.getCurrentUser();
+                            String uid = FirebaseHandler.getCurrentUserUid();
                             UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
                                     .setDisplayName(mName)
                                     .setPhotoUri(Uri.parse(mProfileImage))
@@ -223,8 +223,11 @@ public class RegisterAccountActivity extends AppCompatActivity {
                                 }
                             });
 
+                            // TODO: Retrieve block number from postal code
+                            int blkNo = 1;
+
                             // Add user to database
-                            User addUser = new User(mName, mUserGroup, mPostalCode, email);
+                            User addUser = new User(mName, mUserGroup, mPostalCode, blkNo, email);
                             mUserDatabase.child(uid).setValue(addUser);
 
                             // Bring user to home page

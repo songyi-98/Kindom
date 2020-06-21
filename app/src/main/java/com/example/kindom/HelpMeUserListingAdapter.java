@@ -26,7 +26,7 @@ import java.util.Date;
 
 public class HelpMeUserListingAdapter extends RecyclerView.Adapter<HelpMeUserListingAdapter.HelpMePostViewHolder> {
 
-    private DatabaseReference mUserPostsRef = FirebaseDatabase.getInstance().getReference().child("helpMe").child(FirebaseHandler.getUserUid());
+    private DatabaseReference mUserPostsRef = FirebaseDatabase.getInstance().getReference().child("helpMe").child(FirebaseHandler.getCurrentUserUid());
     private Context mContext;
     private HelpMeUserListingFragment mFragment;
     private final ArrayList<HelpMePost> mPostList;
@@ -36,7 +36,6 @@ public class HelpMeUserListingAdapter extends RecyclerView.Adapter<HelpMeUserLis
 
         public Chip categoryChip;
         public TextView titleTextView;
-        public TextView locationTextView;
         public TextView dateTextView;
         public TextView timeTextView;
         public MaterialButton editButton;
@@ -46,7 +45,6 @@ public class HelpMeUserListingAdapter extends RecyclerView.Adapter<HelpMeUserLis
             super(itemView);
             categoryChip = itemView.findViewById(R.id.list_item_help_me_user_listing_category);
             titleTextView = itemView.findViewById(R.id.list_item_help_me_user_listing_title);
-            locationTextView = itemView.findViewById(R.id.list_item_help_me_user_listing_location);
             dateTextView = itemView.findViewById(R.id.list_item_help_me_user_listing_date);
             timeTextView = itemView.findViewById(R.id.list_item_help_me_user_listing_time);
             editButton = itemView.findViewById(R.id.list_item_help_me_user_listing_edit);
@@ -83,7 +81,6 @@ public class HelpMeUserListingAdapter extends RecyclerView.Adapter<HelpMeUserLis
         }
         holder.categoryChip.setText(currPost.getCategory());
         holder.titleTextView.setText(currPost.getTitle());
-        holder.locationTextView.setText(currPost.getLocation());
         holder.dateTextView.setText(date);
         holder.timeTextView.setText(currPost.getTime());
         holder.editButton.setOnClickListener(new View.OnClickListener() {

@@ -54,7 +54,7 @@ public class HelpMeAllListingFragment extends Fragment {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for (DataSnapshot userSnapshot: dataSnapshot.getChildren()) {
-                    if (!Objects.equals(userSnapshot.getKey(), FirebaseHandler.getUserUid())) {
+                    if (!Objects.equals(userSnapshot.getKey(), FirebaseHandler.getCurrentUserUid())) {
                         for (DataSnapshot postSnapshot: userSnapshot.getChildren()) {
                             HelpMePost post = postSnapshot.getValue(HelpMePost.class);
                             mHelpMePosts.add(post);

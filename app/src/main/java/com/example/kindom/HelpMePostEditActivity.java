@@ -82,7 +82,7 @@ public class HelpMePostEditActivity extends AppCompatActivity {
         setButtonsClickListeners();
 
         // Initialize Firebase Database
-        mUserPostsRef = FirebaseDatabase.getInstance().getReference().child("helpMe").child(FirebaseHandler.getUserUid());
+        mUserPostsRef = FirebaseDatabase.getInstance().getReference().child("helpMe").child(FirebaseHandler.getCurrentUserUid());
     }
 
     @Override

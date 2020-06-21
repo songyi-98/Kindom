@@ -77,7 +77,7 @@ public class MyProfileActivity extends AppCompatActivity {
      * Populate the fields with the user's information
      */
     private void populateFields() {
-        String uid = FirebaseHandler.getUserUid();
+        String uid = FirebaseHandler.getCurrentUserUid();
 
         // Retrieve user's profile image from Firebase Storage
         mStorageRef.child(uid).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
@@ -110,7 +110,7 @@ public class MyProfileActivity extends AppCompatActivity {
                 mNameField.setText(user.getName());
                 mUserGroupChip.setText(user.getUserGroup());
                 mEmailField.setText(user.getEmail());
-                mPostalCodeField.setText(String.valueOf(user.getPostalCode()));
+                mPostalCodeField.setText(String.valueOf(user.getBlkNo()));
             }
 
             @Override

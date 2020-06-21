@@ -77,7 +77,7 @@ public class MainActivity extends AppCompatActivity {
      * Check if the user is already signed in
      */
     private void checkSignIn() {
-        FirebaseUser currentUser = FirebaseHandler.getUser();
+        FirebaseUser currentUser = FirebaseHandler.getCurrentUser();
         if (currentUser == null) {
             // User is not signed in yet. Hide progress bar and show sign in layout.
             findViewById(R.id.progress_circular).setVisibility(View.GONE);
