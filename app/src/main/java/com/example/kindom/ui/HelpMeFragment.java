@@ -1,4 +1,4 @@
-package com.example.kindom;
+package com.example.kindom.ui;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -11,7 +11,11 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentStatePagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
+import com.example.kindom.ui.helpMe.HelpMePagerAdapter;
+import com.example.kindom.R;
 import com.google.android.material.tabs.TabLayout;
+
+import java.util.Objects;
 
 public class HelpMeFragment extends Fragment {
 
@@ -36,7 +40,7 @@ public class HelpMeFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         // Create an instance of the tab layout from the view
-        TabLayout tabLayout = getActivity().findViewById(R.id.help_me_tab_layout);
+        TabLayout tabLayout = Objects.requireNonNull(getActivity()).findViewById(R.id.help_me_tab_layout);
 
         // Set the text for each tab
         tabLayout.addTab(tabLayout.newTab().setText(R.string.help_me_all_listing_tab));

@@ -1,4 +1,4 @@
-package com.example.kindom;
+package com.example.kindom.utils;
 
 import android.app.Activity;
 import android.app.DatePickerDialog;
@@ -8,6 +8,9 @@ import android.widget.DatePicker;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.DialogFragment;
+
+import com.example.kindom.helpMe.HelpMePostAddActivity;
+import com.example.kindom.helpMe.HelpMePostEditActivity;
 
 import java.util.Calendar;
 import java.util.Objects;

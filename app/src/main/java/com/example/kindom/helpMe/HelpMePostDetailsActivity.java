@@ -1,4 +1,4 @@
-package com.example.kindom;
+package com.example.kindom.helpMe;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
@@ -11,6 +11,8 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.TextView;
 
+import com.example.kindom.R;
+import com.example.kindom.helpMe.HelpMePost;
 import com.google.android.material.chip.Chip;
 
 public class HelpMePostDetailsActivity extends AppCompatActivity {
@@ -69,7 +71,7 @@ public class HelpMePostDetailsActivity extends AppCompatActivity {
     private void setText() {
         Chip categoryChip = findViewById(R.id.help_me_post_category);
         TextView titleTextView = findViewById(R.id.help_me_post_title);
-        TextView locationTextView = findViewById(R.id.help_me_post_location);
+        TextView blkNoTextView = findViewById(R.id.help_me_post_blk_no);
         TextView dateTextView = findViewById(R.id.help_me_post_date);
         TextView timeTextView = findViewById(R.id.help_me_post_time);
         TextView userTextView = findViewById(R.id.help_me_post_user);
@@ -77,7 +79,7 @@ public class HelpMePostDetailsActivity extends AppCompatActivity {
 
         categoryChip.setText(mPost.getCategory());
         titleTextView.setText(mPost.getTitle());
-        locationTextView.setText(mPost.getLocation());
+        blkNoTextView.setText(mPost.getBlkNo());
         dateTextView.setText(mPost.getDate());
         timeTextView.setText(mPost.getTime());
         userTextView.setText(mPost.getUser());

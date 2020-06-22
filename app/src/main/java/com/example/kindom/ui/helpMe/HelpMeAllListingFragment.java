@@ -1,4 +1,4 @@
-package com.example.kindom;
+package com.example.kindom.ui.helpMe;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -10,6 +10,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.kindom.R;
+import com.example.kindom.helpMe.HelpMeAllListingAdapter;
+import com.example.kindom.helpMe.HelpMePost;
+import com.example.kindom.utils.FirebaseHandler;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -22,6 +26,7 @@ import java.util.Objects;
 
 public class HelpMeAllListingFragment extends Fragment {
 
+    // TODO: Allow refresh of posts
     private ArrayList<HelpMePost> mHelpMePosts = new ArrayList<>();
     private DatabaseReference mAllPostsRef;
 
@@ -50,6 +55,7 @@ public class HelpMeAllListingFragment extends Fragment {
 
         // Add all users' (except current user) posts to list
         mHelpMePosts.clear();
+        // TODO: Filter only nearby posts
         mAllPostsRef.orderByChild("timeCreated").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {

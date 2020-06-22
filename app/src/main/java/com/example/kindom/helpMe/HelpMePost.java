@@ -1,15 +1,18 @@
-package com.example.kindom;
+package com.example.kindom.helpMe;
 
 import java.io.Serializable;
 import java.util.Date;
 
+/**
+ * Represent a Help Me post
+ */
 public class HelpMePost implements Serializable {
 
     private long timeCreated;
     private String category;
     private String title;
     private String user;
-    private String location;
+    private String blkNo;
     private String date;
     private String time;
     private String description;
@@ -18,12 +21,12 @@ public class HelpMePost implements Serializable {
         // Default constructor required for calls to DataSnapshot.getValue(User.class)
     }
 
-    public HelpMePost(String category, String title, String user, String location, String date, String time, String description) {
+    public HelpMePost(String category, String title, String user, String blkNo, String date, String time, String description) {
         this.timeCreated = new Date().getTime();
         this.category = category;
         this.title = title;
         this.user = user;
-        this.location = location;
+        this.blkNo = blkNo;
         this.date = date;
         this.time = time;
         this.description = description;
@@ -61,12 +64,12 @@ public class HelpMePost implements Serializable {
         this.user = user;
     }
 
-    public String getLocation() {
-        return location;
+    public String getBlkNo() {
+        return blkNo;
     }
 
-    public void setLocation(String location) {
-        this.location = location;
+    public void setBlkNo(String blkNo) {
+        this.blkNo = blkNo;
     }
 
     public String getDate() {

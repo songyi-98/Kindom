@@ -1,4 +1,4 @@
-package com.example.kindom;
+package com.example.kindom.utils;
 
 import android.app.Application;
 

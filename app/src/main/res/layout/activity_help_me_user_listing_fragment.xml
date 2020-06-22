@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".HelpMeUserListingFragment">
+    tools:context=".ui.helpMe.HelpMeUserListingFragment">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/help_me_user_listing_recycler_view"

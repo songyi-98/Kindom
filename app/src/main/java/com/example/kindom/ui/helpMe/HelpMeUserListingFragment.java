@@ -1,4 +1,4 @@
-package com.example.kindom;
+package com.example.kindom.ui.helpMe;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -13,6 +13,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.kindom.R;
+import com.example.kindom.helpMe.HelpMePost;
+import com.example.kindom.helpMe.HelpMePostAddActivity;
+import com.example.kindom.helpMe.HelpMeUserListingAdapter;
+import com.example.kindom.utils.FirebaseHandler;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;

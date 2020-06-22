@@ -11,6 +11,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.example.kindom.utils.FirebaseHandler;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.chip.Chip;
@@ -110,7 +111,7 @@ public class MyProfileActivity extends AppCompatActivity {
                 mNameField.setText(user.getName());
                 mUserGroupChip.setText(user.getUserGroup());
                 mEmailField.setText(user.getEmail());
-                mPostalCodeField.setText(String.valueOf(user.getBlkNo()));
+                mPostalCodeField.setText(String.valueOf(user.getPostalCode()));
             }
 
             @Override

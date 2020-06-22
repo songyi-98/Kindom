@@ -1,8 +1,9 @@
-package com.example.kindom;
+package com.example.kindom.helpMe;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +12,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.kindom.R;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.chip.Chip;
 
@@ -30,7 +32,7 @@ public class HelpMeAllListingAdapter extends RecyclerView.Adapter<HelpMeAllListi
 
         public Chip categoryChip;
         public TextView titleTextView;
-        public TextView locationTextView;
+        public TextView blkNoTextView;
         public TextView dateTextView;
         public TextView timeTextView;
         public Chip userChip;
@@ -40,7 +42,7 @@ public class HelpMeAllListingAdapter extends RecyclerView.Adapter<HelpMeAllListi
             super(itemView);
             categoryChip = itemView.findViewById(R.id.list_item_help_me_all_listing_category);
             titleTextView = itemView.findViewById(R.id.list_item_help_me_all_listing_title);
-            locationTextView = itemView.findViewById(R.id.list_item_help_me_all_listing_location);
+            blkNoTextView = itemView.findViewById(R.id.list_item_help_me_all_listing_blk_no);
             dateTextView = itemView.findViewById(R.id.list_item_help_me_all_listing_date);
             timeTextView = itemView.findViewById(R.id.list_item_help_me_all_listing_time);
             userChip = itemView.findViewById(R.id.list_item_help_me_all_listing_user);
@@ -76,7 +78,7 @@ public class HelpMeAllListingAdapter extends RecyclerView.Adapter<HelpMeAllListi
         }
         holder.categoryChip.setText(currPost.getCategory());
         holder.titleTextView.setText(currPost.getTitle());
-        holder.locationTextView.setText(currPost.getLocation());
+        holder.blkNoTextView.setText(currPost.getBlkNo());
         holder.dateTextView.setText(date);
         holder.timeTextView.setText(currPost.getTime());
         holder.userChip.setText(currPost.getUser());

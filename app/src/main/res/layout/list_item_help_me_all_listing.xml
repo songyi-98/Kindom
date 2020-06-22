@@ -50,7 +50,7 @@
             app:layout_constraintTop_toBottomOf="@id/list_item_help_me_all_listing_title">
 
             <TextView
-                android:id="@+id/list_item_help_me_all_listing_location"
+                android:id="@+id/list_item_help_me_all_listing_blk_no"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
