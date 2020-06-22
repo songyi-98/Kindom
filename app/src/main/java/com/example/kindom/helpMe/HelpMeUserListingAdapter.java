@@ -13,6 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.kindom.utils.CalendarHandler;
 import com.example.kindom.utils.FirebaseHandler;
 import com.example.kindom.ui.helpMe.HelpMeUserListingFragment;
 import com.example.kindom.R;
@@ -21,11 +22,7 @@ import com.google.android.material.chip.Chip;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 
 public class HelpMeUserListingAdapter extends RecyclerView.Adapter<HelpMeUserListingAdapter.HelpMePostViewHolder> {
 
@@ -73,21 +70,12 @@ public class HelpMeUserListingAdapter extends RecyclerView.Adapter<HelpMeUserLis
     @SuppressLint("SimpleDateFormat")
     public void onBindViewHolder(@NonNull HelpMeUserListingAdapter.HelpMePostViewHolder holder, int position) {
         final HelpMePost currPost = mPostList.get(position);
-        String date = "";
-        try {
-            Date dateObj = new SimpleDateFormat("dd/MM/yyyy").parse(currPost.getDate());
-            DateFormat dateFormat = new SimpleDateFormat("d MMM");
-            assert dateObj != null;
-            date = dateFormat.format(dateObj);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
 
         // TODO: Mark expired posts and allow auto-renew
 
         holder.categoryChip.setText(currPost.getCategory());
         holder.titleTextView.setText(currPost.getTitle());
-        holder.dateTextView.setText(date);
+        holder.dateTextView.setText(CalendarHandler.getSimplifiedDateString(currPost.getDate()));
         holder.timeTextView.setText(currPost.getTime());
         holder.editButton.setOnClickListener(new View.OnClickListener() {
             @Override
