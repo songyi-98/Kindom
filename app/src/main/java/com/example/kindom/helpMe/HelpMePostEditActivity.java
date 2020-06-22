@@ -15,6 +15,7 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 
 import com.example.kindom.utils.Alert;
+import com.example.kindom.utils.CalendarHandler;
 import com.example.kindom.utils.DatePickerFragment;
 import com.example.kindom.utils.FirebaseHandler;
 import com.example.kindom.R;
@@ -25,7 +26,6 @@ import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-import java.util.Calendar;
 import java.util.Objects;
 
 public class HelpMePostEditActivity extends AppCompatActivity {
@@ -43,7 +43,9 @@ public class HelpMePostEditActivity extends AppCompatActivity {
     private TextInputLayout mDescriptionField;
     private MaterialButton mSaveButton;
     private int[] mDate;
+    private String mDateString;
     private int[] mTime;
+    private String mTimeString;
     private boolean isValidTitle = true;
     private boolean isValidTime = true;
     private boolean isValidDescription = true;
@@ -254,23 +256,9 @@ public class HelpMePostEditActivity extends AppCompatActivity {
      * @param dayOfMonth the day of month chosen
      */
     public void processDatePickerResult(int year, int month, int dayOfMonth) {
-        // Create date message
         mDate = new int[]{year, month, dayOfMonth};
-        String year_string = Integer.toString(year);
-        String month_string = Integer.toString(month + 1);
-        String day_string = Integer.toString(dayOfMonth);
-        if (month_string.length() == 1) {
-            // Append a zero in front if month is 1 digit
-            month_string = "0" + month_string;
-        }
-        if (day_string.length() == 1) {
-            // Append a zero in front if day is 1 digit
-            day_string = "0" + day_string;
-        }
-        String dateMessage = day_string + "/" + month_string + "/" + year_string;
-
-        // Set date message
-        Objects.requireNonNull(mDateField.getEditText()).setText(dateMessage);
+        mDateString = CalendarHandler.getDateString(year, month, dayOfMonth);
+        Objects.requireNonNull(mDateField.getEditText()).setText(mDateString);
         checkDateAndTime();
     }
 
@@ -281,24 +269,9 @@ public class HelpMePostEditActivity extends AppCompatActivity {
      * @param minute    the minute chosen
      */
     public void processTimePickerResult(int hourOfDay, int minute) {
-        // Create time message
         mTime = new int[]{hourOfDay, minute};
-        int hour = hourOfDay <= 12 ? hourOfDay : hourOfDay - 12;
-        String hour_string = Integer.toString(hour);
-        String minute_string = Integer.toString(minute);
-        if (hour_string.length() == 1) {
-            // Append a zero in front if hour is 1 digit
-            hour_string = "0" + hour_string;
-        }
-        if (minute_string.length() == 1) {
-            // Append a zero in front if minute is 1 digit
-            minute_string = "0" + minute_string;
-        }
-        String am_pm_string = hourOfDay <= 12 ? "AM" : "PM";
-        String timeMessage = hour_string + ":" + minute_string + " " + am_pm_string;
-
-        // Set time message
-        Objects.requireNonNull(mTimeField.getEditText()).setText(timeMessage);
+        mTimeString = CalendarHandler.getTimeString(hourOfDay, minute);
+        Objects.requireNonNull(mTimeField.getEditText()).setText(mTimeString);
         checkDateAndTime();
     }
 
@@ -306,21 +279,12 @@ public class HelpMePostEditActivity extends AppCompatActivity {
      * Check if the date and time inputs are in the past
      */
     private void checkDateAndTime() {
-        if (mDate != null && mTime != null) {
-            Calendar c = Calendar.getInstance();
-            boolean matchYear = c.get(Calendar.YEAR) == mDate[0];
-            boolean matchMonth = c.get(Calendar.MONTH) == mDate[1];
-            boolean matchDay = c.get(Calendar.DAY_OF_MONTH) == mDate[2];
-            if (matchYear && matchMonth && matchDay) {
-                if (c.get(Calendar.HOUR_OF_DAY) > mTime[0] ||
-                        (c.get(Calendar.HOUR_OF_DAY) == mTime[0] && c.get(Calendar.MINUTE) > mTime[1])) {
-                    isValidTime = false;
-                    mTimeField.setError(getString(R.string.error_time));
-                    return;
-                }
-            }
+        if (CalendarHandler.checkIfExpired(mDateString, mTimeString)) {
+            isValidTime = false;
+            mTimeField.setError(getString(R.string.error_time));
+        } else {
+            isValidTime = true;
+            mTimeField.setError(null);
         }
-        isValidTime = true;
-        mTimeField.setError(null);
     }
 }

@@ -9,28 +9,24 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.DialogFragment;
 
+import com.example.kindom.R;
+import com.example.kindom.User;
 import com.example.kindom.utils.Alert;
+import com.example.kindom.utils.CalendarHandler;
 import com.example.kindom.utils.DatePickerFragment;
 import com.example.kindom.utils.FirebaseHandler;
-import com.example.kindom.R;
 import com.example.kindom.utils.TimePickerFragment;
-import com.example.kindom.User;
 import com.example.kindom.utils.Validation;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputLayout;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
-import java.util.Calendar;
 import java.util.Date;
 import java.util.Objects;
 
@@ -48,7 +44,9 @@ public class HelpMePostAddActivity extends AppCompatActivity {
     private TextInputLayout mDescriptionField;
     private MaterialButton mAddButton;
     private int[] mDate;
+    private String mDateString;
     private int[] mTime;
+    private String mTimeString;
     private boolean isValidCategory = false;
     private boolean isValidTitle = false;
     private boolean isValidDate = false;
@@ -220,36 +218,24 @@ public class HelpMePostAddActivity extends AppCompatActivity {
                 } else if (!isValidDescription) {
                     Alert.showAlertDialog(HelpMePostAddActivity.this, getString(R.string.error_description));
                 } else {
-                    // Retrieve user's block number from Firebase Database
-                    DatabaseReference userDatabase = FirebaseDatabase.getInstance().getReference("users");
-                    userDatabase.child(FirebaseHandler.getCurrentUserUid()).addListenerForSingleValueEvent(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                            User currUser = dataSnapshot.getValue(User.class);
-                            assert currUser != null;
-                            int blk = currUser.getBlkNo();
+                    User currUser = FirebaseHandler.getCurrentUserObj();
 
-                            // Create a HelpMePost
-                            String category = Objects.requireNonNull(mCategoryField.getEditText()).getText().toString();
-                            String title = Objects.requireNonNull(mTitleField.getEditText()).getText().toString();
-                            String user = FirebaseHandler.getCurrentUser().getDisplayName();
-                            String blkNo = getString(R.string.blk) + " " + blk;
-                            String date = Objects.requireNonNull(mDateField.getEditText()).getText().toString();
-                            String time = Objects.requireNonNull(mTimeField.getEditText()).getText().toString();
-                            String description = Objects.requireNonNull(mDescriptionField.getEditText()).getText().toString();
-                            HelpMePost post = new HelpMePost(category, title, user, blkNo, date, time, description);
+                    // Create a HelpMePost
+                    String category = Objects.requireNonNull(mCategoryField.getEditText()).getText().toString();
+                    String title = Objects.requireNonNull(mTitleField.getEditText()).getText().toString();
+                    String user = FirebaseHandler.getCurrentUser().getDisplayName();
+                    // TODO: Change back
+                    String blkNo = "0";
+                    //String blkNo = getString(R.string.blk) + " " + currUser.getBlkNo();
+                    String date = Objects.requireNonNull(mDateField.getEditText()).getText().toString();
+                    String time = Objects.requireNonNull(mTimeField.getEditText()).getText().toString();
+                    String description = Objects.requireNonNull(mDescriptionField.getEditText()).getText().toString();
+                    HelpMePost post = new HelpMePost(category, title, user, blkNo, date, time, description);
 
-                            // Add post to database
-                            long timeCreated = new Date().getTime();
-                            mUploadRef.child(String.valueOf(timeCreated)).setValue(post);
-                            onBackPressed();
-                        }
-
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError databaseError) {
-                            // Do nothing
-                        }
-                    });
+                    // Add post to database
+                    long timeCreated = new Date().getTime();
+                    mUploadRef.child(String.valueOf(timeCreated)).setValue(post);
+                    onBackPressed();
                 }
             }
         });
@@ -281,24 +267,9 @@ public class HelpMePostAddActivity extends AppCompatActivity {
      */
     public void processDatePickerResult(int year, int month, int dayOfMonth) {
         isValidDate = true;
-
-        // Create date message
         mDate = new int[]{year, month, dayOfMonth};
-        String year_string = Integer.toString(year);
-        String month_string = Integer.toString(month + 1);
-        String day_string = Integer.toString(dayOfMonth);
-        if (month_string.length() == 1) {
-            // Append a zero in front if month is 1 digit
-            month_string = "0" + month_string;
-        }
-        if (day_string.length() == 1) {
-            // Append a zero in front if day is 1 digit
-            day_string = "0" + day_string;
-        }
-        String dateMessage = day_string + "/" + month_string + "/" + year_string;
-
-        // Set date message
-        Objects.requireNonNull(mDateField.getEditText()).setText(dateMessage);
+        mDateString = CalendarHandler.getDateString(year, month, dayOfMonth);
+        Objects.requireNonNull(mDateField.getEditText()).setText(mDateString);
         checkDateAndTime();
     }
 
@@ -310,25 +281,9 @@ public class HelpMePostAddActivity extends AppCompatActivity {
      */
     public void processTimePickerResult(int hourOfDay, int minute) {
         isNonEmptyTime = true;
-
-        // Create time message
         mTime = new int[]{hourOfDay, minute};
-        int hour = hourOfDay <= 12 ? hourOfDay : hourOfDay - 12;
-        String hour_string = Integer.toString(hour);
-        String minute_string = Integer.toString(minute);
-        if (hour_string.length() == 1) {
-            // Append a zero in front if hour is 1 digit
-            hour_string = "0" + hour_string;
-        }
-        if (minute_string.length() == 1) {
-            // Append a zero in front if minute is 1 digit
-            minute_string = "0" + minute_string;
-        }
-        String am_pm_string = hourOfDay <= 12 ? "AM" : "PM";
-        String timeMessage = hour_string + ":" + minute_string + " " + am_pm_string;
-
-        // Set time message
-        Objects.requireNonNull(mTimeField.getEditText()).setText(timeMessage);
+        mTimeString = CalendarHandler.getTimeString(hourOfDay, minute);
+        Objects.requireNonNull(mTimeField.getEditText()).setText(mTimeString);
         checkDateAndTime();
     }
 
@@ -336,21 +291,14 @@ public class HelpMePostAddActivity extends AppCompatActivity {
      * Check if the date and time inputs are in the past
      */
     private void checkDateAndTime() {
-        if (mDate != null && mTime != null) {
-            Calendar c = Calendar.getInstance();
-            boolean matchYear = c.get(Calendar.YEAR) == mDate[0];
-            boolean matchMonth = c.get(Calendar.MONTH) == mDate[1];
-            boolean matchDay = c.get(Calendar.DAY_OF_MONTH) == mDate[2];
-            if (matchYear && matchMonth && matchDay) {
-                if (c.get(Calendar.HOUR_OF_DAY) > mTime[0] ||
-                        (c.get(Calendar.HOUR_OF_DAY) == mTime[0] && c.get(Calendar.MINUTE) > mTime[1])) {
-                    isValidTime = false;
-                    mTimeField.setError(getString(R.string.error_time));
-                    return;
-                }
+        if (mDateString != null && mTimeString != null) {
+            if (CalendarHandler.checkIfExpired(mDateString, mTimeString)) {
+                isValidTime = false;
+                mTimeField.setError(getString(R.string.error_time));
+            } else {
+                isValidTime = true;
+                mTimeField.setError(null);
             }
         }
-        isValidTime = true;
-        mTimeField.setError(null);
     }
 }

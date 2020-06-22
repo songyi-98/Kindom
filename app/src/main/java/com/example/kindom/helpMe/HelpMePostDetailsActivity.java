@@ -12,7 +12,6 @@ import android.view.MenuItem;
 import android.widget.TextView;
 
 import com.example.kindom.R;
-import com.example.kindom.helpMe.HelpMePost;
 import com.google.android.material.chip.Chip;
 
 public class HelpMePostDetailsActivity extends AppCompatActivity {
