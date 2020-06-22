@@ -1,4 +1,4 @@
-package com.example.kindom;
+package com.example.kindom.ui.helpMe;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -19,7 +19,7 @@ public class HelpMePagerAdapter extends FragmentStatePagerAdapter {
         switch (position) {
             case 0: return new HelpMeAllListingFragment();
             case 1: return new HelpMeUserListingFragment();
-            default: return null;
+            default: return new Fragment();
         }
     }
 

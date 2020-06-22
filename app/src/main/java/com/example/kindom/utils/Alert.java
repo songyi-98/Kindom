@@ -1,10 +1,12 @@
-package com.example.kindom;
+package com.example.kindom.utils;
 
 import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 
 import androidx.appcompat.app.AlertDialog;
+
+import com.example.kindom.R;
 
 /**
  * Encapsulate logic for handling alert dialogs

@@ -1,4 +1,9 @@
-package com.example.kindom;
+package com.example.kindom.helpMe;
+
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.DialogFragment;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -9,50 +14,44 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.fragment.app.DialogFragment;
-
+import com.example.kindom.utils.Alert;
+import com.example.kindom.utils.DatePickerFragment;
+import com.example.kindom.utils.FirebaseHandler;
+import com.example.kindom.R;
+import com.example.kindom.utils.TimePickerFragment;
+import com.example.kindom.utils.Validation;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputLayout;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
 import java.util.Calendar;
-import java.util.Date;
 import java.util.Objects;
 
-public class HelpMePostAddActivity extends AppCompatActivity {
+public class HelpMePostEditActivity extends AppCompatActivity {
 
     private String[] CATEGORIES = new String[]{"Care", "Food", "Groceries", "Others"};
 
-    private DatabaseReference mUploadRef;
-    private TextInputLayout mCategoryField;
+    private DatabaseReference mUserPostsRef;
+    private HelpMePost mPost;
+    private AutoCompleteTextView mCategoryField;
     private TextInputLayout mTitleField;
     private MaterialButton mDateButton;
     private TextInputLayout mDateField;
     private MaterialButton mTimeButton;
     private TextInputLayout mTimeField;
     private TextInputLayout mDescriptionField;
-    private MaterialButton mAddButton;
+    private MaterialButton mSaveButton;
     private int[] mDate;
     private int[] mTime;
-    private boolean isValidCategory = false;
-    private boolean isValidTitle = false;
-    private boolean isValidDate = false;
-    private boolean isNonEmptyTime = false;
-    private boolean isValidTime = false;
-    private boolean isValidDescription = false;
+    private boolean isValidTitle = true;
+    private boolean isValidTime = true;
+    private boolean isValidDescription = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_help_me_post_add);
+        setContentView(R.layout.activity_help_me_post_edit);
 
         // Set toolbar
         Toolbar toolbar = findViewById(R.id.toolbar_main);
@@ -65,23 +64,32 @@ public class HelpMePostAddActivity extends AppCompatActivity {
         assert ab != null;
         ab.setDisplayHomeAsUpEnabled(true);
 
+        // Receive intent
+        if (getIntent().getExtras() != null) {
+            mPost = (HelpMePost) getIntent().getSerializableExtra("Post");
+        }
+
         // Initialize text fields and buttons
-        mCategoryField = findViewById(R.id.help_me_post_add_category);
-        mTitleField = findViewById(R.id.help_me_post_add_title);
-        mDateButton = findViewById(R.id.help_me_post_add_date_button);
-        mDateField = findViewById(R.id.help_me_post_add_date);
-        mTimeButton = findViewById(R.id.help_me_post_add_time_button);
-        mTimeField = findViewById(R.id.help_me_post_add_time);
-        mDescriptionField = findViewById(R.id.help_me_post_add_description);
-        mAddButton = findViewById(R.id.help_me_post_add_button);
+        mCategoryField = findViewById(R.id.help_me_post_edit_category_dropdown_menu);
+        mTitleField = findViewById(R.id.help_me_post_edit_title);
+        mDateButton = findViewById(R.id.help_me_post_edit_date_button);
+        mDateField = findViewById(R.id.help_me_post_edit_date);
+        mTimeButton = findViewById(R.id.help_me_post_edit_time_button);
+        mTimeField = findViewById(R.id.help_me_post_edit_time);
+        mDescriptionField = findViewById(R.id.help_me_post_edit_description);
+        mSaveButton = findViewById(R.id.help_me_post_save_button);
+
+        //TODO: Check if post is expired
 
         // Initialize user's inputs
         setCategoryDropdownMenu();
+        populateInputs();
+        checkDateAndTime();
         setTextChangedListeners();
         setButtonsClickListeners();
 
         // Initialize Firebase Database
-        mUploadRef = FirebaseDatabase.getInstance().getReference().child("helpMe").child(FirebaseHandler.getCurrentUserUid());
+        mUserPostsRef = FirebaseDatabase.getInstance().getReference().child("helpMe").child(FirebaseHandler.getCurrentUserUid());
     }
 
     @Override
@@ -103,31 +111,24 @@ public class HelpMePostAddActivity extends AppCompatActivity {
      */
     private void setCategoryDropdownMenu() {
         ArrayAdapter<String> categoryAdapter = new ArrayAdapter<>(this, R.layout.list_item_help_me_category, CATEGORIES);
-        AutoCompleteTextView categoryTextView = findViewById(R.id.help_me_post_add_category_dropdown_menu);
-        categoryTextView.setAdapter(categoryAdapter);
+        mCategoryField.setAdapter(categoryAdapter);
     }
 
     /**
-     * Set text changed listeners for category, title, location and description fields
+     * Populate the fields with the current inputs
+     */
+    private void populateInputs() {
+        mCategoryField.setText(mPost.getCategory(), false);
+        Objects.requireNonNull(mTitleField.getEditText()).setText(mPost.getTitle());
+        Objects.requireNonNull(mDateField.getEditText()).setText(mPost.getDate());
+        Objects.requireNonNull(mTimeField.getEditText()).setText(mPost.getTime());
+        Objects.requireNonNull(mDescriptionField.getEditText()).setText(mPost.getDescription());
+    }
+
+    /**
+     * Set text changed listeners for title and description fields
      */
     private void setTextChangedListeners() {
-        Objects.requireNonNull(mCategoryField.getEditText()).addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                // Do nothing
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                // Do nothing
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                isValidCategory = true;
-            }
-        });
-
         Objects.requireNonNull(mTitleField.getEditText()).addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -176,14 +177,14 @@ public class HelpMePostAddActivity extends AppCompatActivity {
     }
 
     /**
-     * Set click listeners for date, time and add buttons
+     * Set click listeners for date, time and save buttons
      */
     private void setButtonsClickListeners() {
         mDateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 hideKeyboard();
-                DialogFragment newFragment = new DatePickerFragment(HelpMePostAddActivity.this);
+                DialogFragment newFragment = new DatePickerFragment(HelpMePostEditActivity.this);
                 newFragment.show(getSupportFragmentManager(), "Date");
             }
         });
@@ -192,57 +193,37 @@ public class HelpMePostAddActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 hideKeyboard();
-                DialogFragment newFragment = new TimePickerFragment(HelpMePostAddActivity.this);
+                DialogFragment newFragment = new TimePickerFragment(HelpMePostEditActivity.this);
                 newFragment.show(getSupportFragmentManager(), "Time");
             }
         });
 
-        mAddButton.setOnClickListener(new View.OnClickListener() {
+        mSaveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!isValidCategory) {
-                    Alert.showAlertDialog(HelpMePostAddActivity.this, getString(R.string.error_category));
-                } else if (!isValidTitle) {
-                    Alert.showAlertDialog(HelpMePostAddActivity.this, getString(R.string.error_title));
-                } else if (!isValidDate) {
-                    Alert.showAlertDialog(HelpMePostAddActivity.this, getString(R.string.error_date));
-                } else if (!isNonEmptyTime) {
-                    Alert.showAlertDialog(HelpMePostAddActivity.this, getString(R.string.error_empty_time));
+                if (!isValidTitle) {
+                    Alert.showAlertDialog(HelpMePostEditActivity.this, getString(R.string.error_title));
                 } else if (!isValidTime) {
-                    Alert.showAlertDialog(HelpMePostAddActivity.this, getString(R.string.error_time));
+                    Alert.showAlertDialog(HelpMePostEditActivity.this, getString(R.string.error_time));
                 } else if (!isValidDescription) {
-                    Alert.showAlertDialog(HelpMePostAddActivity.this, getString(R.string.error_description));
+                    Alert.showAlertDialog(HelpMePostEditActivity.this, getString(R.string.error_description));
                 } else {
-                    // Retrieve user's data from Firebase Database
-                    DatabaseReference userDatabase = FirebaseDatabase.getInstance().getReference("users");
-                    userDatabase.child(FirebaseHandler.getCurrentUserUid()).addListenerForSingleValueEvent(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                            User currUser = dataSnapshot.getValue(User.class);
-                            assert currUser != null;
-                            int blkNo = currUser.getBlkNo();
+                    // Retrieve updated fields
+                    String category = Objects.requireNonNull(mCategoryField).getText().toString();
+                    String title = Objects.requireNonNull(mTitleField.getEditText()).getText().toString();
+                    String date = Objects.requireNonNull(mDateField.getEditText()).getText().toString();
+                    String time = Objects.requireNonNull(mTimeField.getEditText()).getText().toString();
+                    String description = Objects.requireNonNull(mDescriptionField.getEditText()).getText().toString();
 
-                            // Create a HelpMePost
-                            String category = Objects.requireNonNull(mCategoryField.getEditText()).getText().toString();
-                            String title = Objects.requireNonNull(mTitleField.getEditText()).getText().toString();
-                            String user = FirebaseHandler.getCurrentUser().getDisplayName();
-                            String location = getString(R.string.blk) + " " + blkNo;
-                            String date = Objects.requireNonNull(mDateField.getEditText()).getText().toString();
-                            String time = Objects.requireNonNull(mTimeField.getEditText()).getText().toString();
-                            String description = Objects.requireNonNull(mDescriptionField.getEditText()).getText().toString();
-                            HelpMePost post = new HelpMePost(category, title, user, location, date, time, description);
+                    // Update in Firebase Database
+                    DatabaseReference uploadRef = mUserPostsRef.child(String.valueOf(mPost.getTimeCreated()));
+                    uploadRef.child("category").setValue(category);
+                    uploadRef.child("title").setValue(title);
+                    uploadRef.child("date").setValue(date);
+                    uploadRef.child("time").setValue(time);
+                    uploadRef.child("description").setValue(description);
 
-                            // Add post to database
-                            long timeCreated = new Date().getTime();
-                            mUploadRef.child(String.valueOf(timeCreated)).setValue(post);
-                            onBackPressed();
-                        }
-
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError databaseError) {
-                            // Do nothing
-                        }
-                    });
+                    onBackPressed();
                 }
             }
         });
@@ -273,8 +254,6 @@ public class HelpMePostAddActivity extends AppCompatActivity {
      * @param dayOfMonth the day of month chosen
      */
     public void processDatePickerResult(int year, int month, int dayOfMonth) {
-        isValidDate = true;
-
         // Create date message
         mDate = new int[]{year, month, dayOfMonth};
         String year_string = Integer.toString(year);
@@ -302,8 +281,6 @@ public class HelpMePostAddActivity extends AppCompatActivity {
      * @param minute    the minute chosen
      */
     public void processTimePickerResult(int hourOfDay, int minute) {
-        isNonEmptyTime = true;
-
         // Create time message
         mTime = new int[]{hourOfDay, minute};
         int hour = hourOfDay <= 12 ? hourOfDay : hourOfDay - 12;

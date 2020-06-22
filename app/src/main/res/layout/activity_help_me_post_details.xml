@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".HelpMePostDetailsActivity">
+    tools:context=".helpMe.HelpMePostDetailsActivity">
 
     <include
         android:id="@+id/toolbar_main"
@@ -13,10 +13,10 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/toolbar_main">
 
@@ -29,8 +29,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_marginTop="8dp"
-                android:textStyle="bold"
                 android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
+                android:textStyle="bold"
                 app:chipBackgroundColor="@color/colorPrimaryLight"
                 tools:text="Category" />
 
@@ -72,7 +72,7 @@
                 android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/help_me_post_location"
+                android:id="@+id/help_me_post_blk_no"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/help_me_post_location_header"
@@ -86,7 +86,7 @@
                 android:id="@+id/help_me_post_date_time_header"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/help_me_post_location"
+                android:layout_below="@id/help_me_post_blk_no"
                 android:layout_marginTop="8dp"
                 android:text="@string/help_me_post_date_time_header"
                 android:textSize="14sp"
