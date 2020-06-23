@@ -30,6 +30,7 @@ import java.util.Objects;
 
 public class HelpMeUserListingFragment extends Fragment {
 
+    private View mView;
     private ArrayList<HelpMePost> mHelpMePosts = new ArrayList<>();
     private DatabaseReference mUserPostsRef;
 
@@ -49,7 +50,8 @@ public class HelpMeUserListingFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.activity_help_me_user_listing_fragment, container, false);
+        mView = inflater.inflate(R.layout.activity_help_me_user_listing_fragment, container, false);
+        return mView;
     }
 
     @Override
@@ -103,16 +105,16 @@ public class HelpMeUserListingFragment extends Fragment {
      * Show the list of user's posts
      */
     private void show() {
-        // Get a handle to the RecyclerView.
-        RecyclerView mRecyclerView = Objects.requireNonNull(getActivity()).findViewById(R.id.help_me_user_listing_recycler_view);
+        // Get a handle to the RecyclerView
+        RecyclerView mRecyclerView = mView.findViewById(R.id.help_me_user_listing_recycler_view);
 
-        // Create an adapter and supply the data to be displayed.
+        // Create an adapter and supply the data to be displayed
         HelpMeUserListingAdapter mAdapter = new HelpMeUserListingAdapter(getContext(), this, mHelpMePosts);
 
-        // Connect the adapter with the RecyclerView.
+        // Connect the adapter with the RecyclerView
         mRecyclerView.setAdapter(mAdapter);
 
-        // Give the RecyclerView a default layout manager.
+        // Give the RecyclerView a default layout manager
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
     }
 }

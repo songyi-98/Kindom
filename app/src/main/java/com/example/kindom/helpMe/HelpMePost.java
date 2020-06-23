@@ -1,5 +1,7 @@
 package com.example.kindom.helpMe;
 
+import com.example.kindom.utils.FirebaseHandler;
+
 import java.io.Serializable;
 import java.util.Date;
 
@@ -9,9 +11,10 @@ import java.util.Date;
 public class HelpMePost implements Serializable {
 
     private long timeCreated;
+    private String userUid;
+    private String user;
     private String category;
     private String title;
-    private String user;
     private String blkNo;
     private String date;
     private String time;
@@ -21,11 +24,12 @@ public class HelpMePost implements Serializable {
         // Default constructor required for calls to DataSnapshot.getValue(User.class)
     }
 
-    public HelpMePost(String category, String title, String user, String blkNo, String date, String time, String description) {
+    public HelpMePost(String category, String title, String blkNo, String date, String time, String description) {
         this.timeCreated = new Date().getTime();
+        this.userUid = FirebaseHandler.getCurrentUserUid();
+        this.user = FirebaseHandler.getCurrentUser().getDisplayName();
         this.category = category;
         this.title = title;
-        this.user = user;
         this.blkNo = blkNo;
         this.date = date;
         this.time = time;
@@ -38,6 +42,22 @@ public class HelpMePost implements Serializable {
 
     public void setTimeCreated(long timeCreated) {
         this.timeCreated = timeCreated;
+    }
+
+    public String getUserUid() {
+        return userUid;
+    }
+
+    public void setUserUid(String userUid) {
+        this.userUid = userUid;
+    }
+
+    public String getUser() {
+        return user;
+    }
+
+    public void setUser(String user) {
+        this.user = user;
     }
 
     public String getCategory() {
@@ -54,14 +74,6 @@ public class HelpMePost implements Serializable {
 
     public void setTitle(String title) {
         this.title = title;
-    }
-
-    public String getUser() {
-        return user;
-    }
-
-    public void setUser(String user) {
-        this.user = user;
     }
 
     public String getBlkNo() {
