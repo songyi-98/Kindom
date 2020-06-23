@@ -25,7 +25,7 @@ import java.util.Objects;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class RegisterProfileActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Integer> {
+public class RegisterProfileActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<String> {
 
     public static final int PICK_IMAGE = 1;
     public static final String USER_PROFILE_IMAGE_TAG = "USER_PROFILE_IMAGE";
@@ -38,7 +38,7 @@ public class RegisterProfileActivity extends AppCompatActivity implements Loader
     private Uri mProfileImageUri;
     private TextInputLayout mNameField;
     private TextInputLayout mPostalCodeField;
-    private Integer mBlkNo = -1;
+    private String mBlkNo = "";
     private MaterialButtonToggleGroup mUserGroup;
     private MaterialButton mNextButton;
     private boolean isValidProfileImage = false;
@@ -107,18 +107,18 @@ public class RegisterProfileActivity extends AppCompatActivity implements Loader
 
     @NonNull
     @Override
-    public Loader<Integer> onCreateLoader(int id, @Nullable Bundle args) {
+    public Loader<String> onCreateLoader(int id, @Nullable Bundle args) {
         return new AddressLoader(this, Integer.parseInt(Objects.requireNonNull(mPostalCodeField.getEditText()).getText().toString()));
     }
 
     @Override
-    public void onLoadFinished(@NonNull Loader<Integer> loader, Integer data) {
+    public void onLoadFinished(@NonNull Loader<String> loader, String data) {
         mBlkNo = data;
     }
 
     @Override
-    public void onLoaderReset(@NonNull Loader<Integer> loader) {
-        mBlkNo = -1;
+    public void onLoaderReset(@NonNull Loader<String> loader) {
+        mBlkNo = "";
         isValidPostalCode = false;
     }
 
@@ -194,10 +194,11 @@ public class RegisterProfileActivity extends AppCompatActivity implements Loader
             @Override
             public void onClick(View v) {
                 // Check postal code validity
-                if (mBlkNo == -1) {
+                if (mBlkNo.equals("")) {
                     Alert.showAlertDialog(RegisterProfileActivity.this, getString(R.string.error_postal_code_processing));
-                }
-                if (mBlkNo != null) {
+                } else if (mBlkNo.equals("invalid")) {
+                    Alert.showAlertDialog(RegisterProfileActivity.this, getString(R.string.error_postal_code));
+                } else {
                     isValidPostalCode = true;
                 }
 

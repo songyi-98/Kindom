@@ -63,7 +63,7 @@
                 tools:text="Adam" />
 
             <TextView
-                android:id="@+id/help_me_post_location_header"
+                android:id="@+id/help_me_post_blk_no_header"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/help_me_post_user"
@@ -75,9 +75,9 @@
                 android:id="@+id/help_me_post_blk_no"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/help_me_post_location_header"
+                android:layout_below="@id/help_me_post_blk_no_header"
                 android:layout_marginTop="8dp"
-                android:drawableStart="@drawable/ic_round_location_on_24"
+                android:drawableStart="@drawable/ic_round_apartment_24"
                 android:drawablePadding="8dp"
                 android:textSize="18sp"
                 tools:text="Blk 999" />

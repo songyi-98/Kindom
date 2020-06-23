@@ -96,18 +96,15 @@ public class AddressQuery {
         return output.toString();
     }
 
-    public static Integer parseJsonResponse(String jsonResponse) {
-        Integer result = null;
+    public static String parseJsonResponse(String jsonResponse) {
+        String result = "invalid";
         JSONObject jsonObject;
 
         try {
             jsonObject = new JSONObject(jsonResponse);
             JSONArray resultsArray = jsonObject.getJSONArray("results");
             for (int i = resultsArray.length() - 1; i >= 0; i--) {
-                JSONObject resultObj = resultsArray.getJSONObject(i);
-                if (resultObj.getString("SEARCHVAL").contains("HDB")) {
-                    result = resultObj.getInt("BLK_NO");
-                }
+                result = resultsArray.getJSONObject(i).getString("BLK_NO");
             }
         } catch (JSONException e) {
             e.printStackTrace();

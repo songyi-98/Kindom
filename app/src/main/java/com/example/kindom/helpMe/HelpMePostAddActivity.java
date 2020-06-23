@@ -9,6 +9,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -24,8 +25,11 @@ import com.example.kindom.utils.TimePickerFragment;
 import com.example.kindom.utils.Validation;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputLayout;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.Date;
 import java.util.Objects;
@@ -34,6 +38,7 @@ public class HelpMePostAddActivity extends AppCompatActivity {
 
     private String[] CATEGORIES = new String[]{"Care", "Food", "Groceries", "Others"};
 
+    private DatabaseReference mUserRef;
     private DatabaseReference mUploadRef;
     private TextInputLayout mCategoryField;
     private TextInputLayout mTitleField;
@@ -86,7 +91,8 @@ public class HelpMePostAddActivity extends AppCompatActivity {
         setButtonsClickListeners();
 
         // Initialize Firebase Database
-        mUploadRef = FirebaseDatabase.getInstance().getReference().child("helpMe").child(FirebaseHandler.getCurrentUserUid());
+        mUserRef = FirebaseDatabase.getInstance().getReference("users").child(FirebaseHandler.getCurrentUserUid());
+        mUploadRef = FirebaseDatabase.getInstance().getReference("helpMe").child(FirebaseHandler.getCurrentUserUid());
     }
 
     @Override
@@ -218,21 +224,33 @@ public class HelpMePostAddActivity extends AppCompatActivity {
                 } else if (!isValidDescription) {
                     Alert.showAlertDialog(HelpMePostAddActivity.this, getString(R.string.error_description));
                 } else {
-                    // Create a HelpMePost
-                    String category = Objects.requireNonNull(mCategoryField.getEditText()).getText().toString();
-                    String title = Objects.requireNonNull(mTitleField.getEditText()).getText().toString();
-                    // TODO: Change back
-                    String blkNo = "0";
-                    //String blkNo = getString(R.string.blk) + " " + currUser.getBlkNo();
-                    String date = Objects.requireNonNull(mDateField.getEditText()).getText().toString();
-                    String time = Objects.requireNonNull(mTimeField.getEditText()).getText().toString();
-                    String description = Objects.requireNonNull(mDescriptionField.getEditText()).getText().toString();
-                    HelpMePost post = new HelpMePost(category, title, blkNo, date, time, description);
+                    mUserRef.addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            // Get current User Java object
+                            User user = dataSnapshot.getValue(User.class);
+                            assert user != null;
 
-                    // Add post to database
-                    long timeCreated = new Date().getTime();
-                    mUploadRef.child(String.valueOf(timeCreated)).setValue(post);
-                    onBackPressed();
+                            // Create a HelpMePost
+                            String category = Objects.requireNonNull(mCategoryField.getEditText()).getText().toString();
+                            String title = Objects.requireNonNull(mTitleField.getEditText()).getText().toString();
+                            String blkNo = getString(R.string.blk) + " " + user.getBlkNo();
+                            String date = Objects.requireNonNull(mDateField.getEditText()).getText().toString();
+                            String time = Objects.requireNonNull(mTimeField.getEditText()).getText().toString();
+                            String description = Objects.requireNonNull(mDescriptionField.getEditText()).getText().toString();
+                            HelpMePost post = new HelpMePost(category, title, blkNo, date, time, description);
+
+                            // Add post to database
+                            long timeCreated = new Date().getTime();
+                            mUploadRef.child(String.valueOf(timeCreated)).setValue(post);
+                            onBackPressed();
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+                            // Do nothing
+                        }
+                    });
                 }
             }
         });
