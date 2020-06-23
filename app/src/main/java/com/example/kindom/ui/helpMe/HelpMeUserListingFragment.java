@@ -26,7 +26,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.Objects;
 
 public class HelpMeUserListingFragment extends Fragment {
 
@@ -57,9 +56,10 @@ public class HelpMeUserListingFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        mHelpMePosts.clear();
 
         // Set click listener for FAB
-        FloatingActionButton fab = Objects.requireNonNull(getActivity()).findViewById(R.id.help_me_add_fab);
+        FloatingActionButton fab = view.findViewById(R.id.help_me_add_fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
