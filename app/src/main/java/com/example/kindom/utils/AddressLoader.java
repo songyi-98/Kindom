@@ -11,7 +11,7 @@ import java.net.URL;
 /**
  * Asynchronously load data about block number from OneMap API
  */
-public class AddressLoader extends AsyncTaskLoader<Integer> {
+public class AddressLoader extends AsyncTaskLoader<String> {
 
     private int postalCode;
 
@@ -27,7 +27,7 @@ public class AddressLoader extends AsyncTaskLoader<Integer> {
 
     @Nullable
     @Override
-    public Integer loadInBackground() {
+    public String loadInBackground() {
         // Create URL object
         URL url = AddressQuery.createUrl(postalCode);
 

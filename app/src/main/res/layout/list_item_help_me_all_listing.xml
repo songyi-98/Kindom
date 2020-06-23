@@ -54,7 +54,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:drawableStart="@drawable/ic_round_location_on_24"
+                android:drawableStart="@drawable/ic_round_apartment_24"
                 android:drawablePadding="8dp"
                 android:textAppearance="?attr/textAppearanceBody2"
                 tools:text="Blk 999" />
