@@ -45,7 +45,8 @@
     <string name="help_me_all_listing_tab">All Listing</string>
     <string name="help_me_my_listing_tab">My Listing</string>
     <string name="list_item_help_me_all_listing_details">Details</string>
-    <string name="fab_content_desc">Add</string>
+    <string name="fab_refresh_content_desc">Refresh</string>
+    <string name="fab_add_content_desc">Add</string>
     <string name="help_me_post_details_label">Post details</string>
     <string name="menu_report_listing_label">Report Listing</string>
     <string name="help_me_post_user_header">User requiring help:</string>

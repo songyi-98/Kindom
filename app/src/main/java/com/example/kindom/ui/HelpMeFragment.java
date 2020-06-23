@@ -11,8 +11,8 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentStatePagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
-import com.example.kindom.ui.helpMe.HelpMePagerAdapter;
 import com.example.kindom.R;
+import com.example.kindom.ui.helpMe.HelpMePagerAdapter;
 import com.google.android.material.tabs.TabLayout;
 
 import java.util.Objects;
@@ -53,7 +53,7 @@ public class HelpMeFragment extends Fragment {
         // Each page is represented by its own fragment.
         final ViewPager viewPager = getActivity().findViewById(R.id.help_me_pager);
         final HelpMePagerAdapter adapter = new HelpMePagerAdapter(
-                getActivity().getSupportFragmentManager(),
+                getChildFragmentManager(),
                 FragmentStatePagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT,
                 tabLayout.getTabCount());
         viewPager.setAdapter(adapter);
