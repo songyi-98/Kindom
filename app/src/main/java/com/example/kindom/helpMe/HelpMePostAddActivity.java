@@ -218,19 +218,16 @@ public class HelpMePostAddActivity extends AppCompatActivity {
                 } else if (!isValidDescription) {
                     Alert.showAlertDialog(HelpMePostAddActivity.this, getString(R.string.error_description));
                 } else {
-                    User currUser = FirebaseHandler.getCurrentUserObj();
-
                     // Create a HelpMePost
                     String category = Objects.requireNonNull(mCategoryField.getEditText()).getText().toString();
                     String title = Objects.requireNonNull(mTitleField.getEditText()).getText().toString();
-                    String user = FirebaseHandler.getCurrentUser().getDisplayName();
                     // TODO: Change back
                     String blkNo = "0";
                     //String blkNo = getString(R.string.blk) + " " + currUser.getBlkNo();
                     String date = Objects.requireNonNull(mDateField.getEditText()).getText().toString();
                     String time = Objects.requireNonNull(mTimeField.getEditText()).getText().toString();
                     String description = Objects.requireNonNull(mDescriptionField.getEditText()).getText().toString();
-                    HelpMePost post = new HelpMePost(category, title, user, blkNo, date, time, description);
+                    HelpMePost post = new HelpMePost(category, title, blkNo, date, time, description);
 
                     // Add post to database
                     long timeCreated = new Date().getTime();

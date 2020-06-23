@@ -27,6 +27,7 @@ import java.util.Objects;
 public class HelpMeAllListingFragment extends Fragment {
 
     // TODO: Allow refresh of posts
+
     private ArrayList<HelpMePost> mHelpMePosts = new ArrayList<>();
     private DatabaseReference mAllPostsRef;
 
@@ -55,7 +56,9 @@ public class HelpMeAllListingFragment extends Fragment {
 
         // Add all users' (except current user) posts to list
         mHelpMePosts.clear();
+
         // TODO: Filter only nearby posts
+
         mAllPostsRef.orderByChild("timeCreated").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -82,16 +85,16 @@ public class HelpMeAllListingFragment extends Fragment {
      * Show the list of all users' (except current user) posts
      */
     private void show() {
-        // Get a handle to the RecyclerView.
+        // Get a handle to the RecyclerView
         RecyclerView mRecyclerView = Objects.requireNonNull(getActivity()).findViewById(R.id.help_me_all_listing_recycler_view);
 
-        // Create an adapter and supply the data to be displayed.
+        // Create an adapter and supply the data to be displayed
         HelpMeAllListingAdapter mAdapter = new HelpMeAllListingAdapter(getContext(), mHelpMePosts);
 
-        // Connect the adapter with the RecyclerView.
+        // Connect the adapter with the RecyclerView
         mRecyclerView.setAdapter(mAdapter);
 
-        // Give the RecyclerView a default layout manager.
+        // Give the RecyclerView a default layout manager
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
     }
 }
