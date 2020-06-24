@@ -3,9 +3,12 @@ package com.example.kindom.chat;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.speech.tts.TextToSpeech;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -52,6 +55,13 @@ public class ChatActivity extends AppCompatActivity {
         chatID = getIntent().getExtras().getString("chatID");
         mChatDb = FirebaseDatabase.getInstance().getReference().child("chat").child(chatID);
 
+        //setting chat Title and setting chat image
+        TextView mChatTitle = findViewById(R.id.chatTitle);
+        mChatTitle.setText(getIntent().getExtras().getString("chatTitle"));
+        ImageView mProfilePicture = findViewById(R.id.image_chat_profile);
+        //to be changed, temporary placeholder image
+        //mProfilePicture.setImageURI(Uri.parse("https://firebasestorage.googleapis.com/v0/b/kindom-20.appspot.com/o/chat%2Fiaggsddiuahs%26%5E(%26(%2F-MAb0kfmsKPHgi54jW8a%2FmediaId?alt=media&token=911f8737-cd1f-48b6-bada-b91864cba497"));
+
         Button mSend = findViewById(R.id.sendBtn);
         mSend.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -79,6 +89,7 @@ public class ChatActivity extends AppCompatActivity {
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                 if(dataSnapshot.exists()) {
                     String text = "",sender = "";
+                    String timestamp = "";
                     ArrayList<String> mediaUrlList = new ArrayList<>();
                     if (dataSnapshot.child("text").getValue() != null) {
                         text = dataSnapshot.child("text").getValue().toString();
@@ -91,8 +102,10 @@ public class ChatActivity extends AppCompatActivity {
                             mediaUrlList.add(mediaSnapshot.getValue().toString());
                         }
                     }
-                    Date currentTime = Calendar.getInstance().getTime();
-                    MessageObject mMessage = new MessageObject(dataSnapshot.getKey(), sender, text, currentTime.toString(), mediaUrlList);
+                    if (dataSnapshot.child("timestamp").getValue() != null) {
+                        timestamp = dataSnapshot.child("timestamp").getValue().toString();
+                    }
+                    MessageObject mMessage = new MessageObject(dataSnapshot.getKey(), sender, text, timestamp, mediaUrlList);
                     messageList.add(mMessage);
                     mChatLayoutManager.scrollToPosition(messageList.size()-1);
                     mChatAdapter.notifyDataSetChanged();
@@ -133,10 +146,13 @@ public class ChatActivity extends AppCompatActivity {
             final Map newMessageMap = new HashMap<>();
 
             if(!mMessage.getText().toString().isEmpty()) {
+                while (mMessage.getText().toString().endsWith("\n")) {
+                    mMessage.getText().delete(mMessage.getText().length() - 1,mMessage.getText().length());
+                }
                 newMessageMap.put("text", mMessage.getText().toString());
             }
             newMessageMap.put("sender", FirebaseAuth.getInstance().getUid());
-            newMessageMap.put("timestamp", "");
+            newMessageMap.put("timestamp", Long.toString(System.currentTimeMillis()));
 
             if(!mediaUriList.isEmpty()) {
                 for (String mediaUri : mediaUriList) {

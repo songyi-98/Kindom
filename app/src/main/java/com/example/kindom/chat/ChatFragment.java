@@ -65,7 +65,7 @@ public class ChatFragment extends Fragment {
         DatabaseReference chatListRef = FirebaseDatabase.getInstance().getReference().child("chatLists").push();
         FirebaseDatabase.getInstance().getReference().child("users").child(FirebaseAuth.getInstance().getUid()).child("chatListKeys").updateChildren(testMap);
         //this will add the chat to that persons chatListKeys
-        FirebaseDatabase.getInstance().getReference().child("users").child("XoHQmpwSx1bseqxFk6bgmduJnAJ2").child("chatListKeys").updateChildren(testMap);
+        FirebaseDatabase.getInstance().getReference().child("users").child("paERsLtvYahiSa8xMxzDrYtDQuT2").child("chatListKeys").updateChildren(testMap);
 
         initializeRecyclerView();
         getUserChatList();
