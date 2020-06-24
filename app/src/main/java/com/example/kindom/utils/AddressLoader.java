@@ -32,7 +32,7 @@ public class AddressLoader extends AsyncTaskLoader<String> {
         URL url = AddressQuery.createUrl(postalCode);
 
         // Perform HTTP request to the URL and return a JSON response
-        String jsonResponse = AddressQuery.makeHttpRequest(url);
+        String jsonResponse = Connection.makeHttpRequest(url);
 
         // Extract block number from the JSON response
         return AddressQuery.parseJsonResponse(jsonResponse);

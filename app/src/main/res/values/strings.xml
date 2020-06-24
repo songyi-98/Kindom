@@ -53,6 +53,7 @@
     <string name="help_me_post_location_header">Location of help required:</string>
     <string name="help_me_post_date_time_header">Date and Time of help required:</string>
     <string name="help_me_post_description_header">Description:</string>
+    <string name="help_me_post_chat">Chat</string>
     <string name="help_me_add_post_label">Add post</string>
     <string name="help_me_post_add_category">Category</string>
     <string name="help_me_post_add_title">Title</string>
