@@ -9,18 +9,35 @@
         android:id="@+id/toolbar_main"
         layout="@layout/toolbar_main"
         />
+    <ImageView
+        android:id="@+id/image_chat_profile"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:layout_marginStart="40dp"
+        android:contentDescription="@string/user_image_text"
+        android:layout_marginTop="12dp"
+        android:src="@drawable/ic_launcher_background"/>
     <TextView
+        android:id="@+id/chatTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:drawableStart="@drawable/navigation_back_arrow">
+        android:layout_toEndOf="@id/image_chat_profile"
+        android:layout_marginTop="12dp"
+        android:layout_marginStart="8dp"
+        android:textColor="#ffffff"
+        android:textSize="24sp"
+        >
     </TextView>
 
     <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/messageList"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/messageList"
-        android:layout_above="@+id/sendLayout"/>
-    
+        android:layout_above="@+id/sendLayout"
+        android:layout_below="@id/toolbar_main"
+        android:layout_marginTop="-2dp"
+        android:layout_marginBottom="2dp" />
+
     <LinearLayout
         android:layout_alignParentBottom="true"
         android:layout_width="match_parent"

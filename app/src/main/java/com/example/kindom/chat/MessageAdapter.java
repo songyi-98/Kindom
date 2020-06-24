@@ -1,10 +1,15 @@
 package com.example.kindom.chat;
 
 import android.graphics.Typeface;
+import android.media.Image;
+import android.net.Uri;
+import android.text.SpannableStringBuilder;
+import android.text.style.ImageSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -12,6 +17,7 @@ import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.kindom.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
@@ -19,8 +25,10 @@ import com.stfalcon.frescoimageviewer.ImageViewer;
 
 import org.w3c.dom.Text;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 
 public class MessageAdapter extends RecyclerView.Adapter {
 
@@ -63,35 +71,13 @@ public class MessageAdapter extends RecyclerView.Adapter {
 
     @Override
     public void onBindViewHolder(@NonNull final RecyclerView.ViewHolder holder, final int position) {
-        MessageObject message = (MessageObject) messageList.get(position);
+        final MessageObject message = (MessageObject) messageList.get(position);
         switch (holder.getItemViewType()) {
             case VIEW_TYPE_MESSAGE_SENT:
                 ((SentMessageViewHolder) holder).bind(message);
-                if (messageList.get(holder.getAdapterPosition()).getMediaUrlList().isEmpty()) {
-                    ((SentMessageViewHolder) holder).mViewMedia.setVisibility(View.GONE);
-                }
-                ((SentMessageViewHolder) holder).mViewMedia.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        new ImageViewer.Builder(v.getContext(), messageList.get(holder.getAdapterPosition()).getMediaUrlList())
-                                .setStartPosition(0)
-                                .show();
-                    }
-                });
                 break;
             case VIEW_TYPE_MESSAGE_RECEIVED:
                 ((ReceivedMessageViewHolder) holder).bind(message);
-                if (messageList.get(holder.getAdapterPosition()).getMediaUrlList().isEmpty()) {
-                    ((ReceivedMessageViewHolder) holder).mViewMedia.setVisibility(View.GONE);
-                }
-                ((ReceivedMessageViewHolder) holder).mViewMedia.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    new ImageViewer.Builder(v.getContext(), messageList.get(holder.getAdapterPosition()).getMediaUrlList())
-                            .setStartPosition(0)
-                            .show();
-                }
-            });
         }
     }
 
@@ -102,22 +88,38 @@ public class MessageAdapter extends RecyclerView.Adapter {
 
     public class SentMessageViewHolder extends RecyclerView.ViewHolder {
         private TextView mMessage, mTime;
-        Button mViewMedia;
         public ConstraintLayout mLayout;
+        private ImageView mImageBody;
         public SentMessageViewHolder(View view) {
             super(view);
             mMessage = view.findViewById(R.id.text_message_body);
             mTime = view.findViewById(R.id.text_message_time);
             mLayout = view.findViewById(R.id.message_received_layout);
-            mViewMedia = view.findViewById(R.id.viewMedia);
+            mImageBody = view.findViewById(R.id.image_body);
         }
 
-        void bind(MessageObject message) {
+        void bind(final MessageObject message) {
             mMessage.setText(message.getMessage());
-
-            // Format the stored timestamp into a readable String using method.
-            mTime.setText(message.getTimestamp());
-
+            SimpleDateFormat dateFormat = new SimpleDateFormat("hh.mm aa");
+            String formattedTimeStamp = dateFormat.format(Long.parseLong(message.getTimestamp()));
+            mTime.setText(formattedTimeStamp);
+            if (!message.getMediaUrlList().isEmpty()) {
+                Glide.with(itemView.getContext())
+                        .load(Uri.parse(message.getMediaUrlList().get(0)))
+                        .override(400,400)
+                        .into(mImageBody);
+                mImageBody.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        new ImageViewer.Builder(itemView.getContext(), message.getMediaUrlList())
+                                .setStartPosition(0)
+                                .show();
+                    }
+                });
+                mMessage.setVisibility(View.GONE);
+            } else {
+                mImageBody.setVisibility(View.GONE);
+            }
 /*
             // Insert the profile image from the URL into the ImageView.
             Utils.displayRoundImageFromUrl(mContext, message.getSender().getProfileUrl(), profileImage);*/
@@ -126,7 +128,7 @@ public class MessageAdapter extends RecyclerView.Adapter {
 
     public class ReceivedMessageViewHolder extends RecyclerView.ViewHolder {
         private TextView mMessage, mTime, mSender;
-        Button mViewMedia;
+        private ImageView mImageBody;
         public ConstraintLayout mLayout;
         public ReceivedMessageViewHolder(View view) {
             super(view);
@@ -134,16 +136,33 @@ public class MessageAdapter extends RecyclerView.Adapter {
             mTime = view.findViewById(R.id.text_message_time);
             mSender = view.findViewById(R.id.text_message_name);
             mLayout = view.findViewById(R.id.message_received_layout);
-            mViewMedia = view.findViewById(R.id.viewMedia);
+            mImageBody = view.findViewById(R.id.image_body);
 
         }
 
-        void bind(MessageObject message) {
+        void bind(final MessageObject message) {
             mMessage.setText(message.getMessage());
-
-            // Format the stored timestamp into a readable String using method.
-            mTime.setText(message.getTimestamp());
             mSender.setText(message.getSenderId());
+            SimpleDateFormat dateFormat = new SimpleDateFormat("hh.mm aa");
+            String formattedTimeStamp = dateFormat.format(message.getTimestamp());
+            mTime.setText(formattedTimeStamp);
+            if (!message.getMediaUrlList().isEmpty()) {
+                Glide.with(itemView.getContext())
+                        .load(Uri.parse(message.getMediaUrlList().get(0)))
+                        .override(400,400)
+                        .into(mImageBody);
+                mImageBody.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        new ImageViewer.Builder(itemView.getContext(), message.getMediaUrlList())
+                                .setStartPosition(0)
+                                .show();
+                    }
+                });
+                mMessage.setVisibility(View.GONE);
+            } else {
+                mImageBody.setVisibility(View.GONE);
+            }
 /*
             // Insert the profile image from the URL into the ImageView.
             Utils.displayRoundImageFromUrl(mContext, message.getSender().getProfileUrl(), profileImage);*/

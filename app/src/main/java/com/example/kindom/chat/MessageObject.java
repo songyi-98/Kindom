@@ -1,10 +1,12 @@
 package com.example.kindom.chat;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 public class MessageObject {
 
-    private String messageId, senderId, message, timestamp;
+    private String messageId, senderId, message;
+    private String timestamp;
 
     ArrayList<String> mediaUrlList;
 

@@ -47,12 +47,9 @@ public class ChatListAdapter extends RecyclerView.Adapter<ChatListAdapter.ChatLi
                 Intent intent = new Intent(v.getContext(), ChatActivity.class);
                 Bundle bundle = new Bundle();
                 bundle.putString("chatID", chatList.get(holder.getAdapterPosition()).getChatId());
+                bundle.putString("chatTitle", chatList.get(holder.getAdapterPosition()).getTitle());
                 intent.putExtras(bundle);
                 v.getContext().startActivity(intent);
-                /*String key = FirebaseDatabase.getInstance().getReference().child("chat").push().getKey();
-
-                FirebaseDatabase.getInstance().getReference().child("users").child(FirebaseAuth.getInstance().getUid()).child("chat").child(key).setValue(true);
-                FirebaseDatabase.getInstance().getReference().child("users").child(chatList.get(position).getChatId()).child("chat").child(key).setValue(true);*/
             }
         });
     }
