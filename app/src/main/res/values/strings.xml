@@ -13,6 +13,7 @@
     <string name="user_image_text">Choose a profile image:</string>
     <string name="name_label">Name</string>
     <string name="postal_code_label">Postal Code</string>
+    <string name="rc_label">Select RC</string>
     <string name="user_group_text">Register as:</string>
     <string name="user_group_admin_button">Admin</string>
     <string name="user_group_user_button">User</string>
@@ -22,7 +23,7 @@
     <string name="error_postal_code">Postal code is invalid</string>
     <string name="error_postal_code_empty">Postal code cannot be empty</string>
     <string name="error_postal_code_length">Postal code must be 6 digits long</string>
-    <string name="error_postal_code_processing">Please wait while we are processing your postal code</string>
+    <string name="error_rc">Select the correct RC from the provided list</string>
     <string name="error_user_group">Please select if you are registering as an admin or a user</string>
     <string name="confirm_password_label">Confirm Password</string>
     <string name="password_policy">Password must: \n• have at least 8 characters \n• include at least 1 uppercase letter (A–Z) \n• include at least 1 lowercase letter (a–z) \n• include at least 1 number (0–9)</string>

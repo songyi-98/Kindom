@@ -92,7 +92,7 @@ public class HelpMePostAddActivity extends AppCompatActivity {
 
         // Initialize Firebase Database
         mUserRef = FirebaseDatabase.getInstance().getReference("users").child(FirebaseHandler.getCurrentUserUid());
-        mUploadRef = FirebaseDatabase.getInstance().getReference("helpMe").child(FirebaseHandler.getCurrentUserUid());
+        mUploadRef = FirebaseDatabase.getInstance().getReference("helpMe");
     }
 
     @Override
@@ -113,7 +113,7 @@ public class HelpMePostAddActivity extends AppCompatActivity {
      * Set the list of categories shown in the dropdown menu
      */
     private void setCategoryDropdownMenu() {
-        ArrayAdapter<String> categoryAdapter = new ArrayAdapter<>(this, R.layout.list_item_help_me_category, CATEGORIES);
+        ArrayAdapter<String> categoryAdapter = new ArrayAdapter<>(this, R.layout.list_item_dropdown_menu, CATEGORIES);
         AutoCompleteTextView categoryTextView = findViewById(R.id.help_me_post_add_category_dropdown_menu);
         categoryTextView.setAdapter(categoryAdapter);
     }
@@ -241,8 +241,9 @@ public class HelpMePostAddActivity extends AppCompatActivity {
                             HelpMePost post = new HelpMePost(category, title, blkNo, date, time, description);
 
                             // Add post to database
+                            String rc = user.getRc();
                             long timeCreated = new Date().getTime();
-                            mUploadRef.child(String.valueOf(timeCreated)).setValue(post);
+                            mUploadRef.child(rc).child(FirebaseHandler.getCurrentUserUid()).child(String.valueOf(timeCreated)).setValue(post);
                             onBackPressed();
                         }
 
