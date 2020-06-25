@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".helpMe.HelpMePostDetailsActivity">
+
+    <include
+        android:id="@+id/toolbar_main"
+        layout="@layout/toolbar_main" />
+
+    <ScrollView
+        android:id="@+id/help_me_post_scroll_view"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintBottom_toTopOf="@id/help_me_post_chat_button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/toolbar_main">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/help_me_post_category"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginTop="8dp"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
+                android:textStyle="bold"
+                app:chipBackgroundColor="@color/colorPrimaryLight"
+                tools:text="Category" />
+
+            <TextView
+                android:id="@+id/help_me_post_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/help_me_post_category"
+                android:textAppearance="?attr/textAppearanceHeadline5"
+                tools:text="Title" />
+
+            <TextView
+                android:id="@+id/help_me_post_user_header"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/help_me_post_title"
+                android:layout_marginTop="8dp"
+                android:text="@string/help_me_post_user_header"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/help_me_post_user"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/help_me_post_user_header"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
+                app:chipIcon="@drawable/ic_round_person_24"
+                tools:text="Adam" />
+
+            <TextView
+                android:id="@+id/help_me_post_blk_no_header"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/help_me_post_user"
+                android:text="@string/help_me_post_location_header"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/help_me_post_blk_no"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/help_me_post_blk_no_header"
+                android:layout_marginTop="8dp"
+                android:drawableStart="@drawable/ic_round_apartment_24"
+                android:drawablePadding="8dp"
+                android:textSize="18sp"
+                tools:text="Blk 999" />
+
+            <TextView
+                android:id="@+id/help_me_post_date_time_header"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/help_me_post_blk_no"
+                android:layout_marginTop="8dp"
+                android:text="@string/help_me_post_date_time_header"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/help_me_post_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/help_me_post_date_time_header"
+                android:layout_marginTop="8dp"
+                android:drawableStart="@drawable/ic_round_calendar_today_24"
+                android:drawablePadding="8dp"
+                android:textSize="18sp"
+                tools:text="Tomorrow" />
+
+            <TextView
+                android:id="@+id/help_me_post_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/help_me_post_date_time_header"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:layout_toEndOf="@id/help_me_post_date"
+                android:drawableStart="@drawable/ic_round_access_time_24"
+                android:drawablePadding="8dp"
+                android:textSize="18sp"
+                tools:text="12:00 PM" />
+
+            <TextView
+                android:id="@+id/help_me_post_description_header"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/help_me_post_time"
+                android:layout_marginTop="8dp"
+                android:text="@string/help_me_post_description_header"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/help_me_post_description"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/help_me_post_description_header"
+                android:layout_marginTop="8dp"
+                android:textSize="18sp"
+                tools:text="Description of the post goes here." />
+        </RelativeLayout>
+    </ScrollView>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/help_me_post_chat_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/help_me_post_chat"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent" />
+</androidx.constraintlayout.widget.ConstraintLayout>

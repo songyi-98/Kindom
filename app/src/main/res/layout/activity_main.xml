@@ -7,6 +7,7 @@
     tools:context=".MainActivity">
 
     <!-- TODO: Add logo -->
+
     <TextView
         android:id="@+id/logo_with_app_name"
         android:layout_width="wrap_content"
