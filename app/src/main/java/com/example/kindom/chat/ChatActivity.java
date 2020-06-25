@@ -52,15 +52,24 @@ public class ChatActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
 
-        chatID = getIntent().getExtras().getString("chatID");
+        Intent intent = getIntent();
+        chatID = intent.getExtras().getString("ChatId");
+        String mChatUser  = intent.getExtras().getString("ChatUser");
         mChatDb = FirebaseDatabase.getInstance().getReference().child("chat").child(chatID);
 
         //setting chat Title and setting chat image
         TextView mChatTitle = findViewById(R.id.chatTitle);
-        mChatTitle.setText(getIntent().getExtras().getString("chatTitle"));
+        mChatTitle.setText(mChatUser);
         ImageView mProfilePicture = findViewById(R.id.image_chat_profile);
         //to be changed, temporary placeholder image
         //mProfilePicture.setImageURI(Uri.parse("https://firebasestorage.googleapis.com/v0/b/kindom-20.appspot.com/o/chat%2Fiaggsddiuahs%26%5E(%26(%2F-MAb0kfmsKPHgi54jW8a%2FmediaId?alt=media&token=911f8737-cd1f-48b6-bada-b91864cba497"));
+
+        if (intent.getExtras().getString("ChatId") != null) {
+            Map<String, Object> testMap = new HashMap<>();
+            testMap.put(chatID, mChatUser);
+            DatabaseReference chatListRef = FirebaseDatabase.getInstance().getReference().child("chat").push();
+            FirebaseDatabase.getInstance().getReference().child("users").child(FirebaseAuth.getInstance().getUid()).child("chatListKeys").updateChildren(testMap);
+        }
 
         Button mSend = findViewById(R.id.sendBtn);
         mSend.setOnClickListener(new View.OnClickListener() {
@@ -193,6 +202,7 @@ public class ChatActivity extends AppCompatActivity {
         mediaUriList.clear();
         mediaIdList.clear();
         mMediaAdapter.notifyDataSetChanged();
+        mChatAdapter.notifyDataSetChanged();
     }
 
     //initializes messages objects with recycler view
