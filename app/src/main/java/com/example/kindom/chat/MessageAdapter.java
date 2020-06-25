@@ -127,14 +127,13 @@ public class MessageAdapter extends RecyclerView.Adapter {
     }
 
     public class ReceivedMessageViewHolder extends RecyclerView.ViewHolder {
-        private TextView mMessage, mTime, mSender;
+        private TextView mMessage, mTime;
         private ImageView mImageBody;
         public ConstraintLayout mLayout;
         public ReceivedMessageViewHolder(View view) {
             super(view);
             mMessage = view.findViewById(R.id.text_message_body);
             mTime = view.findViewById(R.id.text_message_time);
-            mSender = view.findViewById(R.id.text_message_name);
             mLayout = view.findViewById(R.id.message_received_layout);
             mImageBody = view.findViewById(R.id.image_body);
 
@@ -142,9 +141,8 @@ public class MessageAdapter extends RecyclerView.Adapter {
 
         void bind(final MessageObject message) {
             mMessage.setText(message.getMessage());
-            mSender.setText(message.getSenderId());
             SimpleDateFormat dateFormat = new SimpleDateFormat("hh.mm aa");
-            String formattedTimeStamp = dateFormat.format(message.getTimestamp());
+            String formattedTimeStamp = dateFormat.format(Long.parseLong(message.getTimestamp()));
             mTime.setText(formattedTimeStamp);
             if (!message.getMediaUrlList().isEmpty()) {
                 Glide.with(itemView.getContext())

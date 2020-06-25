@@ -30,14 +30,12 @@ public class MediaAdapter extends RecyclerView.Adapter<MediaAdapter.MediaViewHol
     @Override
     public MediaViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View layoutView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_media, null, false);
-        MediaViewHolder mediaViewHolder = new MediaViewHolder(layoutView);
-        return mediaViewHolder;
+        return new MediaViewHolder(layoutView);
     }
 
     @Override
     public void onBindViewHolder(@NonNull MediaViewHolder holder, int position) {
         Glide.with(context).load(Uri.parse(mediaList.get(position))).into(holder.mMedia);
-
     }
 
     @Override
