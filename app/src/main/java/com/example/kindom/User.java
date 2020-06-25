@@ -14,6 +14,7 @@ public class User {
     private String name;
     private String userGroup;
     private int postalCode;
+    private String rc;
     private String blkNo;
     private String email;
 
@@ -21,11 +22,12 @@ public class User {
         // Default constructor required for calls to DataSnapshot.getValue(User.class)
     }
 
-    public User(String name, String userGroup, int postalCode, String blkNo, String email) {
+    public User(String name, String userGroup, int postalCode, String rc, String blkNo, String email) {
         this.uid = FirebaseHandler.getCurrentUserUid();
         this.name = name;
         this.userGroup = userGroup;
         this.postalCode = postalCode;
+        this.rc = rc;
         this.blkNo = blkNo;
         this.email = email;
     }
@@ -60,6 +62,14 @@ public class User {
 
     public void setPostalCode(int postalCode) {
         this.postalCode = postalCode;
+    }
+
+    public String getRc() {
+        return rc;
+    }
+
+    public void setRc(String rc) {
+        this.rc = rc;
     }
 
     public String getBlkNo() {

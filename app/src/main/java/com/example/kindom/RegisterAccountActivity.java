@@ -40,6 +40,7 @@ public class RegisterAccountActivity extends AppCompatActivity {
     private String mProfileImage;
     private String mName;
     private int mPostalCode;
+    private String mRc;
     private String mBlkNo;
     private String mUserGroup;
     private TextInputLayout mEmailField;
@@ -61,6 +62,7 @@ public class RegisterAccountActivity extends AppCompatActivity {
             mProfileImage = intent.getStringExtra(RegisterProfileActivity.USER_PROFILE_IMAGE_TAG);
             mName = intent.getStringExtra(RegisterProfileActivity.USER_NAME_TAG);
             mPostalCode = intent.getIntExtra(RegisterProfileActivity.USER_POSTAL_CODE_TAG, 0);
+            mRc = intent.getStringExtra(RegisterProfileActivity.USER_RC_TAG);
             mBlkNo = intent.getStringExtra(RegisterProfileActivity.USER_BLK_NO_TAG);
             mUserGroup = intent.getStringExtra(RegisterProfileActivity.USER_GROUP_TAG);
         }
@@ -229,7 +231,7 @@ public class RegisterAccountActivity extends AppCompatActivity {
                             });
 
                             // Add user to database
-                            User addUser = new User(mName, mUserGroup, mPostalCode, mBlkNo, email);
+                            User addUser = new User(mName, mUserGroup, mPostalCode, mRc, mBlkNo, email);
                             mUserDatabase.child(uid).setValue(addUser);
 
                             // Bring user to home page
