@@ -10,6 +10,9 @@ import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.kindom.utils.Alert;
+import com.example.kindom.utils.FirebaseHandler;
+import com.example.kindom.utils.Validation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -19,6 +22,7 @@ import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
@@ -30,11 +34,13 @@ import java.util.Objects;
 public class RegisterAccountActivity extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
+
     private DatabaseReference mUserDatabase;
     private StorageReference mStorageRef;
     private String mProfileImage;
     private String mName;
     private int mPostalCode;
+    private String mBlkNo;
     private String mUserGroup;
     private TextInputLayout mEmailField;
     private TextInputLayout mPasswordField;
@@ -55,6 +61,7 @@ public class RegisterAccountActivity extends AppCompatActivity {
             mProfileImage = intent.getStringExtra(RegisterProfileActivity.USER_PROFILE_IMAGE_TAG);
             mName = intent.getStringExtra(RegisterProfileActivity.USER_NAME_TAG);
             mPostalCode = intent.getIntExtra(RegisterProfileActivity.USER_POSTAL_CODE_TAG, 0);
+            mBlkNo = intent.getStringExtra(RegisterProfileActivity.USER_BLK_NO_TAG);
             mUserGroup = intent.getStringExtra(RegisterProfileActivity.USER_GROUP_TAG);
         }
 
@@ -188,7 +195,7 @@ public class RegisterAccountActivity extends AppCompatActivity {
     /**
      * Create an account with Firebase Authentication
      *
-     * @param email email of the user
+     * @param email    email of the user
      * @param password password of the user
      */
     private void createAccount(final String email, String password) {
@@ -198,8 +205,13 @@ public class RegisterAccountActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             // Sign up success
-                            FirebaseUser newUser = mAuth.getCurrentUser();
-                            String uid = newUser.getUid();
+                            FirebaseUser user = FirebaseHandler.getCurrentUser();
+                            String uid = FirebaseHandler.getCurrentUserUid();
+                            UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
+                                    .setDisplayName(mName)
+                                    .setPhotoUri(Uri.parse(mProfileImage))
+                                    .build();
+                            user.updateProfile(profileUpdates);
 
                             // Add profile image to storage
                             StorageReference uploadRef = mStorageRef.child(uid);
@@ -217,10 +229,10 @@ public class RegisterAccountActivity extends AppCompatActivity {
                             });
 
                             // Add user to database
-                            User user = new User(mName, mUserGroup, mPostalCode, email);
-                            mUserDatabase.child(uid).setValue(user);
+                            User addUser = new User(mName, mUserGroup, mPostalCode, mBlkNo, email);
+                            mUserDatabase.child(uid).setValue(addUser);
 
-                            // Bring user to Home page
+                            // Bring user to home page
                             Intent intent = new Intent(RegisterAccountActivity.this, HomeActivity.class);
                             startActivity(intent);
                         } else {

@@ -11,6 +11,9 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
+import com.example.kindom.ui.EventsFragment;
+import com.example.kindom.ui.HelpMeFragment;
+import com.example.kindom.ui.HomeFragment;
 import com.example.kindom.chat.ChatFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
@@ -54,6 +57,7 @@ public class HomeActivity extends AppCompatActivity {
                         fragment = new EventsFragment();
                         break;
                 }
+                assert fragment != null;
                 getSupportFragmentManager()
                         .beginTransaction()
                         .replace(R.id.fragment_container, fragment)
@@ -67,7 +71,7 @@ public class HomeActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater =getMenuInflater();
+        MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.main_menu, menu);
         return true;
     }

@@ -8,7 +8,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
@@ -16,6 +15,9 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.facebook.drawee.backends.pipeline.Fresco;
+import com.example.kindom.utils.Alert;
+import com.example.kindom.utils.FirebaseHandler;
+import com.example.kindom.utils.Validation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.button.MaterialButton;
@@ -68,11 +70,10 @@ public class MainActivity extends AppCompatActivity {
      * Check if an internet connection is available
      */
     private void checkInternetConnection() {
-        Log.i("INTERNET", "CALLED");
         ConnectivityManager connMgr = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
         if (networkInfo == null || !networkInfo.isConnected()) {
-            Alert.showAlertDialogAndFinish(this,this, getString(R.string.error_internet_connection));
+            Alert.showAlertDialogAndFinish(this, this, getString(R.string.error_internet_connection));
         } else {
             isConn = true;
         }
@@ -82,7 +83,7 @@ public class MainActivity extends AppCompatActivity {
      * Check if the user is already signed in
      */
     private void checkSignIn() {
-        FirebaseUser currentUser = mAuth.getCurrentUser();
+        FirebaseUser currentUser = FirebaseHandler.getCurrentUser();
         if (currentUser == null) {
             // User is not signed in yet. Hide progress bar and show sign in layout.
             findViewById(R.id.progress_circular).setVisibility(View.GONE);
@@ -189,7 +190,7 @@ public class MainActivity extends AppCompatActivity {
     /**
      * Sign in user with Firebase Authentication
      *
-     * @param email email of the user
+     * @param email    email of the user
      * @param password password of the user
      */
     private void signIn(String email, String password) {

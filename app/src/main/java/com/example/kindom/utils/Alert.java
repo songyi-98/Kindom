@@ -1,10 +1,12 @@
-package com.example.kindom;
+package com.example.kindom.utils;
 
 import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 
 import androidx.appcompat.app.AlertDialog;
+
+import com.example.kindom.R;
 
 /**
  * Encapsulate logic for handling alert dialogs
@@ -33,8 +35,8 @@ public class Alert {
      * Show alert dialog and finish activity
      *
      * @param activity the activity to be finished
-     * @param context the context
-     * @param message the message to be displayed
+     * @param context  the context
+     * @param message  the message to be displayed
      */
     public static void showAlertDialogAndFinish(final Activity activity, Context context, String message) {
         new AlertDialog.Builder(context)
