@@ -52,25 +52,15 @@ public class ChatActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
 
+        //receives intent from chat fragment or from help me post listing
         Intent intent = getIntent();
         chatID = intent.getExtras().getString("ChatId");
         String mChatUser  = intent.getExtras().getString("ChatUser");
         mChatDb = FirebaseDatabase.getInstance().getReference().child("chat").child(chatID);
 
-        //setting chat Title and setting chat image
+        //setting the layout for chat activity
         TextView mChatTitle = findViewById(R.id.chatTitle);
         mChatTitle.setText(mChatUser);
-        ImageView mProfilePicture = findViewById(R.id.image_chat_profile);
-        //to be changed, temporary placeholder image
-        //mProfilePicture.setImageURI(Uri.parse("https://firebasestorage.googleapis.com/v0/b/kindom-20.appspot.com/o/chat%2Fiaggsddiuahs%26%5E(%26(%2F-MAb0kfmsKPHgi54jW8a%2FmediaId?alt=media&token=911f8737-cd1f-48b6-bada-b91864cba497"));
-
-        if (intent.getExtras().getString("ChatId") != null) {
-            Map<String, Object> testMap = new HashMap<>();
-            testMap.put(chatID, mChatUser);
-            DatabaseReference chatListRef = FirebaseDatabase.getInstance().getReference().child("chat").push();
-            FirebaseDatabase.getInstance().getReference().child("users").child(FirebaseAuth.getInstance().getUid()).child("chatListKeys").updateChildren(testMap);
-        }
-
         Button mSend = findViewById(R.id.sendBtn);
         mSend.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -85,10 +75,13 @@ public class ChatActivity extends AppCompatActivity {
                 openGallery();
             }
         });
+        /*profile picture of user (WORK IN PROGRESS)
+        ImageView mProfilePicture = findViewById(R.id.image_chat_profile);
+        mProfilePicture.setImageURI(Uri.parse("https://firebasestorage.googleapis.com/v0/b/kindom-20.appspot.com/o/chat%2Fiaggsddiuahs%26%5E(%26(%2F-MAb0kfmsKPHgi54jW8a%2FmediaId?alt=media&token=911f8737-cd1f-48b6-bada-b91864cba497"));*/
 
+        getChatMessages();
         initializeMessages();
         initializeMedia();
-        getChatMessages();
     }
 
     //retrieves messages from database
@@ -97,6 +90,7 @@ public class ChatActivity extends AppCompatActivity {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                 if(dataSnapshot.exists()) {
+                    //messages have either media or text
                     String text = "",sender = "";
                     String timestamp = "";
                     ArrayList<String> mediaUrlList = new ArrayList<>();
@@ -144,6 +138,7 @@ public class ChatActivity extends AppCompatActivity {
     }
 
     //sends Message, can also send media
+    //variables only used in send message
     ArrayList<String> mediaIdList = new ArrayList<>();
     int totalMediaUploaded = 0;
     EditText mMessage;
@@ -163,6 +158,7 @@ public class ChatActivity extends AppCompatActivity {
             newMessageMap.put("sender", FirebaseAuth.getInstance().getUid());
             newMessageMap.put("timestamp", Long.toString(System.currentTimeMillis()));
 
+            //sending media in this
             if(!mediaUriList.isEmpty()) {
                 for (String mediaUri : mediaUriList) {
                     String mediaId = newMessageDb.child("media").push().getKey();
