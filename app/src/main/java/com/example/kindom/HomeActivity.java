@@ -12,7 +12,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 
 import com.example.kindom.ui.ChatFragment;
-import com.example.kindom.ui.EventsFragment;
 import com.example.kindom.ui.HelpMeFragment;
 import com.example.kindom.ui.HomeFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -52,9 +51,6 @@ public class HomeActivity extends AppCompatActivity {
                         break;
                     case R.id.navigation_chat:
                         fragment = new ChatFragment();
-                        break;
-                    case R.id.navigation_events:
-                        fragment = new EventsFragment();
                         break;
                 }
                 assert fragment != null;
