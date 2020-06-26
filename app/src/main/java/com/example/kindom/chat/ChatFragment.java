@@ -50,24 +50,7 @@ public class ChatFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_chat, container, false);
-
         mChatList = rootView.findViewById(R.id.chatList);
-
-        /*bug identified!! dont let the chatIds be the same or else messages wont display correctly
-        //this chunk of code is dummy code for adding chat for this user/needs a add contact portion
-        //stuck because if I want to chat with someone, I need to access their key to add this chat to their chatListKeys
-        String testChatID = "iaggsddiuahs&^(&(";
-        String mChatUser = bundle.getString("ChatUser");
-        String mChatUserID = bundle.getString("ChatUserId");
-        ChatObject tester = new ChatObject(mChatUser,testChatID);
-        chatList.add(tester);
-        Map<String, Object> testMap = new HashMap<>();
-        testMap.put(testChatID, mChatUser);
-        DatabaseReference chatListRef = FirebaseDatabase.getInstance().getReference().child("chat").push();
-        FirebaseDatabase.getInstance().getReference().child("users").child(FirebaseAuth.getInstance().getUid()).child("chatListKeys").updateChildren(testMap);
-        //this will add the chat to that persons chatListKeys
-        FirebaseDatabase.getInstance().getReference().child("users").child(mChatUserID).child("chatListKeys").updateChildren(testMap);*/
-
         initializeRecyclerView();
         getUserChatList();
 
@@ -76,15 +59,15 @@ public class ChatFragment extends Fragment {
 
     //retrieves the users' chatList from the database
     private void getUserChatList() {
-        DatabaseReference mUserChatDB = FirebaseDatabase.getInstance().getReference().child("users").child(FirebaseAuth.getInstance().getUid()).child("chatListKeys");
+        final DatabaseReference mUserChatDB = FirebaseDatabase.getInstance().getReference().child("users").child(FirebaseAuth.getInstance().getUid()).child("chatListKeys");
 
         mUserChatDB.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {
                     for (DataSnapshot childSnapshot : dataSnapshot.getChildren()) {
-                        //might be swapped for the chatId and the title
-                        ChatObject mChat = new ChatObject("test",childSnapshot.getKey());
+                        String chatKey = childSnapshot.getKey();
+                        ChatObject mChat = new ChatObject(childSnapshot.getValue().toString(), childSnapshot.getKey());
                         chatList.add(mChat);
                         mChatListAdapter.notifyDataSetChanged();
                     }

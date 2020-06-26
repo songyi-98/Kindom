@@ -104,47 +104,65 @@ public class HelpMePostDetailsActivity extends AppCompatActivity {
         descriptionTextView.setText(mPost.getDescription());
         chatButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(v.getContext(), ChatActivity.class);
+            public void onClick(final View v) {
+                final Intent intent = new Intent(v.getContext(), ChatActivity.class);
 
-                //creates a new chat key if no chat currently exists between the two users
-                Map<String, Object> testMap = new HashMap<>();
-                String testChatId = FirebasePushIdGenerator.generatePushId();
-                testMap.put(testChatId, mPost.getUser());
+                final ArrayList<String> possibleKey = new ArrayList<>();
 
-                //adds the chatlist's key to both users
                 final DatabaseReference postUserDb = FirebaseDatabase.getInstance().getReference().child("users").child(mPost.getUserUid()).child("chatListKeys");
-                postUserDb.updateChildren(testMap);
-                DatabaseReference currentUserDb = FirebaseDatabase.getInstance().getReference().child("users").child(FirebaseAuth.getInstance().getUid()).child("chatListKeys");
-                currentUserDb.updateChildren(testMap);
-                //i dont even know what im doing but im trying to make sure that if there exists the same chatID in these two users, I dont recreate a chat and instead open that old chat
-                /*boolean sameChatExists = false;
+                final DatabaseReference currentUserDb = FirebaseDatabase.getInstance().getReference().child("users").child(FirebaseAuth.getInstance().getUid()).child("chatListKeys");
+                //checks if there is a current chat that already exists between the two users
                 currentUserDb.addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
-                        Iterable<DataSnapshot> children  = dataSnapshot.getChildren();
-
-                        for (DataSnapshot snapshot: children) {
-                            String value = snapshot.getValue(String.class);
-                            if (!postUserDb.orderByKey().toString().equals(value)) {
-                                sameChatExists = true;
+                        if (dataSnapshot.exists()) {
+                            Map<String, Object> newMap = (Map<String, Object>) dataSnapshot.getValue();
+                            if (newMap.containsValue(mPost.getUser())) {
+                                String correctKey = null;
+                                for (String key : newMap.keySet()) {
+                                    if (newMap.get(key).equals(mPost.getUser())) {
+                                        correctKey = key;
+                                    }
+                                }
+                                if (correctKey != null) {
+                                    possibleKey.add(correctKey);
+                                }
                             }
                         }
+
+                        Map<String, Object> newMapCurrentUser = new HashMap<>();
+                        Map<String, Object> newMapPostUser = new HashMap<>();
+                        String chatId = "";
+                        if (possibleKey.isEmpty()) {
+                            //no chat exists yet between the two, create a new chat
+                            chatId = FirebasePushIdGenerator.generatePushId();
+                            newMapCurrentUser.put(chatId, mPost.getUser());
+                            newMapPostUser.put(chatId, FirebaseAuth.getInstance().getCurrentUser().getDisplayName());
+                            currentUserDb.updateChildren(newMapCurrentUser);
+                            postUserDb.updateChildren(newMapPostUser);
+                        } else {
+                            for (int k = 0; k < possibleKey.size(); k++) {
+                                if (dataSnapshot.child(possibleKey.get(k)).getValue().toString().equals(mPost.getUser())) {
+                                    chatId = possibleKey.get(k);
+                                    break;
+                                }
+                            }
+                        }
+
+                        //starts chat activity for user
+
+                        Bundle bundle = new Bundle();
+                        bundle.putString("ChatId", chatId);
+                        bundle.putString("ChatUser", mPost.getUser());
+                        intent.putExtras(bundle);
+                        v.getContext().startActivity(intent);
                     }
 
                     @Override
                     public void onCancelled(@NonNull DatabaseError databaseError) {
 
                     }
-                });*/
-
-                //starts chat activity for user
-                Bundle bundle = new Bundle();
-                bundle.putString("ChatId", testChatId);
-                bundle.putString("ChatUser", mPost.getUser());
-                intent.putExtras(bundle);
-                v.getContext().startActivity(intent);
+                });
             }
         });
     }
