@@ -42,6 +42,8 @@
     <string name="navigation_home">Home</string>
     <string name="navigation_help_me">Help Me!</string>
     <string name="navigation_chat">Chat</string>
+    <string name="home_neighbourhood_news">Neighbourhood News</string>
+    <string name="home_singapore_news">Singapore News</string>
     <string name="help_me_all_listing_tab">All Listing</string>
     <string name="help_me_my_listing_tab">My Listing</string>
     <string name="list_item_help_me_all_listing_details">Details</string>
