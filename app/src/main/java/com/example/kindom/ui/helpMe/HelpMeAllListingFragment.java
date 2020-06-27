@@ -131,15 +131,17 @@ public class HelpMeAllListingFragment extends Fragment {
         // Get a handle to the RecyclerView
         RecyclerView mRecyclerView = mView.findViewById(R.id.help_me_all_listing_recycler_view);
 
-        // Create an adapter and supply the data to be displayed
-        HelpMeAllListingAdapter mAdapter = new HelpMeAllListingAdapter(getContext(), mHelpMePosts);
+        if (getContext() != null) {
+            // Create an adapter and supply the data to be displayed
+            HelpMeAllListingAdapter mAdapter = new HelpMeAllListingAdapter(getContext(), mHelpMePosts);
 
-        // Connect the adapter with the RecyclerView
-        mRecyclerView.setAdapter(mAdapter);
+            // Connect the adapter with the RecyclerView
+            mRecyclerView.setAdapter(mAdapter);
 
-        // Give the RecyclerView a default layout manager
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+            // Give the RecyclerView a default layout manager
+            mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        mSwipeRefreshLayout.setRefreshing(false);
+            mSwipeRefreshLayout.setRefreshing(false);
+        }
     }
 }
