@@ -17,10 +17,4 @@
         android:enabled="true"
         android:icon="@drawable/ic_round_chat_24"
         android:title="@string/navigation_chat" />
-
-    <item
-        android:id="@+id/navigation_events"
-        android:enabled="true"
-        android:icon="@drawable/ic_round_event_24"
-        android:title="@string/navigation_events" />
 </menu>
