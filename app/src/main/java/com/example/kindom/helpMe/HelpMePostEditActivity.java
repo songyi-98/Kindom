@@ -1,5 +1,6 @@
 package com.example.kindom.helpMe;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -14,25 +15,31 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 
+import com.example.kindom.User;
 import com.example.kindom.utils.Alert;
 import com.example.kindom.utils.CalendarHandler;
 import com.example.kindom.utils.DatePickerFragment;
-import com.example.kindom.utils.FirebaseHandler;
 import com.example.kindom.R;
+import com.example.kindom.utils.FirebaseHandler;
 import com.example.kindom.utils.TimePickerFragment;
 import com.example.kindom.utils.Validation;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputLayout;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
+import java.util.Date;
 import java.util.Objects;
 
 public class HelpMePostEditActivity extends AppCompatActivity {
 
     private String[] CATEGORIES = new String[]{"Care", "Food", "Groceries", "Others"};
 
-    private DatabaseReference mUserPostsRef;
+    private DatabaseReference mUserRef;
+    private DatabaseReference mUserPostRef;
     private HelpMePost mPost;
     private AutoCompleteTextView mCategoryField;
     private TextInputLayout mTitleField;
@@ -91,7 +98,8 @@ public class HelpMePostEditActivity extends AppCompatActivity {
         setButtonsClickListeners();
 
         // Initialize Firebase Database
-        mUserPostsRef = FirebaseDatabase.getInstance().getReference().child("helpMe").child(FirebaseHandler.getCurrentUserUid());
+        mUserRef = FirebaseDatabase.getInstance().getReference("users").child(FirebaseHandler.getCurrentUserUid());
+        mUserPostRef = FirebaseDatabase.getInstance().getReference("helpMe");
     }
 
     @Override
@@ -112,7 +120,7 @@ public class HelpMePostEditActivity extends AppCompatActivity {
      * Set the list of categories shown in the dropdown menu
      */
     private void setCategoryDropdownMenu() {
-        ArrayAdapter<String> categoryAdapter = new ArrayAdapter<>(this, R.layout.list_item_help_me_category, CATEGORIES);
+        ArrayAdapter<String> categoryAdapter = new ArrayAdapter<>(this, R.layout.list_item_dropdown_menu, CATEGORIES);
         mCategoryField.setAdapter(categoryAdapter);
     }
 
@@ -211,21 +219,36 @@ public class HelpMePostEditActivity extends AppCompatActivity {
                     Alert.showAlertDialog(HelpMePostEditActivity.this, getString(R.string.error_description));
                 } else {
                     // Retrieve updated fields
-                    String category = Objects.requireNonNull(mCategoryField).getText().toString();
-                    String title = Objects.requireNonNull(mTitleField.getEditText()).getText().toString();
-                    String date = Objects.requireNonNull(mDateField.getEditText()).getText().toString();
-                    String time = Objects.requireNonNull(mTimeField.getEditText()).getText().toString();
-                    String description = Objects.requireNonNull(mDescriptionField.getEditText()).getText().toString();
+                    final String category = Objects.requireNonNull(mCategoryField).getText().toString();
+                    final String title = Objects.requireNonNull(mTitleField.getEditText()).getText().toString();
+                    final String date = Objects.requireNonNull(mDateField.getEditText()).getText().toString();
+                    final String time = Objects.requireNonNull(mTimeField.getEditText()).getText().toString();
+                    final String description = Objects.requireNonNull(mDescriptionField.getEditText()).getText().toString();
 
-                    // Update in Firebase Database
-                    DatabaseReference uploadRef = mUserPostsRef.child(String.valueOf(mPost.getTimeCreated()));
-                    uploadRef.child("category").setValue(category);
-                    uploadRef.child("title").setValue(title);
-                    uploadRef.child("date").setValue(date);
-                    uploadRef.child("time").setValue(time);
-                    uploadRef.child("description").setValue(description);
+                    mUserRef.addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            // Get current User Java object
+                            User user = dataSnapshot.getValue(User.class);
+                            assert user != null;
 
-                    onBackPressed();
+                            // Update in Firebase Database
+                            String rc = user.getRc();
+                            DatabaseReference uploadRef = mUserPostRef.child(rc).child(FirebaseHandler.getCurrentUserUid()).child(String.valueOf(mPost.getTimeCreated()));
+                            uploadRef.child("category").setValue(category);
+                            uploadRef.child("title").setValue(title);
+                            uploadRef.child("date").setValue(date);
+                            uploadRef.child("time").setValue(time);
+                            uploadRef.child("description").setValue(description);
+
+                            onBackPressed();
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+                            // Do nothing
+                        }
+                    });
                 }
             }
         });
