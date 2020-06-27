@@ -51,7 +51,7 @@ public class HelpMeAllListingAdapter extends RecyclerView.Adapter<HelpMeAllListi
 
     public HelpMeAllListingAdapter(Context context, ArrayList<HelpMePost> postList) {
         mContext = context;
-        mInflater =LayoutInflater.from(context);
+        mInflater = LayoutInflater.from(context);
         mPostList = postList;
     }
 

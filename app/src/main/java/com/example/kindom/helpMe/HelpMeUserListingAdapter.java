@@ -55,7 +55,7 @@ public class HelpMeUserListingAdapter extends RecyclerView.Adapter<HelpMeUserLis
     public HelpMeUserListingAdapter(Context context, HelpMeUserListingFragment fragment, ArrayList<HelpMePost> postList) {
         mContext = context;
         mFragment = fragment;
-        mInflater =LayoutInflater.from(context);
+        mInflater = LayoutInflater.from(context);
         mPostList = postList;
     }
 
