@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.kindom.R;
+import com.example.kindom.User;
 import com.example.kindom.helpMe.HelpMePost;
 import com.example.kindom.helpMe.HelpMePostAddActivity;
 import com.example.kindom.helpMe.HelpMeUserListingAdapter;
@@ -31,6 +32,7 @@ public class HelpMeUserListingFragment extends Fragment {
 
     private View mView;
     private ArrayList<HelpMePost> mHelpMePosts = new ArrayList<>();
+    private DatabaseReference mUserRef;
     private DatabaseReference mUserPostsRef;
 
     public HelpMeUserListingFragment() {
@@ -42,7 +44,8 @@ public class HelpMeUserListingFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         // Initialize Firebase Database
-        mUserPostsRef = FirebaseDatabase.getInstance().getReference().child("helpMe").child(FirebaseHandler.getCurrentUserUid());
+        mUserRef = FirebaseDatabase.getInstance().getReference("users").child(FirebaseHandler.getCurrentUserUid());
+        mUserPostsRef = FirebaseDatabase.getInstance().getReference("helpMe");
     }
 
     @Override
@@ -75,14 +78,27 @@ public class HelpMeUserListingFragment extends Fragment {
 
         // Add user's posts to list
         mHelpMePosts.clear();
-        mUserPostsRef.orderByChild("timeCreated").addListenerForSingleValueEvent(new ValueEventListener() {
+        mUserRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
-                    HelpMePost post = postSnapshot.getValue(HelpMePost.class);
-                    mHelpMePosts.add(post);
-                }
-                show();
+                User user = dataSnapshot.getValue(User.class);
+                assert user != null;
+                String rc = user.getRc();
+                mUserPostsRef.child(rc).child(FirebaseHandler.getCurrentUserUid()).orderByChild("timeCreated").addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
+                            HelpMePost post = postSnapshot.getValue(HelpMePost.class);
+                            mHelpMePosts.add(post);
+                        }
+                        show();
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                        // Do nothing
+                    }
+                });
             }
 
             @Override

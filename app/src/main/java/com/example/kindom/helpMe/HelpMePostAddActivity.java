@@ -234,14 +234,14 @@ public class HelpMePostAddActivity extends AppCompatActivity {
                             // Create a HelpMePost
                             String category = Objects.requireNonNull(mCategoryField.getEditText()).getText().toString();
                             String title = Objects.requireNonNull(mTitleField.getEditText()).getText().toString();
+                            String rc = user.getRc();
                             String blkNo = getString(R.string.blk) + " " + user.getBlkNo();
                             String date = Objects.requireNonNull(mDateField.getEditText()).getText().toString();
                             String time = Objects.requireNonNull(mTimeField.getEditText()).getText().toString();
                             String description = Objects.requireNonNull(mDescriptionField.getEditText()).getText().toString();
-                            HelpMePost post = new HelpMePost(category, title, blkNo, date, time, description);
+                            HelpMePost post = new HelpMePost(category, title, rc, blkNo, date, time, description);
 
                             // Add post to database
-                            String rc = user.getRc();
                             long timeCreated = new Date().getTime();
                             mUploadRef.child(rc).child(FirebaseHandler.getCurrentUserUid()).child(String.valueOf(timeCreated)).setValue(post);
                             onBackPressed();
