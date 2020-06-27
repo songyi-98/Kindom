@@ -14,6 +14,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.facebook.drawee.backends.pipeline.Fresco;
 import com.example.kindom.utils.Alert;
 import com.example.kindom.utils.FirebaseHandler;
 import com.example.kindom.utils.Validation;
@@ -41,6 +42,9 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        //Initialize Fresco for image display
+        Fresco.initialize(this);
         setContentView(R.layout.activity_main);
 
         // Initialize Firebase Authentication

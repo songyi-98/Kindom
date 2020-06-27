@@ -11,9 +11,9 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
-import com.example.kindom.ui.ChatFragment;
 import com.example.kindom.ui.HelpMeFragment;
 import com.example.kindom.ui.HomeFragment;
+import com.example.kindom.ui.ChatFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 
