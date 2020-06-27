@@ -15,21 +15,23 @@ public class HelpMePost implements Serializable {
     private String user;
     private String category;
     private String title;
+    private String rc;
     private String blkNo;
     private String date;
     private String time;
     private String description;
 
     public HelpMePost() {
-        // Default constructor required for calls to DataSnapshot.getValue(User.class)
+        // Default constructor required for calls to DataSnapshot.getValue(HelpMePost.class)
     }
 
-    public HelpMePost(String category, String title, String blkNo, String date, String time, String description) {
+    public HelpMePost(String category, String title, String rc, String blkNo, String date, String time, String description) {
         this.timeCreated = new Date().getTime();
         this.userUid = FirebaseHandler.getCurrentUserUid();
         this.user = FirebaseHandler.getCurrentUser().getDisplayName();
         this.category = category;
         this.title = title;
+        this.rc = rc;
         this.blkNo = blkNo;
         this.date = date;
         this.time = time;
@@ -74,6 +76,14 @@ public class HelpMePost implements Serializable {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public String getRc() {
+        return rc;
+    }
+
+    public void setRc(String rc) {
+        this.rc = rc;
     }
 
     public String getBlkNo() {

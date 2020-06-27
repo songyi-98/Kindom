@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.kindom.R;
+import com.example.kindom.User;
 import com.example.kindom.helpMe.HelpMeAllListingAdapter;
 import com.example.kindom.helpMe.HelpMePost;
 import com.example.kindom.utils.FirebaseHandler;
@@ -32,6 +33,7 @@ public class HelpMeAllListingFragment extends Fragment {
     private View mView;
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private ArrayList<HelpMePost> mHelpMePosts = new ArrayList<>();
+    private DatabaseReference mUserRef;
     private DatabaseReference mAllPostsRef;
 
     public HelpMeAllListingFragment() {
@@ -43,7 +45,8 @@ public class HelpMeAllListingFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         // Initialize Firebase Database
-        mAllPostsRef = FirebaseDatabase.getInstance().getReference().child("helpMe");
+        mUserRef = FirebaseDatabase.getInstance().getReference("users").child(FirebaseHandler.getCurrentUserUid());
+        mAllPostsRef = FirebaseDatabase.getInstance().getReference("helpMe");
     }
 
     @Override
@@ -90,8 +93,6 @@ public class HelpMeAllListingFragment extends Fragment {
     public void onStart() {
         super.onStart();
 
-        // TODO: Filter only nearby posts
-
         getPosts();
     }
 
@@ -101,20 +102,35 @@ public class HelpMeAllListingFragment extends Fragment {
     private void getPosts() {
         mHelpMePosts.clear();
 
-        // Add all users' (except current user) posts to list
-        mAllPostsRef.orderByChild("timeCreated").addListenerForSingleValueEvent(new ValueEventListener() {
+        // Add nearby users' (except current user) posts to list
+        mUserRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                for (DataSnapshot userSnapshot: dataSnapshot.getChildren()) {
-                    if (!Objects.equals(userSnapshot.getKey(), FirebaseHandler.getCurrentUserUid())) {
-                        for (DataSnapshot postSnapshot: userSnapshot.getChildren()) {
-                            HelpMePost post = postSnapshot.getValue(HelpMePost.class);
-                            mHelpMePosts.add(post);
+                User user = dataSnapshot.getValue(User.class);
+                assert user != null;
+                String rc = user.getRc();
+
+                // Retrieve only posts from the same RC as the querying user
+                mAllPostsRef.child(rc).orderByChild("timeCreated").addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        for (DataSnapshot userSnapshot: dataSnapshot.getChildren()) {
+                            if (!Objects.equals(userSnapshot.getKey(), FirebaseHandler.getCurrentUserUid())) {
+                                for (DataSnapshot postSnapshot: userSnapshot.getChildren()) {
+                                    HelpMePost post = postSnapshot.getValue(HelpMePost.class);
+                                    mHelpMePosts.add(post);
+                                }
+                            }
                         }
+                        Collections.reverse(mHelpMePosts);
+                        show();
                     }
-                }
-                Collections.reverse(mHelpMePosts);
-                show();
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                        // Do nothing
+                    }
+                });
             }
 
             @Override

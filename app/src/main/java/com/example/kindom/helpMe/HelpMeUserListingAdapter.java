@@ -26,7 +26,7 @@ import java.util.ArrayList;
 
 public class HelpMeUserListingAdapter extends RecyclerView.Adapter<HelpMeUserListingAdapter.HelpMePostViewHolder> {
 
-    private DatabaseReference mUserPostsRef = FirebaseDatabase.getInstance().getReference().child("helpMe").child(FirebaseHandler.getCurrentUserUid());
+    private DatabaseReference mUserPostsRef = FirebaseDatabase.getInstance().getReference("helpMe");
     private Context mContext;
     private HelpMeUserListingFragment mFragment;
     private final ArrayList<HelpMePost> mPostList;
@@ -93,7 +93,7 @@ public class HelpMeUserListingAdapter extends RecyclerView.Adapter<HelpMeUserLis
                         .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                mUserPostsRef.child(String.valueOf(currPost.getTimeCreated())).removeValue();
+                                mUserPostsRef.child(currPost.getRc()).child(FirebaseHandler.getCurrentUserUid()).child(String.valueOf(currPost.getTimeCreated())).removeValue();
                                 mFragment.refresh();
                             }
                         })
