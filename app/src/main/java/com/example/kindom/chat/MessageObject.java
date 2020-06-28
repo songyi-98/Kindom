@@ -1,7 +1,6 @@
 package com.example.kindom.chat;
 
 import java.util.ArrayList;
-import java.util.Date;
 
 public class MessageObject {
 
@@ -22,19 +21,39 @@ public class MessageObject {
         return messageId;
     }
 
+    public void setMessageId(String messageId) {
+        this.messageId = messageId;
+    }
+
     public String getSenderId() {
         return senderId;
     }
 
-    public String getTimestamp() {
-        return timestamp;
+    public void setSenderId(String senderId) {
+        this.senderId = senderId;
     }
 
     public String getMessage() {
         return message;
     }
 
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
+    public String getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(String timestamp) {
+        this.timestamp = timestamp;
+    }
+
     public ArrayList<String> getMediaUrlList() {
         return mediaUrlList;
+    }
+
+    public void setMediaUrlList(ArrayList<String> mediaUrlList) {
+        this.mediaUrlList = mediaUrlList;
     }
 }

@@ -1,22 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/chatLayout">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/chatLayout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
 
-        <androidx.appcompat.widget.AppCompatImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/ic_launcher_background">
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:layout_width="96dp"
+        android:layout_height="96dp"
+        android:src="@drawable/ic_launcher_background" />
 
-        </androidx.appcompat.widget.AppCompatImageView>
-
-        <TextView
-        android:padding="20sp"
-        android:layout_marginTop="16dp"
+    <TextView
+        android:id="@+id/chatTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:layout_marginStart="16dp"
         android:text="@string/chat_title"
-        android:textSize="22sp"
-        android:id="@+id/chatTitle"/>
-    </LinearLayout>
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6" />
+</LinearLayout>

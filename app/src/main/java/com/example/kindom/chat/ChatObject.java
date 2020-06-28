@@ -12,17 +12,19 @@ public class ChatObject {
         this.chatId = chatId;
     }
 
+    public String getTitle() {
+        return title;
+    }
+
     public void setTitle(String title) {
         this.title = title;
     }
-    public void setChatId(String chatId) {
-        this.chatId = chatId;
+
+    public String getChatId() {
+        return chatId;
     }
 
-    public String getTitle() {
-        return this.title;
-    }
-    public String getChatId() {
-        return this.chatId;
+    public void setChatId(String chatId) {
+        this.chatId = chatId;
     }
 }
