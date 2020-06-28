@@ -117,10 +117,10 @@ public class HelpMePostDetailsActivity extends AppCompatActivity {
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         if (dataSnapshot.exists()) {
                             Map<String, Object> newMap = (Map<String, Object>) dataSnapshot.getValue();
-                            if (newMap.containsValue(mPost.getUser())) {
+                            if (newMap.containsValue(mPost.getUserUid())) {
                                 String correctKey = null;
                                 for (String key : newMap.keySet()) {
-                                    if (newMap.get(key).equals(mPost.getUser())) {
+                                    if (newMap.get(key).equals(mPost.getUserUid())) {
                                         correctKey = key;
                                     }
                                 }
@@ -136,13 +136,13 @@ public class HelpMePostDetailsActivity extends AppCompatActivity {
                         if (possibleKey.isEmpty()) {
                             // No chat exists yet between the two, create a new chat
                             chatId = FirebasePushIdGenerator.generatePushId();
-                            newMapCurrentUser.put(chatId, mPost.getUser());
-                            newMapPostUser.put(chatId, Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getDisplayName());
+                            newMapCurrentUser.put(chatId, mPost.getUserUid());
+                            newMapPostUser.put(chatId, Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid());
                             currentUserDb.updateChildren(newMapCurrentUser);
                             postUserDb.updateChildren(newMapPostUser);
                         } else {
                             for (int k = 0; k < possibleKey.size(); k++) {
-                                if (Objects.requireNonNull(dataSnapshot.child(possibleKey.get(k)).getValue()).toString().equals(mPost.getUser())) {
+                                if (Objects.requireNonNull(dataSnapshot.child(possibleKey.get(k)).child("chatName").getValue()).toString().equals(mPost.getUser())) {
                                     chatId = possibleKey.get(k);
                                     break;
                                 }

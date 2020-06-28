@@ -7,7 +7,8 @@
     <de.hdodenhof.circleimageview.CircleImageView
         android:layout_width="96dp"
         android:layout_height="96dp"
-        android:src="@drawable/ic_launcher_background" />
+        android:id="@+id/chatPicture"
+        android:src="@drawable/blank_profile_picture"/>
 
     <TextView
         android:id="@+id/chatTitle"
