@@ -29,6 +29,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 public class HelpMePostDetailsActivity extends AppCompatActivity {
 
@@ -136,12 +137,12 @@ public class HelpMePostDetailsActivity extends AppCompatActivity {
                             // No chat exists yet between the two, create a new chat
                             chatId = FirebasePushIdGenerator.generatePushId();
                             newMapCurrentUser.put(chatId, mPost.getUser());
-                            newMapPostUser.put(chatId, FirebaseAuth.getInstance().getCurrentUser().getDisplayName());
+                            newMapPostUser.put(chatId, Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getDisplayName());
                             currentUserDb.updateChildren(newMapCurrentUser);
                             postUserDb.updateChildren(newMapPostUser);
                         } else {
                             for (int k = 0; k < possibleKey.size(); k++) {
-                                if (dataSnapshot.child(possibleKey.get(k)).getValue().toString().equals(mPost.getUser())) {
+                                if (Objects.requireNonNull(dataSnapshot.child(possibleKey.get(k)).getValue()).toString().equals(mPost.getUser())) {
                                     chatId = possibleKey.get(k);
                                     break;
                                 }
@@ -150,8 +151,9 @@ public class HelpMePostDetailsActivity extends AppCompatActivity {
 
                         // Start chat activity for user
                         Bundle bundle = new Bundle();
-                        bundle.putString("ChatId", chatId);
-                        bundle.putString("ChatUser", mPost.getUser());
+                        bundle.putString("CHAT_ID", chatId);
+                        bundle.putString("CHAT_USER_UID", mPost.getUserUid());
+                        bundle.putString("CHAT_USER", mPost.getUser());
                         intent.putExtras(bundle);
                         v.getContext().startActivity(intent);
                     }

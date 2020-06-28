@@ -1,16 +1,10 @@
 package com.example.kindom.chat;
 
-import android.graphics.Typeface;
-import android.media.Image;
 import android.net.Uri;
-import android.text.SpannableStringBuilder;
-import android.text.style.ImageSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -20,15 +14,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.kindom.R;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.FirebaseDatabase;
 import com.stfalcon.frescoimageviewer.ImageViewer;
-
-import org.w3c.dom.Text;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 
 public class MessageAdapter extends RecyclerView.Adapter {
 
@@ -90,6 +79,7 @@ public class MessageAdapter extends RecyclerView.Adapter {
         private TextView mMessage, mTime;
         public ConstraintLayout mLayout;
         private ImageView mImageBody;
+
         public SentMessageViewHolder(View view) {
             super(view);
             mMessage = view.findViewById(R.id.text_message_body);
@@ -106,7 +96,7 @@ public class MessageAdapter extends RecyclerView.Adapter {
             if (!message.getMediaUrlList().isEmpty()) {
                 Glide.with(itemView.getContext())
                         .load(Uri.parse(message.getMediaUrlList().get(0)))
-                        .override(400,400)
+                        .override(400, 400)
                         .into(mImageBody);
                 mImageBody.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -130,13 +120,13 @@ public class MessageAdapter extends RecyclerView.Adapter {
         private TextView mMessage, mTime;
         private ImageView mImageBody;
         public ConstraintLayout mLayout;
+
         public ReceivedMessageViewHolder(View view) {
             super(view);
             mMessage = view.findViewById(R.id.text_message_body);
             mTime = view.findViewById(R.id.text_message_time);
             mLayout = view.findViewById(R.id.message_received_layout);
             mImageBody = view.findViewById(R.id.image_body);
-
         }
 
         void bind(final MessageObject message) {
@@ -147,7 +137,7 @@ public class MessageAdapter extends RecyclerView.Adapter {
             if (!message.getMediaUrlList().isEmpty()) {
                 Glide.with(itemView.getContext())
                         .load(Uri.parse(message.getMediaUrlList().get(0)))
-                        .override(400,400)
+                        .override(400, 400)
                         .into(mImageBody);
                 mImageBody.setOnClickListener(new View.OnClickListener() {
                     @Override

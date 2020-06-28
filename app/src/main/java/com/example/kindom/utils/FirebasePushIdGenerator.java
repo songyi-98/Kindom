@@ -5,7 +5,7 @@ import java.util.Date;
 /**
  * Fancy ID generator that creates 20-character string identifiers with the
  * following properties:
- *
+ * <p>
  * 1. They're based on timestamp so that they sort *after* any existing ids.
  * 2. They contain 72-bits of random data after the timestamp so that IDs won't
  * collide with other clients' IDs.
@@ -19,9 +19,10 @@ import java.util.Date;
  *
  * @author jfbyers@about.me
  * @see <a href="https://gist.github.com/mikelehen/3596a30bd69384624c11#file-generate-pushid-js">
-Original port by mikelehen </a>
+ * Original port by mikelehen </a>
  */
 public class FirebasePushIdGenerator {
+
     // Modeled after base64 web-safe chars, but ordered by ASCII.
     private final static String PUSH_CHARS = "-0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ_abcdefghijklmnopqrstuvwxyz";
 
@@ -58,7 +59,7 @@ public class FirebasePushIdGenerator {
         } else {
             // If the timestamp hasn't changed since last push, use the same random number,
             //except incremented by 1.
-            int lastValueOfInt=0;
+            int lastValueOfInt = 0;
             for (int i = 11; i >= 0 && lastRandChars[i] == 63; i--) {
                 lastValueOfInt = i;
                 lastRandChars[i] = 0;
@@ -72,6 +73,5 @@ public class FirebasePushIdGenerator {
             throw new AssertionError("Length should be 20.");
 
         return id;
-    };
-
+    }
 }
