@@ -1,6 +1,7 @@
 package com.example.kindom.ui;
 
 import android.os.Bundle;
+import android.renderscript.Sampler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -63,10 +64,21 @@ public class ChatFragment extends Fragment {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {
-                    for (DataSnapshot childSnapshot : dataSnapshot.getChildren()) {
-                        ChatObject mChat = new ChatObject(Objects.requireNonNull(childSnapshot.getValue()).toString(), childSnapshot.getKey());
-                        chatList.add(mChat);
-                        mChatListAdapter.notifyDataSetChanged();
+                    for (final DataSnapshot childSnapshot : dataSnapshot.getChildren()) {
+                        final String chatUserId = Objects.requireNonNull(childSnapshot.getValue()).toString();
+                        mUserChatDB.getParent().getParent().child(chatUserId).child("name").addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                ChatObject mChat = new ChatObject(childSnapshot.getKey(), snapshot.getValue().toString(), chatUserId);
+                                chatList.add(mChat);
+                                mChatListAdapter.notifyDataSetChanged();
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError error) {
+
+                            }
+                        });
                     }
                 }
             }
@@ -86,7 +98,7 @@ public class ChatFragment extends Fragment {
         mChatList.setHasFixedSize(false);
         RecyclerView.LayoutManager mChatListLayoutManager = new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false);
         mChatList.setLayoutManager(mChatListLayoutManager);
-        mChatListAdapter = new ChatListAdapter(chatList);
+        mChatListAdapter = new ChatListAdapter(this.getContext(), chatList);
         mChatList.setAdapter(mChatListAdapter);
     }
 }

@@ -110,9 +110,6 @@ public class MessageAdapter extends RecyclerView.Adapter {
             } else {
                 mImageBody.setVisibility(View.GONE);
             }
-/*
-            // Insert the profile image from the URL into the ImageView.
-            Utils.displayRoundImageFromUrl(mContext, message.getSender().getProfileUrl(), profileImage);*/
         }
     }
 
@@ -151,9 +148,6 @@ public class MessageAdapter extends RecyclerView.Adapter {
             } else {
                 mImageBody.setVisibility(View.GONE);
             }
-/*
-            // Insert the profile image from the URL into the ImageView.
-            Utils.displayRoundImageFromUrl(mContext, message.getSender().getProfileUrl(), profileImage);*/
         }
     }
 }
