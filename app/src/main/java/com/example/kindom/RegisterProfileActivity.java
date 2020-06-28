@@ -1,26 +1,63 @@
 package com.example.kindom;
 
-import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
-import android.widget.Button;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 
-import androidx.appcompat.app.AlertDialog;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.loader.app.LoaderManager;
+import androidx.loader.content.Loader;
 
+import com.bumptech.glide.Glide;
+import com.example.kindom.utils.AddressLoader;
+import com.example.kindom.utils.Alert;
+import com.example.kindom.utils.Validation;
+import com.google.android.material.button.MaterialButton;
 import com.google.android.material.button.MaterialButtonToggleGroup;
 import com.google.android.material.textfield.TextInputLayout;
 
-public class RegisterProfileActivity extends AppCompatActivity {
+import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Objects;
+
+import de.hdodenhof.circleimageview.CircleImageView;
+
+public class RegisterProfileActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<String> {
+
+    public static final int PICK_IMAGE = 1;
+    public static final String USER_PROFILE_IMAGE_TAG = "USER_PROFILE_IMAGE";
+    public static final String USER_NAME_TAG = "USER_NAME";
+    public static final String USER_POSTAL_CODE_TAG = "USER_POSTAL_CODE";
+    public static final String USER_RC_TAG = "USER_RC";
+    public static final String USER_BLK_NO_TAG = "USER_BLK_NO";
+    public static final String USER_GROUP_TAG = "USER_GROUP";
+    private static ArrayList<String> RC = new ArrayList<>();
+
+    private CircleImageView mProfileImage;
+    private Uri mProfileImageUri;
     private TextInputLayout mNameField;
     private TextInputLayout mPostalCodeField;
+    private TextInputLayout mRcField;
+    private String mBlkNo = "";
     private MaterialButtonToggleGroup mUserGroup;
+    private MaterialButton mNextButton;
+    private boolean isValidProfileImage = false;
     private boolean isValidName = false;
     private boolean isValidPostalCode = false;
+    private boolean isValidRc = false;
     private boolean isCheckedUserGroup = false;
 
     @Override
@@ -28,12 +65,106 @@ public class RegisterProfileActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register_profile);
 
+        // Initialize layout variables
+        mProfileImage = findViewById(R.id.user_image);
         mNameField = findViewById(R.id.edit_name);
         mPostalCodeField = findViewById(R.id.edit_postal_code);
+        mRcField = findViewById(R.id.edit_rc);
         mUserGroup = findViewById(R.id.user_group_toggle);
+        mNextButton = findViewById(R.id.next_button);
 
-        // Check name and postal code validity
-        mNameField.getEditText().addTextChangedListener(new TextWatcher() {
+        // Initialize empty profile image
+        Glide.with(this)
+                .load(getDrawable(R.drawable.blank_profile_picture))
+                .into(mProfileImage);
+
+        setProfileImageClickListener();
+        validateInputs();
+        setNextClickListener();
+
+        // Initialize list of RCs
+        InputStream file;
+        try {
+            file = getAssets().open("list_rc.xls");
+            HSSFWorkbook workbook = new HSSFWorkbook(file);
+            HSSFSheet sheet = workbook.getSheetAt(0);
+            for (Row row: sheet) {
+                Cell cell = row.getCell(0, Row.MissingCellPolicy.RETURN_BLANK_AS_NULL);
+                if (cell == null) {
+                    break;
+                } else {
+                    RC.add(cell.getStringCellValue());
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        // Initialize dropdown menu for RC
+        ArrayAdapter<String> categoryAdapter = new ArrayAdapter<>(this, R.layout.list_item_dropdown_menu, RC);
+        AutoCompleteTextView categoryTextView = findViewById(R.id.edit_rc_dropdown_menu);
+        categoryTextView.setAdapter(categoryAdapter);
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent intent = new Intent(RegisterProfileActivity.this, MainActivity.class);
+        startActivity(intent);
+    }
+
+    /**
+     * Set click listener for profile image
+     */
+    private void setProfileImageClickListener() {
+        mProfileImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent();
+                intent.setType("image/*");
+                intent.setAction(Intent.ACTION_GET_CONTENT);
+                if (intent.resolveActivity(getPackageManager()) != null) {
+                    startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE);
+                }
+            }
+        });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == PICK_IMAGE && resultCode == RESULT_OK) {
+            assert data != null;
+            mProfileImageUri = data.getData();
+            isValidProfileImage = true;
+            Glide.with(this)
+                    .load(mProfileImageUri)
+                    .into(mProfileImage);
+        }
+    }
+
+    @NonNull
+    @Override
+    public Loader<String> onCreateLoader(int id, @Nullable Bundle args) {
+        return new AddressLoader(this, Integer.parseInt(Objects.requireNonNull(mPostalCodeField.getEditText()).getText().toString()));
+    }
+
+    @Override
+    public void onLoadFinished(@NonNull Loader<String> loader, String data) {
+        mBlkNo = data;
+    }
+
+    @Override
+    public void onLoaderReset(@NonNull Loader<String> loader) {
+        mBlkNo = "";
+        isValidPostalCode = false;
+    }
+
+    /**
+     * Validate the inputs of name, postal code, RC and user group
+     */
+    private void validateInputs() {
+        Objects.requireNonNull(mNameField.getEditText()).addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
                 // Do nothing
@@ -55,7 +186,8 @@ public class RegisterProfileActivity extends AppCompatActivity {
                 }
             }
         });
-        mPostalCodeField.getEditText().addTextChangedListener(new TextWatcher() {
+
+        Objects.requireNonNull(mPostalCodeField.getEditText()).addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
                 // Do nothing
@@ -68,7 +200,6 @@ public class RegisterProfileActivity extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable s) {
-                // TODO: Check postal code validity
                 int len = s.toString().length();
                 if (!Validation.isNonEmpty(s)) {
                     isValidPostalCode = false;
@@ -77,66 +208,85 @@ public class RegisterProfileActivity extends AppCompatActivity {
                     isValidPostalCode = false;
                     mPostalCodeField.setError(getString(R.string.error_postal_code_length));
                 } else {
-                    isValidPostalCode = true;
+                    // Start loader to query postal code received from the intent
+                    getSupportLoaderManager().initLoader(0, null, RegisterProfileActivity.this);
+
                     mPostalCodeField.setError(null);
                 }
             }
         });
+
+        Objects.requireNonNull(mRcField.getEditText()).addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                // Do nothing
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                // Do nothing
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (!RC.contains(s.toString())) {
+                    isValidRc = false;
+                    mRcField.setError(getString(R.string.error_rc));
+                } else {
+                    isValidRc = true;
+                    mRcField.setError(null);
+                }
+            }
+        });
+
         mUserGroup.addOnButtonCheckedListener(new MaterialButtonToggleGroup.OnButtonCheckedListener() {
             @Override
             public void onButtonChecked(MaterialButtonToggleGroup group, int checkedId, boolean isChecked) {
                 isCheckedUserGroup = isChecked;
             }
         });
-
-        Button nextButton = findViewById(R.id.next_button);
-        nextButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-            if (!isCheckedUserGroup) {
-                showAlertDialog(getString(R.string.error_user_group));
-            } else if (isValidName && isValidPostalCode) {
-                    Intent intent = new Intent(RegisterProfileActivity.this, RegisterAccountActivity.class);
-                    intent.putExtra(
-                            "USER_NAME",
-                            mNameField.getEditText().getText().toString());
-                    intent.putExtra(
-                            "USER_POSTAL_CODE",
-                            Integer.parseInt(mPostalCodeField.getEditText().getText().toString()));
-                    int checkedId = mUserGroup.getCheckedButtonId();
-                    if (checkedId == R.id.user_group_admin) {
-                        intent.putExtra("USER_GROUP", User.USER_GROUP_ADMIN);
-                    } else {
-                        intent.putExtra("USER_GROUP", User.USER_GROUP_USER);
-                    }
-                    startActivity(intent);
-                } else {
-                    showAlertDialog(getString(R.string.error_profile));
-                }
-            }
-        });
     }
 
     /**
-     * Show alert dialog
-     * @param message the message to be displayed in the dialog
+     * Set click listener for next button
      */
-    private void showAlertDialog(String message) {
-        new AlertDialog.Builder(this)
-                .setMessage(message)
-                .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        // User clicked OK button
-                    }
-                })
-                .show();
-    }
+    private void setNextClickListener() {
+        mNextButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Check postal code validity
+                if (mBlkNo.equals("") || mBlkNo.equals("invalid")) {
+                    Alert.showAlertDialog(RegisterProfileActivity.this, getString(R.string.error_postal_code));
+                } else {
+                    isValidPostalCode = true;
+                }
 
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        Intent intent = new Intent(RegisterProfileActivity.this, MainActivity.class);
-        startActivity(intent);
+                if (!isValidProfileImage) {
+                    Alert.showAlertDialog(RegisterProfileActivity.this, getString(R.string.error_profile_image));
+                } else if (!isValidName) {
+                    Alert.showAlertDialog(RegisterProfileActivity.this, getString(R.string.error_name));
+                } else if (!isValidPostalCode) {
+                    Alert.showAlertDialog(RegisterProfileActivity.this, getString(R.string.error_postal_code));
+                } else if (!isValidRc) {
+                    Alert.showAlertDialog(RegisterProfileActivity.this, getString(R.string.error_rc));
+                } else if (!isCheckedUserGroup) {
+                    Alert.showAlertDialog(RegisterProfileActivity.this, getString(R.string.error_user_group));
+                } else {
+                    Intent intent = new Intent(RegisterProfileActivity.this, RegisterAccountActivity.class);
+                    intent.putExtra(USER_PROFILE_IMAGE_TAG, mProfileImageUri.toString());
+                    intent.putExtra(USER_NAME_TAG, Objects.requireNonNull(mNameField.getEditText()).getText().toString());
+                    intent.putExtra(USER_POSTAL_CODE_TAG, Integer.parseInt(Objects.requireNonNull(mPostalCodeField.getEditText()).getText().toString()));
+                    intent.putExtra(USER_RC_TAG, Objects.requireNonNull(mRcField.getEditText()).getText().toString());
+                    intent.putExtra(USER_BLK_NO_TAG, mBlkNo);
+                    int checkedId = mUserGroup.getCheckedButtonId();
+                    if (checkedId == R.id.user_group_admin) {
+                        intent.putExtra(USER_GROUP_TAG, User.USER_GROUP_ADMIN);
+                    } else {
+                        intent.putExtra(USER_GROUP_TAG, User.USER_GROUP_USER);
+                    }
+                    startActivity(intent);
+                }
+            }
+        });
     }
 }

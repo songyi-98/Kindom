@@ -11,6 +11,9 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
+import com.example.kindom.ui.HelpMeFragment;
+import com.example.kindom.ui.HomeFragment;
+import com.example.kindom.ui.ChatFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 
@@ -49,10 +52,8 @@ public class HomeActivity extends AppCompatActivity {
                     case R.id.navigation_chat:
                         fragment = new ChatFragment();
                         break;
-                    case R.id.navigation_events:
-                        fragment = new EventsFragment();
-                        break;
                 }
+                assert fragment != null;
                 getSupportFragmentManager()
                         .beginTransaction()
                         .replace(R.id.fragment_container, fragment)
@@ -66,7 +67,7 @@ public class HomeActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater =getMenuInflater();
+        MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.main_menu, menu);
         return true;
     }
@@ -74,11 +75,15 @@ public class HomeActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
+            case R.id.menu_my_profile:
+                Intent profile = new Intent(HomeActivity.this, MyProfileActivity.class);
+                startActivity(profile);
+                return true;
             case R.id.menu_sign_out:
                 mAuth.signOut();
                 finishAffinity();
-                Intent intent = new Intent(HomeActivity.this, MainActivity.class);
-                startActivity(intent);
+                Intent main = new Intent(HomeActivity.this, MainActivity.class);
+                startActivity(main);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
