@@ -19,19 +19,27 @@ After a long hard day in school, you walk wearily to the lift lobby of your flat
 
 When the user first launches the app, he/she is brought to the main page where the user can sign in with the text fields provided.
 
+<img src="https://github.com/SONGYI98/Kindom/blob/master/screenshots/1%20-%20Main%20%20Sign-in%20page.jpg" width="256"/>
+
 Alternatively, the user can click on the "Not registered yet? Click here!" to register an account with Kindom.
 
 This brings the user to a 2-part registration process.
 
 The first part includes filling personal details of the user as shown below.
 
+<img src="https://github.com/SONGYI98/Kindom/blob/master/screenshots/2%20-%20Registartion%20Part%201.jpg" width="256"/>
+
 The second part includes using an email and password for user identification.
+
+<img src="https://github.com/SONGYI98/Kindom/blob/master/screenshots/3%20-%20Registration%20Part%202.jpg" width="256"/>
 
 #### 2. Home (Announcements)
 
 A digital community notice board replaces the traditional ones found in the void decks of HDB flats. It provides updates on issues within the community (e.g. dengue cluster) and at the national level (e.g. COVID-19).
 
 The images can be scrolled (left and right) and a dot indicator indicates the position of the image the user is currently viewing.
+
+<img src="https://github.com/SONGYI98/Kindom/blob/master/screenshots/4%20-%20Home%20page.jpg" width="256"/>
 
 #### 3. Help Me! (Core feature)
 
@@ -43,11 +51,19 @@ The All Listing tab shows all the listings from neighbours who are staying in th
 
 A refresh floating action button at the bottom right side of the screen allows user to refresh the list for the latest posts.
 
+<img src="https://github.com/SONGYI98/Kindom/blob/master/screenshots/5%20-%20Help%20Me!%20page%20all%20listing.jpg" width="256"/>
+
 Clicking on details allow the user to show detailed information of the Help Me! request. User can then chat with the person who posted the request.
+
+<img src="https://github.com/SONGYI98/Kindom/blob/master/screenshots/6%20-%20Help%20Me!%20request%20details.jpg" width="256"/>
 
 The My Listing tab shows the user's listings. User can add a new Help Me! request or edit / delete existing requests.
 
-Adding a Help Me! request requires the user to fill up information about the request.
+<img src="https://github.com/SONGYI98/Kindom/blob/master/screenshots/7%20-%20Help%20Me!%20page%20my%20listing.jpg" width="256"/>
+
+An add floating action button at the bottom right side of the screen allows user to add a Help Me! request. Adding a request requires the user to fill up information about the request.
+
+<img src="https://github.com/SONGYI98/Kindom/blob/master/screenshots/8%20-%20Help%20Me!%20add%20request.jpg" width="256"/>
 
 #### 4. Chat
 
@@ -60,6 +76,8 @@ Upon clicking on the "Chat" button at the bottom navigation menu, the user is br
 When the user is navigating between any of the three buttons in the bottom navigation menu, a menu icon is consistently shown in the top app bar. Clicking on the menu options shows a "My Profile" and "Sign Out" option.
 
 "My Profile" allows users to view his own profile.
+
+<img src="https://github.com/SONGYI98/Kindom/blob/master/screenshots/9%20-%20My%20Profile%20page.jpg" width="256"/>
 
 "Sign Out" signs the user out and brings him/her to the main screen.
 
