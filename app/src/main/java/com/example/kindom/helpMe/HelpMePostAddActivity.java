@@ -232,6 +232,7 @@ public class HelpMePostAddActivity extends AppCompatActivity {
                             assert user != null;
 
                             // Create a HelpMePost
+                            long timeCreated = new Date().getTime();
                             String category = Objects.requireNonNull(mCategoryField.getEditText()).getText().toString();
                             String title = Objects.requireNonNull(mTitleField.getEditText()).getText().toString();
                             String rc = user.getRc();
@@ -239,10 +240,9 @@ public class HelpMePostAddActivity extends AppCompatActivity {
                             String date = Objects.requireNonNull(mDateField.getEditText()).getText().toString();
                             String time = Objects.requireNonNull(mTimeField.getEditText()).getText().toString();
                             String description = Objects.requireNonNull(mDescriptionField.getEditText()).getText().toString();
-                            HelpMePost post = new HelpMePost(category, title, rc, blkNo, date, time, description);
+                            HelpMePost post = new HelpMePost(timeCreated, category, title, rc, blkNo, date, time, description);
 
                             // Add post to database
-                            long timeCreated = new Date().getTime();
                             mUploadRef.child(rc).child(FirebaseHandler.getCurrentUserUid()).child(String.valueOf(timeCreated)).setValue(post);
                             onBackPressed();
                         }

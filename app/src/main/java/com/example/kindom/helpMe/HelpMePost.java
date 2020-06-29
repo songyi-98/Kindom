@@ -3,7 +3,6 @@ package com.example.kindom.helpMe;
 import com.example.kindom.utils.FirebaseHandler;
 
 import java.io.Serializable;
-import java.util.Date;
 
 /**
  * Represent a Help Me post
@@ -25,8 +24,8 @@ public class HelpMePost implements Serializable {
         // Default constructor required for calls to DataSnapshot.getValue(HelpMePost.class)
     }
 
-    public HelpMePost(String category, String title, String rc, String blkNo, String date, String time, String description) {
-        this.timeCreated = new Date().getTime();
+    public HelpMePost(long timeCreated, String category, String title, String rc, String blkNo, String date, String time, String description) {
+        this.timeCreated = timeCreated;
         this.userUid = FirebaseHandler.getCurrentUserUid();
         this.user = FirebaseHandler.getCurrentUser().getDisplayName();
         this.category = category;
