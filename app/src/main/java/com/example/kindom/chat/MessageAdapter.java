@@ -127,10 +127,18 @@ public class MessageAdapter extends RecyclerView.Adapter {
         }
 
         void bind(final MessageObject message) {
-            mMessage.setText(message.getMessage());
-            SimpleDateFormat dateFormat = new SimpleDateFormat("hh.mm aa");
-            String formattedTimeStamp = dateFormat.format(Long.parseLong(message.getTimestamp()));
-            mTime.setText(formattedTimeStamp);
+            if (message.getMessage().equals("")) {
+                mMessage.setVisibility(View.GONE);
+            } else {
+                mMessage.setText(message.getMessage());
+            }
+            if (!message.getTimestamp().equals("")) {
+                SimpleDateFormat dateFormat = new SimpleDateFormat("hh.mm aa");
+                String formattedTimeStamp = dateFormat.format(Long.parseLong(message.getTimestamp()));
+                mTime.setText(formattedTimeStamp);
+            } else {
+                mTime.setVisibility(View.GONE);
+            }
             if (!message.getMediaUrlList().isEmpty()) {
                 Glide.with(itemView.getContext())
                         .load(Uri.parse(message.getMediaUrlList().get(0)))

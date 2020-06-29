@@ -142,7 +142,7 @@ public class HelpMePostDetailsActivity extends AppCompatActivity {
                             postUserDb.updateChildren(newMapPostUser);
                         } else {
                             for (int k = 0; k < possibleKey.size(); k++) {
-                                if (Objects.requireNonNull(dataSnapshot.child(possibleKey.get(k)).child("chatName").getValue()).toString().equals(mPost.getUser())) {
+                                if (Objects.requireNonNull(dataSnapshot.child(possibleKey.get(k)).getValue()).toString().equals(mPost.getUserUid())) {
                                     chatId = possibleKey.get(k);
                                     break;
                                 }
