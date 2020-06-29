@@ -87,7 +87,11 @@ public class HelpMePostEditActivity extends AppCompatActivity {
         mDescriptionField = findViewById(R.id.help_me_post_edit_description);
         mSaveButton = findViewById(R.id.help_me_post_save_button);
 
-        //TODO: Check if post is expired
+        // Initialize date and time for checking
+        mDateString = mPost.getDate();
+        mTimeString = mPost.getTime();
+
+        // TODO: Check if post is expired
 
         // Initialize user's inputs
         setCategoryDropdownMenu();
