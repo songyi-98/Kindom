@@ -71,13 +71,15 @@ The chat feature allows neighbours to communicate with one another.
 
 Upon clicking on the "Chat" button at the bottom navigation menu, the user is brought to a list of existing chat with other neighbours. From here, users can view the chat conversation history or send messages and/or media.
 
+<img src="https://github.com/SONGYI98/Kindom/blob/master/screenshots/9%20-%20Chat%20history.jpg" width="256"/>
+
 #### 5. Others
 
 When the user is navigating between any of the three buttons in the bottom navigation menu, a menu icon is consistently shown in the top app bar. Clicking on the menu options shows a "My Profile" and "Sign Out" option.
 
 "My Profile" allows users to view his own profile.
 
-<img src="https://github.com/SONGYI98/Kindom/blob/master/screenshots/9%20-%20My%20Profile%20page.jpg" width="256"/>
+<img src="https://github.com/SONGYI98/Kindom/blob/master/screenshots/10%20-%20My%20Profile%20page.jpg" width="256"/>
 
 "Sign Out" signs the user out and brings him/her to the main screen.
 
@@ -137,4 +139,4 @@ Testing has been done to ensure functionalities work correctly. The following sc
 
 ## Bugs
 
-Bugs which include My Profile page crashing or Help Me! fragments crashing (due to user suddenly switching to another bottom navigation activity) has been fixed. There is currently no known bugs that we know of. However, if you encounter a bug, please do tell us in the peer evaluation!
+There is currently no known bugs that we know of. However, if you encounter a bug, please do tell us in the peer evaluation!
