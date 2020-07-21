@@ -125,6 +125,9 @@ public class HelpMeUserListingFragment extends Fragment {
         RecyclerView mRecyclerView = mView.findViewById(R.id.help_me_user_listing_recycler_view);
 
         if (getContext() != null) {
+            // Hide progress indicator
+            mView.findViewById(R.id.help_me_user_listing_progress_circular).setVisibility(View.GONE);
+
             // Create an adapter and supply the data to be displayed
             HelpMeUserListingAdapter mAdapter = new HelpMeUserListingAdapter(getContext(), this, mHelpMePosts);
 
@@ -133,6 +136,10 @@ public class HelpMeUserListingFragment extends Fragment {
 
             // Give the RecyclerView a default layout manager
             mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+
+            if (mAdapter.getItemCount() == 0) {
+                mView.findViewById(R.id.help_me_user_listing_empty).setVisibility(View.VISIBLE);
+            }
         }
     }
 }
