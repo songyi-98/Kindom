@@ -18,9 +18,9 @@ import java.util.ArrayList;
 
 public class HomeImagePagerAdapter extends PagerAdapter {
 
-    private Context context;
-    private LayoutInflater layoutInflater;
-    private ArrayList<Integer> images;
+    private final Context context;
+    private final LayoutInflater layoutInflater;
+    private final ArrayList<Integer> images;
 
     public HomeImagePagerAdapter(Context context, ArrayList<Integer> images) {
         this.context = context;

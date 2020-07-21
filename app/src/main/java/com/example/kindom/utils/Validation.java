@@ -25,7 +25,7 @@ public class Validation {
         return (!TextUtils.isEmpty(target) && Patterns.EMAIL_ADDRESS.matcher(target).matches());
     }
 
-    public static boolean isValidPassword(CharSequence targert) {
-        return isNonEmpty(targert) && PATTERN_PASSWORD.matcher(targert).matches();
+    public static boolean isValidPassword(CharSequence target) {
+        return isNonEmpty(target) && PATTERN_PASSWORD.matcher(target).matches();
     }
 }

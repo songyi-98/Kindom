@@ -32,7 +32,7 @@ public class HelpMeAllListingFragment extends Fragment {
 
     private View mView;
     private SwipeRefreshLayout mSwipeRefreshLayout;
-    private ArrayList<HelpMePost> mHelpMePosts = new ArrayList<>();
+    private final ArrayList<HelpMePost> mHelpMePosts = new ArrayList<>();
     private DatabaseReference mUserRef;
     private DatabaseReference mAllPostsRef;
 

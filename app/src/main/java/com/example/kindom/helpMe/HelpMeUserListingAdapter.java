@@ -26,20 +26,20 @@ import java.util.ArrayList;
 
 public class HelpMeUserListingAdapter extends RecyclerView.Adapter<HelpMeUserListingAdapter.HelpMePostViewHolder> {
 
-    private DatabaseReference mUserPostsRef = FirebaseDatabase.getInstance().getReference("helpMe");
-    private Context mContext;
-    private HelpMeUserListingFragment mFragment;
+    private final DatabaseReference mUserPostsRef = FirebaseDatabase.getInstance().getReference("helpMe");
+    private final Context mContext;
+    private final HelpMeUserListingFragment mFragment;
     private final ArrayList<HelpMePost> mPostList;
-    private LayoutInflater mInflater;
+    private final LayoutInflater mInflater;
 
     static class HelpMePostViewHolder extends RecyclerView.ViewHolder {
 
-        public Chip categoryChip;
-        public TextView titleTextView;
-        public TextView dateTextView;
-        public TextView timeTextView;
-        public MaterialButton editButton;
-        public MaterialButton deleteButton;
+        public final Chip categoryChip;
+        public final TextView titleTextView;
+        public final TextView dateTextView;
+        public final TextView timeTextView;
+        public final MaterialButton editButton;
+        public final MaterialButton deleteButton;
 
         public HelpMePostViewHolder(@NonNull View itemView) {
             super(itemView);

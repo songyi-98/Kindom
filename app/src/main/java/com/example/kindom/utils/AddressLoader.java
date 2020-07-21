@@ -13,7 +13,7 @@ import java.net.URL;
  */
 public class AddressLoader extends AsyncTaskLoader<String> {
 
-    private int postalCode;
+    private final int postalCode;
 
     public AddressLoader(@NonNull Context context, int postalCode) {
         super(context);

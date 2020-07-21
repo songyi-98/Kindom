@@ -44,7 +44,7 @@ public class RegisterProfileActivity extends AppCompatActivity implements Loader
     public static final String USER_RC_TAG = "USER_RC";
     public static final String USER_BLK_NO_TAG = "USER_BLK_NO";
     public static final String USER_GROUP_TAG = "USER_GROUP";
-    private static ArrayList<String> RC = new ArrayList<>();
+    private static final ArrayList<String> RC = new ArrayList<>();
 
     private CircleImageView mProfileImage;
     private Uri mProfileImageUri;

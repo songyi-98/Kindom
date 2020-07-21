@@ -5,8 +5,6 @@ import com.example.kindom.utils.FirebaseHandler;
 /**
  * Represent a user of the app
  */
-import java.util.ArrayList;
-
 public class User {
 
     public static final String USER_GROUP_ADMIN = "Admin";

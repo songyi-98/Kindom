@@ -11,5 +11,6 @@
         android:layout_height="match_parent"
         android:adjustViewBounds="true"
         android:scaleType="fitCenter"
-        tools:srcCompat="@drawable/blank_profile_picture" />
+        tools:srcCompat="@drawable/blank_profile_picture"
+        android:contentDescription="@string/home_image_content_desc" />
 </LinearLayout>

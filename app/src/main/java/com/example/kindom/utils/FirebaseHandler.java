@@ -7,11 +7,6 @@ import com.google.firebase.auth.FirebaseUser;
 
 public class FirebaseHandler extends Application {
 
-    @Override
-    public void onCreate() {
-        super.onCreate();
-    }
-
     /**
      * Get current user from Firebase
      *

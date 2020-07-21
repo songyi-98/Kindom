@@ -1,7 +1,6 @@
 package com.example.kindom.ui;
 
 import android.os.Bundle;
-import android.renderscript.Sampler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;

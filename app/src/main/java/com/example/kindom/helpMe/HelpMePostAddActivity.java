@@ -36,7 +36,7 @@ import java.util.Objects;
 
 public class HelpMePostAddActivity extends AppCompatActivity {
 
-    private String[] CATEGORIES = new String[]{"Care", "Food", "Groceries", "Others"};
+    private final String[] CATEGORIES = new String[]{"Care", "Food", "Groceries", "Others"};
 
     private DatabaseReference mUserRef;
     private DatabaseReference mUploadRef;

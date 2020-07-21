@@ -51,6 +51,7 @@
     <string name="home_weather_mist">Mist</string>
     <string name="home_weather_thundery_showers">Thundery\nShowers</string>
     <string name="home_psi_value_header">PSI Value</string>
+    <string name="home_image_content_desc">News</string>
     <string name="home_neighbourhood_news">Neighbourhood News</string>
     <string name="home_singapore_news">Singapore News</string>
     <string name="help_me_all_listing_tab">All Listing</string>
@@ -59,7 +60,6 @@
     <string name="help_me_my_listing_tab">My Listing</string>
     <string name="help_me_user_listing_empty">You have not posted any listing. Add one today!</string>
     <string name="list_item_help_me_all_listing_details">Details</string>
-    <string name="fab_refresh_content_desc">Refresh</string>
     <string name="fab_add_content_desc">Add</string>
     <string name="help_me_post_details_label">Post details</string>
     <string name="menu_report_listing_label">Report Listing</string>

@@ -24,7 +24,7 @@ public class MessageAdapter extends RecyclerView.Adapter {
     private static final int VIEW_TYPE_MESSAGE_SENT = 1;
     private static final int VIEW_TYPE_MESSAGE_RECEIVED = 2;
 
-    ArrayList<MessageObject> messageList;
+    final ArrayList<MessageObject> messageList;
 
     public MessageAdapter(ArrayList<MessageObject> Message) {
         this.messageList = Message;
@@ -32,7 +32,7 @@ public class MessageAdapter extends RecyclerView.Adapter {
 
     @Override
     public int getItemViewType(int position) {
-        MessageObject message = (MessageObject) messageList.get(position);
+        MessageObject message = messageList.get(position);
 
         if (message.getSenderId().equals(FirebaseAuth.getInstance().getUid())) {
             // If the current user is the sender of the message
@@ -60,7 +60,7 @@ public class MessageAdapter extends RecyclerView.Adapter {
 
     @Override
     public void onBindViewHolder(@NonNull final RecyclerView.ViewHolder holder, final int position) {
-        final MessageObject message = (MessageObject) messageList.get(position);
+        final MessageObject message = messageList.get(position);
         switch (holder.getItemViewType()) {
             case VIEW_TYPE_MESSAGE_SENT:
                 ((SentMessageViewHolder) holder).bind(message);
@@ -75,10 +75,11 @@ public class MessageAdapter extends RecyclerView.Adapter {
         return messageList.size();
     }
 
-    public class SentMessageViewHolder extends RecyclerView.ViewHolder {
-        private TextView mMessage, mTime;
-        public ConstraintLayout mLayout;
-        private ImageView mImageBody;
+    static class SentMessageViewHolder extends RecyclerView.ViewHolder {
+        private final TextView mMessage;
+        private final TextView mTime;
+        public final ConstraintLayout mLayout;
+        private final ImageView mImageBody;
 
         public SentMessageViewHolder(View view) {
             super(view);
@@ -113,10 +114,11 @@ public class MessageAdapter extends RecyclerView.Adapter {
         }
     }
 
-    public class ReceivedMessageViewHolder extends RecyclerView.ViewHolder {
-        private TextView mMessage, mTime;
-        private ImageView mImageBody;
-        public ConstraintLayout mLayout;
+    static class ReceivedMessageViewHolder extends RecyclerView.ViewHolder {
+        private final TextView mMessage;
+        private final TextView mTime;
+        private final ImageView mImageBody;
+        public final ConstraintLayout mLayout;
 
         public ReceivedMessageViewHolder(View view) {
             super(view);

@@ -49,7 +49,7 @@ public class FirebasePushIdGenerator {
         if (now != 0)
             throw new AssertionError("We should have converted the entire timestamp.");
 
-        String id = new String(timeStampChars);
+        StringBuilder id = new StringBuilder(new String(timeStampChars));
         if (!duplicateTime) {
             for (int i = 0; i < 12; i++) {
                 final double times = Math.random() * 64;
@@ -67,11 +67,11 @@ public class FirebasePushIdGenerator {
             lastRandChars[lastValueOfInt]++;
         }
         for (int i = 0; i < 12; i++) {
-            id += PUSH_CHARS.charAt(lastRandChars[i]);
+            id.append(PUSH_CHARS.charAt(lastRandChars[i]));
         }
         if (id.length() != 20)
             throw new AssertionError("Length should be 20.");
 
-        return id;
+        return id.toString();
     }
 }

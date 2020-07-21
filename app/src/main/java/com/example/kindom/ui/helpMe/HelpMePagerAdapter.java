@@ -6,7 +6,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentStatePagerAdapter;
 
 public class HelpMePagerAdapter extends FragmentStatePagerAdapter {
-    int mNumOfTabs;
+    final int mNumOfTabs;
 
     public HelpMePagerAdapter(@NonNull FragmentManager fm, int behavior, int numOfTabs) {
         super(fm, behavior);

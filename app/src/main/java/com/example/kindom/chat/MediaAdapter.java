@@ -17,8 +17,8 @@ import java.util.ArrayList;
 
 public class MediaAdapter extends RecyclerView.Adapter<MediaAdapter.MediaViewHolder> {
 
-    ArrayList<String> mediaList;
-    Context context;
+    final ArrayList<String> mediaList;
+    final Context context;
 
     public MediaAdapter(Context context, ArrayList<String> mediaList) {
         this.context = context;
@@ -42,9 +42,9 @@ public class MediaAdapter extends RecyclerView.Adapter<MediaAdapter.MediaViewHol
         return mediaList.size();
     }
 
-    public class MediaViewHolder extends RecyclerView.ViewHolder {
+    static class MediaViewHolder extends RecyclerView.ViewHolder {
 
-        ImageView mMedia;
+        final ImageView mMedia;
 
         public MediaViewHolder(@NonNull View itemView) {
             super(itemView);
