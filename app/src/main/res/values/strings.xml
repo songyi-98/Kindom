@@ -79,10 +79,6 @@
     <string name="help_me_post_delete">Are you sure you want to delete this post?</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
-    <string name="chat_title">title</string>
-    <string name="chat_message">message</string>
-    <string name="chat_message_hint">message…</string>
-    <string name="chat_send_button">send</string>
-    <string name="chat_add_media_button">+</string>
-    <string name="chat_view_media_button">View Media</string>
+    <string name="chat_user_name">Name</string>
+    <string name="chat_message_hint">Message</string>
 </resources>

@@ -82,10 +82,10 @@ public class MessageAdapter extends RecyclerView.Adapter {
 
         public SentMessageViewHolder(View view) {
             super(view);
-            mMessage = view.findViewById(R.id.text_message_body);
-            mTime = view.findViewById(R.id.text_message_time);
+            mMessage = view.findViewById(R.id.chat_text_body);
+            mTime = view.findViewById(R.id.chat_text_time);
             mLayout = view.findViewById(R.id.message_received_layout);
-            mImageBody = view.findViewById(R.id.image_body);
+            mImageBody = view.findViewById(R.id.chat_image_body);
         }
 
         void bind(final MessageObject message) {
@@ -120,10 +120,10 @@ public class MessageAdapter extends RecyclerView.Adapter {
 
         public ReceivedMessageViewHolder(View view) {
             super(view);
-            mMessage = view.findViewById(R.id.text_message_body);
-            mTime = view.findViewById(R.id.text_message_time);
+            mMessage = view.findViewById(R.id.chat_text_body);
+            mTime = view.findViewById(R.id.chat_text_time);
             mLayout = view.findViewById(R.id.message_received_layout);
-            mImageBody = view.findViewById(R.id.image_body);
+            mImageBody = view.findViewById(R.id.chat_image_body);
         }
 
         void bind(final MessageObject message) {
