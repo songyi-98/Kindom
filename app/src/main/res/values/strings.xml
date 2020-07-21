@@ -54,7 +54,10 @@
     <string name="home_neighbourhood_news">Neighbourhood News</string>
     <string name="home_singapore_news">Singapore News</string>
     <string name="help_me_all_listing_tab">All Listing</string>
+    <string name="help_me_all_listing_refresh_toast">Swipe down to refresh</string>
+    <string name="help_me_all_listing_empty">There is currently no listing available.</string>
     <string name="help_me_my_listing_tab">My Listing</string>
+    <string name="help_me_user_listing_empty">You have not posted any listing. Add one today!</string>
     <string name="list_item_help_me_all_listing_details">Details</string>
     <string name="fab_refresh_content_desc">Refresh</string>
     <string name="fab_add_content_desc">Add</string>
