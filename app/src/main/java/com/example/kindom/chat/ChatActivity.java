@@ -64,16 +64,16 @@ public class ChatActivity extends AppCompatActivity {
         }
 
         // Set the layout for chat activity
-        TextView mChatTitle = findViewById(R.id.chatTitle);
+        TextView mChatTitle = findViewById(R.id.chat_user_name);
         mChatTitle.setText(mChatUser);
-        Button mSend = findViewById(R.id.sendBtn);
+        Button mSend = findViewById(R.id.chat_send_button);
         mSend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 sendMessage();
             }
         });
-        Button mAddMedia = findViewById(R.id.addMediaBtn);
+        Button mAddMedia = findViewById(R.id.chat_attach_media_button);
         mAddMedia.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -91,7 +91,7 @@ public class ChatActivity extends AppCompatActivity {
      * Retrieve user's profile picture from Firebase Storage
      */
     private void getProfilePicture() {
-        final CircleImageView profilePicture = findViewById(R.id.image_chat_profile);
+        final CircleImageView profilePicture = findViewById(R.id.chat_profile_image);
         StorageReference storageRef = FirebaseStorage.getInstance().getReference("profileImages");
         storageRef.child(mChatUserUid).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
@@ -177,7 +177,7 @@ public class ChatActivity extends AppCompatActivity {
     EditText mMessage;
 
     private void sendMessage() {
-        mMessage = findViewById(R.id.message);
+        mMessage = findViewById(R.id.chat_message);
         String messageId = mChatDb.push().getKey();
         assert messageId != null;
         final DatabaseReference newMessageDb = mChatDb.child(messageId);
@@ -246,7 +246,7 @@ public class ChatActivity extends AppCompatActivity {
      */
     private void initializeMessages() {
         messageList = new ArrayList<>();
-        RecyclerView mChat = findViewById(R.id.messageList);
+        RecyclerView mChat = findViewById(R.id.chat_message_list);
         mChat.setNestedScrollingEnabled(false);
         mChat.setHasFixedSize(false);
         //this line below could cause problems
@@ -264,7 +264,7 @@ public class ChatActivity extends AppCompatActivity {
      */
     private void initializeMedia() {
         mediaUriList = new ArrayList<>();
-        RecyclerView mMedia = findViewById(R.id.mediaList);
+        RecyclerView mMedia = findViewById(R.id.chat_media_list);
         mMedia.setNestedScrollingEnabled(false);
         mMedia.setHasFixedSize(false);
         //this line below could cause problems

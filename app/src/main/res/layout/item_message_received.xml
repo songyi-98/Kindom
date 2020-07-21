@@ -7,7 +7,7 @@
     android:paddingTop="8dp">
 
     <TextView
-        android:id="@+id/text_message_body"
+        android:id="@+id/chat_text_body"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -20,16 +20,16 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/text_message_time"
+        android:id="@+id/chat_text_time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="4dp"
         android:textSize="10sp"
-        app:layout_constraintBottom_toBottomOf="@+id/text_message_body"
-        app:layout_constraintLeft_toRightOf="@+id/text_message_body" />
+        app:layout_constraintBottom_toBottomOf="@+id/chat_text_body"
+        app:layout_constraintLeft_toRightOf="@+id/chat_text_body" />
 
     <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/image_body"
+        android:id="@+id/chat_image_body"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
@@ -40,6 +40,6 @@
         android:maxHeight="240dp"
         android:padding="10dp"
         android:textColor="#ffffff"
-        app:layout_constraintLeft_toLeftOf="@+id/text_message_body"
-        app:layout_constraintTop_toTopOf="@+id/text_message_body" />
+        app:layout_constraintLeft_toLeftOf="@+id/chat_text_body"
+        app:layout_constraintTop_toTopOf="@+id/chat_text_body" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -7,17 +7,14 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.kindom.R;
-import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -28,32 +25,46 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class ChatListAdapter extends RecyclerView.Adapter<ChatListAdapter.ChatListViewHolder> {
 
-    ArrayList<ChatObject> chatList;
-    Context context;
+    private Context mContext;
+    private ArrayList<ChatObject> mChatList;
+    private LayoutInflater mInflater;
 
     public ChatListAdapter(Context context, ArrayList<ChatObject> chatList) {
-        this.context = context;
-        this.chatList = chatList;
+        this.mContext = context;
+        mInflater = LayoutInflater.from(context);
+        this.mChatList = chatList;
+    }
+
+    static class ChatListViewHolder extends RecyclerView.ViewHolder {
+
+        public TextView mTitle;
+        public ConstraintLayout mLayout;
+        public CircleImageView mChatPicture;
+
+        public ChatListViewHolder(View view) {
+            super(view);
+            mTitle = view.findViewById(R.id.chat_user_name);
+            mLayout = view.findViewById(R.id.chat_layout);
+            mChatPicture = view.findViewById(R.id.chat_picture);
+        }
     }
 
     @NonNull
     @Override
     public ChatListViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View layoutView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_chat, null, false);
-        RecyclerView.LayoutParams lp = new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        layoutView.setLayoutParams(lp);
-        return new ChatListViewHolder(layoutView);
+        View itemView = mInflater.inflate(R.layout.item_chat, parent, false);
+        return new ChatListViewHolder(itemView);
     }
 
     @Override
     public void onBindViewHolder(@NonNull final ChatListViewHolder holder, final int position) {
-        holder.mTitle.setText(chatList.get(position).getTitle());
+        holder.mTitle.setText(mChatList.get(position).getTitle());
 
         StorageReference storageRef = FirebaseStorage.getInstance().getReference("profileImages");
-        storageRef.child(chatList.get(position).getChatUserId()).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+        storageRef.child(mChatList.get(position).getChatUserId()).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
             public void onSuccess(Uri uri) {
-                Glide.with(context).load(uri).into(holder.mChatPicture);
+                Glide.with(mContext).load(uri).into(holder.mChatPicture);
             }
         });
 
@@ -63,10 +74,9 @@ public class ChatListAdapter extends RecyclerView.Adapter<ChatListAdapter.ChatLi
             public void onClick(View v) {
                 Intent intent = new Intent(v.getContext(), ChatActivity.class);
                 Bundle bundle = new Bundle();
-                bundle.putString("CHAT_ID", chatList.get(holder.getAdapterPosition()).getChatId());
-                bundle.putString("CHAT_USER", chatList.get(holder.getAdapterPosition()).getTitle());
-                // TODO: Include the user UID
-                bundle.putString("CHAT_USER_UID", chatList.get(holder.getAdapterPosition()).getChatUserId());
+                bundle.putString("CHAT_ID", mChatList.get(holder.getAdapterPosition()).getChatId());
+                bundle.putString("CHAT_USER", mChatList.get(holder.getAdapterPosition()).getTitle());
+                bundle.putString("CHAT_USER_UID", mChatList.get(holder.getAdapterPosition()).getChatUserId());
                 intent.putExtras(bundle);
                 v.getContext().startActivity(intent);
             }
@@ -75,18 +85,6 @@ public class ChatListAdapter extends RecyclerView.Adapter<ChatListAdapter.ChatLi
 
     @Override
     public int getItemCount() {
-        return chatList.size();
-    }
-
-    public class ChatListViewHolder extends RecyclerView.ViewHolder {
-        public TextView mTitle;
-        public LinearLayout mLayout;
-        public CircleImageView mChatPicture;
-        public ChatListViewHolder(View view) {
-            super(view);
-            mTitle = view.findViewById(R.id.chatTitle);
-            mLayout = view.findViewById(R.id.chatLayout);
-            mChatPicture = view.findViewById(R.id.chatPicture);
-        }
+        return mChatList.size();
     }
 }
