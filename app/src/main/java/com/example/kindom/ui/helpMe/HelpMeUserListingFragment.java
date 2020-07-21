@@ -31,7 +31,7 @@ import java.util.ArrayList;
 public class HelpMeUserListingFragment extends Fragment {
 
     private View mView;
-    private ArrayList<HelpMePost> mHelpMePosts = new ArrayList<>();
+    private final ArrayList<HelpMePost> mHelpMePosts = new ArrayList<>();
     private DatabaseReference mUserRef;
     private DatabaseReference mUserPostsRef;
 

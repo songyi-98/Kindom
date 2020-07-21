@@ -69,13 +69,11 @@ public class HelpMePostDetailsActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.menu_report_listing:
-                // TODO: Implement report listing feature
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
+        if (item.getItemId() == R.id.menu_report_listing) {
+            // TODO: Implement report listing feature
+            return true;
         }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override

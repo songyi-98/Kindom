@@ -172,7 +172,7 @@ public class ChatActivity extends AppCompatActivity {
 
     // Send Message, can also send media
     // Variables only used in sendMessage
-    ArrayList<String> mediaIdList = new ArrayList<>();
+    final ArrayList<String> mediaIdList = new ArrayList<>();
     int totalMediaUploaded = 0;
     EditText mMessage;
 
@@ -256,7 +256,7 @@ public class ChatActivity extends AppCompatActivity {
         mChat.setAdapter(mChatAdapter);
     }
 
-    int PICK_IMAGE_INTENT = 1;
+    final int PICK_IMAGE_INTENT = 1;
     ArrayList<String> mediaUriList = new ArrayList<>();
 
     /**

@@ -23,19 +23,19 @@ import java.util.Date;
 
 public class HelpMeAllListingAdapter extends RecyclerView.Adapter<HelpMeAllListingAdapter.HelpMePostViewHolder> {
 
-    private Context mContext;
+    private final Context mContext;
     private final ArrayList<HelpMePost> mPostList;
-    private LayoutInflater mInflater;
+    private final LayoutInflater mInflater;
 
     static class HelpMePostViewHolder extends RecyclerView.ViewHolder {
 
-        public Chip categoryChip;
-        public TextView titleTextView;
-        public TextView blkNoTextView;
-        public TextView dateTextView;
-        public TextView timeTextView;
-        public Chip userChip;
-        public MaterialButton detailsButton;
+        public final Chip categoryChip;
+        public final TextView titleTextView;
+        public final TextView blkNoTextView;
+        public final TextView dateTextView;
+        public final TextView timeTextView;
+        public final Chip userChip;
+        public final MaterialButton detailsButton;
 
         public HelpMePostViewHolder(@NonNull View itemView) {
             super(itemView);

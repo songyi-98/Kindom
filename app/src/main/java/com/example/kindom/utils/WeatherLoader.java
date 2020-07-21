@@ -14,7 +14,7 @@ import java.util.ArrayList;
  */
 public class WeatherLoader extends AsyncTaskLoader<ArrayList<String>> {
 
-    private String region;
+    private final String region;
 
     public WeatherLoader(@NonNull Context context, String region) {
         super(context);
