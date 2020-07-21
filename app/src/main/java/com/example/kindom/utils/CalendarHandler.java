@@ -14,6 +14,21 @@ import java.util.Date;
 public class CalendarHandler {
 
     /**
+     * Get a String representation of the current date time in the format of YYYY-MM-DD[T]HH:mm:ss
+     *
+     * @return String representation of the current date time
+     */
+    @SuppressLint("SimpleDateFormat")
+    public static String getCurrentDateTime() {
+        Date date = new Date();
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        DateFormat timeFormat = new SimpleDateFormat("HH:mm:ss");
+        String dateString = dateFormat.format(date);
+        String timeString = timeFormat.format(date);
+        return dateString + "T" + timeString;
+    }
+
+    /**
      * Get a date String representation in the format of DD/MM/YYYY
      *
      * @param year       the year

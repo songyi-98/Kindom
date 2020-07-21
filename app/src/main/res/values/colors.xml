@@ -6,6 +6,13 @@
     <color name="colorPrimaryDark">#D32F2F</color>
     <color name="colorAccent">#536DFE</color>
 
+    <!-- Colors for PSI values -->
+    <color name="psi_good">#008000</color>
+    <color name="psi_moderate">#0000FF</color>
+    <color name="psi_unhealthy">#CCCC00</color>
+    <color name="psi_very_unhealthy">#FF8C00</color>
+    <color name="psi_hazardous">#FF0000</color>
+
     <!-- Other colors -->
     <color name="black">#000000</color>
     <color name="darkGray">#A9A9A9</color>
