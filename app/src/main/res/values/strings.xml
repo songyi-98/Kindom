@@ -43,6 +43,13 @@
     <string name="navigation_help_me">Help Me!</string>
     <string name="navigation_chat">Chat</string>
     <string name="home_weather">Weather</string>
+    <string name="home_weather_fair">Fair</string>
+    <string name="home_weather_partly_cloudy">Partly\nCloudy</string>
+    <string name="home_weather_cloudy">Cloudy</string>
+    <string name="home_weather_hazy">Hazy</string>
+    <string name="home_weather_windy">Windy</string>
+    <string name="home_weather_mist">Mist</string>
+    <string name="home_weather_thundery_showers">Thundery\nShowers</string>
     <string name="home_psi_value_header">PSI Value</string>
     <string name="home_neighbourhood_news">Neighbourhood News</string>
     <string name="home_singapore_news">Singapore News</string>
