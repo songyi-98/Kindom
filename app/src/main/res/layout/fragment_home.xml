@@ -26,6 +26,16 @@
                 android:layout_weight="1"
                 android:background="@drawable/box">
 
+                <ProgressBar
+                    android:id="@+id/home_weather_progress_circular"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:indeterminate="true"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
                 <ImageView
                     android:id="@+id/home_weather_icon"
                     android:layout_width="64dp"
@@ -70,6 +80,16 @@
                 android:layout_weight="1"
                 android:background="@drawable/box">
 
+                <ProgressBar
+                    android:id="@+id/home_psi_progress_circular"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:indeterminate="true"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
                 <TextView
                     android:id="@+id/home_psi_value_header"
                     style="@style/TextAppearance.MaterialComponents.Headline6"
@@ -77,6 +97,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:text="@string/home_psi_value_header"
+                    android:visibility="invisible"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />

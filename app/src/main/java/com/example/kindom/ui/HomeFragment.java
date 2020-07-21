@@ -71,7 +71,8 @@ public class HomeFragment extends Fragment implements LoaderManager.LoaderCallba
         mWeatherResult = data;
 
         String weather = mWeatherResult.get(0);
-        ImageView weatherIcon = Objects.requireNonNull(getActivity()).findViewById(R.id.home_weather_icon);
+        Objects.requireNonNull(getActivity()).findViewById(R.id.home_weather_progress_circular).setVisibility(View.GONE);
+        ImageView weatherIcon = getActivity().findViewById(R.id.home_weather_icon);
         TextView weatherText = getActivity().findViewById(R.id.home_weather_text);
         if (weather.equals("Fair (Day)")) {
             weatherIcon.setImageDrawable(getActivity().getDrawable(R.drawable.weather_fair_day));
@@ -117,6 +118,8 @@ public class HomeFragment extends Fragment implements LoaderManager.LoaderCallba
         TextView temperatureText = getActivity().findViewById(R.id.home_weather_temperature);
         temperatureText.setText(temperature);
 
+        getActivity().findViewById(R.id.home_psi_progress_circular).setVisibility(View.GONE);
+        getActivity().findViewById(R.id.home_psi_value_header).setVisibility(View.VISIBLE);
         String psi = mWeatherResult.get(2);
         TextView psiValue = getActivity().findViewById(R.id.home_psi_value);
         psiValue.setText(psi);
