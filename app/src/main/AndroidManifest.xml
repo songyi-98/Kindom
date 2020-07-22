@@ -41,10 +41,6 @@
             android:name=".HomeActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".home.HomeAdminManageNewsActivity"
-            android:label="@string/home_admin_manage_news"
-            android:screenOrientation="portrait" />
-        <activity
             android:name=".home.HomeAdminAddNewsActivity"
             android:label="@string/home_admin_add_news"
             android:screenOrientation="portrait" />
