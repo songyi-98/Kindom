@@ -207,8 +207,20 @@ public class HomeFragment extends Fragment implements LoaderManager.LoaderCallba
     @Override
     public void onResume() {
         super.onResume();
+
+        // Show text if there are no news
+        if (mNeighbourhoodImages.size() == 0) {
+            Objects.requireNonNull(getActivity()).findViewById(R.id.home_neighbourhood_no_news).setVisibility(View.VISIBLE);
+        }
+        if (mSingaporeImages.size() == 0) {
+            Objects.requireNonNull(getActivity()).findViewById(R.id.home_singapore_no_news).setVisibility(View.VISIBLE);
+        }
+
         mNeighbourhoodImages.clear();
         mSingaporeImages.clear();
+        mNeighbourhoodAdapter.notifyDataSetChanged();
+        mSingaporeAdapter.notifyDataSetChanged();
+
         retrieveNeighbourhoodNews();
         retrieveSingaporeNews();
     }
