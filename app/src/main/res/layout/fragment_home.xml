@@ -143,6 +143,18 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp">
 
+                    <TextView
+                        android:id="@+id/home_neighbourhood_no_news"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_horizontal"
+                        android:text="@string/home_no_news"
+                        android:visibility="invisible"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
                     <androidx.viewpager.widget.ViewPager
                         android:id="@+id/home_neighbourhood_news_view_pager"
                         android:layout_width="0dp"
@@ -185,6 +197,18 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp">
+
+                    <TextView
+                        android:id="@+id/home_singapore_no_news"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_horizontal"
+                        android:text="@string/home_no_news"
+                        android:visibility="invisible"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
 
                     <androidx.viewpager.widget.ViewPager
                         android:id="@+id/home_singapore_news_view_pager"
