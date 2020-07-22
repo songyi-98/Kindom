@@ -1,5 +1,7 @@
 package com.example.kindom.ui;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 
@@ -20,10 +22,12 @@ import android.widget.TextView;
 
 import com.example.kindom.R;
 import com.example.kindom.User;
+import com.example.kindom.home.HomeAdminManageNewsActivity;
 import com.example.kindom.ui.home.HomeImagePagerAdapter;
 import com.example.kindom.utils.FirebaseHandler;
 import com.example.kindom.utils.Region;
 import com.example.kindom.utils.WeatherLoader;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -152,9 +156,24 @@ public class HomeFragment extends Fragment implements LoaderManager.LoaderCallba
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 User user = dataSnapshot.getValue(User.class);
                 assert user != null;
-                mRegion = Region.getRegion(user.getPostalCode());
 
-                // Start loader to query weather information
+                // Grant the admin access to manage news
+                if (user.getUserGroup().equals(User.USER_GROUP_ADMIN)) {
+                    FloatingActionButton manageNewsFab = Objects.requireNonNull(getActivity()).findViewById(R.id.home_manage_news_fab);
+                    manageNewsFab.setVisibility(View.VISIBLE);
+                    manageNewsFab.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Context context = getContext();
+                            Intent intent = new Intent(context, HomeAdminManageNewsActivity.class);
+                            assert context != null;
+                            context.startActivity(intent);
+                        }
+                    });
+                }
+
+                // Start loader to query weather information based on the user's region
+                mRegion = Region.getRegion(user.getPostalCode());
                 getLoaderManager().initLoader(0, null, HomeFragment.this);
             }
 
