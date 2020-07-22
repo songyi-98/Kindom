@@ -4,6 +4,8 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
         android:name=".utils.FirebaseHandler"
@@ -23,6 +25,9 @@
             </intent-filter>
         </activity>
         <activity
+            android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
+            android:theme="@style/ImageCropperTheme" />
+        <activity
             android:name=".MyProfileActivity"
             android:label="@string/profile_settings_label"
             android:screenOrientation="portrait" />
@@ -38,6 +43,10 @@
         <activity
             android:name=".home.HomeAdminManageNewsActivity"
             android:label="@string/home_admin_manage_news"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".home.HomeAdminAddNewsActivity"
+            android:label="@string/home_admin_add_news"
             android:screenOrientation="portrait" />
         <activity
             android:name=".helpMe.HelpMePostDetailsActivity"

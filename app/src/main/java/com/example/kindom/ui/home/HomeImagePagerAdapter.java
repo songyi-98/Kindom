@@ -2,6 +2,7 @@ package com.example.kindom.ui.home;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,9 +21,9 @@ public class HomeImagePagerAdapter extends PagerAdapter {
 
     private final Context context;
     private final LayoutInflater layoutInflater;
-    private final ArrayList<Integer> images;
+    private final ArrayList<Uri> images;
 
-    public HomeImagePagerAdapter(Context context, ArrayList<Integer> images) {
+    public HomeImagePagerAdapter(Context context, ArrayList<Uri> images) {
         this.context = context;
         this.layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         this.images = images;
@@ -56,5 +57,10 @@ public class HomeImagePagerAdapter extends PagerAdapter {
         ViewPager vp = (ViewPager) container;
         View view = (View) object;
         vp.removeView(view);
+    }
+
+    @Override
+    public int getItemPosition(@NonNull Object object) {
+        return POSITION_NONE;
     }
 }
