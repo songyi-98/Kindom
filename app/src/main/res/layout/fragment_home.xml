@@ -210,14 +210,14 @@
     </androidx.core.widget.NestedScrollView>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/home_manage_news_fab"
+        android:id="@+id/home_admin_add_news_fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_margin="16dp"
         android:backgroundTint="@color/colorAccent"
-        android:contentDescription="@string/home_admin_manage_news"
+        android:contentDescription="@string/home_admin_add_news"
         android:visibility="gone"
-        app:srcCompat="@drawable/ic_round_edit_24"
+        app:srcCompat="@drawable/ic_round_add_24"
         app:tint="@android:color/white" />
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -79,6 +79,16 @@ public class HomeAdminAddNewsActivity extends AppCompatActivity {
     }
 
     @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+
+        // Bring user to home page
+        Intent intent = new Intent(this, HomeActivity.class);
+        finish();
+        startActivity(intent);
+    }
+
+    @Override
     public boolean onSupportNavigateUp() {
         onBackPressed();
         return true;

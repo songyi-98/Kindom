@@ -22,11 +22,12 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.example.kindom.R;
 import com.example.kindom.User;
-import com.example.kindom.home.HomeAdminManageNewsActivity;
+import com.example.kindom.home.HomeAdminAddNewsActivity;
 import com.example.kindom.ui.home.HomeImagePagerAdapter;
 import com.example.kindom.utils.FirebaseHandler;
 import com.example.kindom.utils.Region;
 import com.example.kindom.utils.WeatherLoader;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.database.DataSnapshot;
@@ -41,6 +42,8 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 public class HomeFragment extends Fragment implements LoaderManager.LoaderCallbacks<ArrayList<String>> {
+
+    public static boolean IS_ADMIN = false;
 
     private View mView;
     private DatabaseReference mUserDatabase;
@@ -173,13 +176,14 @@ public class HomeFragment extends Fragment implements LoaderManager.LoaderCallba
 
                 // Grant the admin access to manage news
                 if (user.getUserGroup().equals(User.USER_GROUP_ADMIN)) {
-                    FloatingActionButton manageNewsFab = Objects.requireNonNull(getActivity()).findViewById(R.id.home_manage_news_fab);
+                    IS_ADMIN = true;
+                    FloatingActionButton manageNewsFab = Objects.requireNonNull(getActivity()).findViewById(R.id.home_admin_add_news_fab);
                     manageNewsFab.setVisibility(View.VISIBLE);
                     manageNewsFab.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
                             Context context = getContext();
-                            Intent intent = new Intent(context, HomeAdminManageNewsActivity.class);
+                            Intent intent = new Intent(context, HomeAdminAddNewsActivity.class);
                             assert context != null;
                             context.startActivity(intent);
                         }
@@ -214,11 +218,11 @@ public class HomeFragment extends Fragment implements LoaderManager.LoaderCallba
      */
     private void initializeAdapters() {
         mNeighbourhoodViewPager = mView.findViewById(R.id.home_neighbourhood_news_view_pager);
-        mNeighbourhoodAdapter = new HomeImagePagerAdapter(mView.getContext(), mNeighbourhoodImages);
+        mNeighbourhoodAdapter = new HomeImagePagerAdapter(mView.getContext(), getActivity(), mNeighbourhoodImages);
         mNeighbourhoodViewPager.setAdapter(mNeighbourhoodAdapter);
 
         mSingaporeViewPager = mView.findViewById(R.id.home_singapore_news_view_pager);
-        mSingaporeAdapter = new HomeImagePagerAdapter(mView.getContext(), mSingaporeImages);
+        mSingaporeAdapter = new HomeImagePagerAdapter(mView.getContext(), getActivity(), mSingaporeImages);
         mSingaporeViewPager.setAdapter(mSingaporeAdapter);
     }
 
@@ -232,19 +236,24 @@ public class HomeFragment extends Fragment implements LoaderManager.LoaderCallba
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 User user = dataSnapshot.getValue(User.class);
                 assert user != null;
-                String rc = user.getRc();
+                final String rc = user.getRc();
                 final StorageReference mNewsStorageRef = mStorageRef.child("neighbourhoodNews").child(rc);
                 mNewsDatabase.child("neighbourhoodNews").child(rc).addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         for (DataSnapshot newsSnapshot : snapshot.getChildren()) {
-                            String id = newsSnapshot.getKey();
+                            final String id = newsSnapshot.getKey();
                             assert id != null;
                             mNewsStorageRef.child(id).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                                 @Override
                                 public void onSuccess(Uri uri) {
                                     mNeighbourhoodImages.add(uri);
                                     createNeighbourhoodNews();
+                                }
+                            }).addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    mNewsDatabase.child("neighbourhoodNews").child(rc).child(id).removeValue();
                                 }
                             });
                         }
@@ -322,13 +331,18 @@ public class HomeFragment extends Fragment implements LoaderManager.LoaderCallba
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for (DataSnapshot newsSnapshot : snapshot.getChildren()) {
-                    String id = newsSnapshot.getKey();
+                    final String id = newsSnapshot.getKey();
                     assert id != null;
                     mNewsStorageRef.child(id).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                         @Override
                         public void onSuccess(Uri uri) {
                             mSingaporeImages.add(uri);
                             createSingaporeNews();
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            mNewsDatabase.child("singaporeNews").child(id).removeValue();
                         }
                     });
                 }
