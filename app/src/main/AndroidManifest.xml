@@ -36,6 +36,10 @@
             android:name=".HomeActivity"
             android:screenOrientation="portrait" />
         <activity
+            android:name=".home.HomeAdminManageNewsActivity"
+            android:label="@string/home_admin_manage_news"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".helpMe.HelpMePostDetailsActivity"
             android:label="@string/help_me_post_details_label"
             android:parentActivityName=".HomeActivity"
@@ -50,8 +54,9 @@
             android:label="@string/help_me_edit_post_label"
             android:parentActivityName=".HomeActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".chat.ChatActivity"
-            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".chat.ChatActivity"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>
