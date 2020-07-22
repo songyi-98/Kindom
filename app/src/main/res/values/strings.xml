@@ -55,6 +55,17 @@
     <string name="home_neighbourhood_news">Neighbourhood News</string>
     <string name="home_singapore_news">Singapore News</string>
     <string name="home_admin_manage_news">Manage news</string>
+    <string name="home_admin_add_news">Add news</string>
+    <string name="home_admin_edit_news_type_header">Edit the type of news:</string>
+    <string name="home_admin_news_type_neighbourhood">Neighbourhood</string>
+    <string name="home_admin_news_type_singapore">Singapore</string>
+    <string name="home_admin_news_save_changes">Save Changes</string>
+    <string name="home_admin_delete_news">Delete News</string>
+    <string name="home_admin_add_news_image_header">Add an image:</string>
+    <string name="home_admin_select_news_type_header">Select the type of news:</string>
+    <string name="error_news_image_empty">Please add an image</string>
+    <string name="error_news_type">Please select the type of news</string>
+    <string name="error_news_image_upload">Upload of image failed. Please try again.</string>
     <string name="help_me_all_listing_tab">All Listing</string>
     <string name="help_me_all_listing_refresh_toast">Swipe down to refresh</string>
     <string name="help_me_all_listing_empty">There is currently no listing available.</string>

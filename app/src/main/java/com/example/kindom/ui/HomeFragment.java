@@ -2,8 +2,15 @@ package com.example.kindom.ui;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -13,13 +20,6 @@ import androidx.loader.app.LoaderManager;
 import androidx.loader.content.Loader;
 import androidx.viewpager.widget.ViewPager;
 
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
-
 import com.example.kindom.R;
 import com.example.kindom.User;
 import com.example.kindom.home.HomeAdminManageNewsActivity;
@@ -27,21 +27,33 @@ import com.example.kindom.ui.home.HomeImagePagerAdapter;
 import com.example.kindom.utils.FirebaseHandler;
 import com.example.kindom.utils.Region;
 import com.example.kindom.utils.WeatherLoader;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 import java.util.Objects;
 
 public class HomeFragment extends Fragment implements LoaderManager.LoaderCallbacks<ArrayList<String>> {
 
+    private View mView;
     private DatabaseReference mUserDatabase;
+    private DatabaseReference mNewsDatabase;
+    private StorageReference mStorageRef;
     private String mRegion;
     private ArrayList<String> mWeatherResult;
+    private ViewPager mNeighbourhoodViewPager;
+    private ViewPager mSingaporeViewPager;
+    private HomeImagePagerAdapter mNeighbourhoodAdapter;
+    private HomeImagePagerAdapter mSingaporeAdapter;
+    private ArrayList<Uri> mNeighbourhoodImages = new ArrayList<>();
+    private ArrayList<Uri> mSingaporeImages = new ArrayList<>();
 
     public HomeFragment() {
         // Required empty public constructor
@@ -51,9 +63,10 @@ public class HomeFragment extends Fragment implements LoaderManager.LoaderCallba
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // Initialize Firebase Database
+        // Initialize Firebase components
         mUserDatabase = FirebaseDatabase.getInstance().getReference("users");
-        mUserDatabase.keepSynced(true);
+        mNewsDatabase = FirebaseDatabase.getInstance().getReference("news");
+        mStorageRef = FirebaseStorage.getInstance().getReference("news");
     }
 
     @Override
@@ -149,6 +162,7 @@ public class HomeFragment extends Fragment implements LoaderManager.LoaderCallba
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        mView = view;
 
         // Retrieve user's data from Firebase Database
         mUserDatabase.child(FirebaseHandler.getCurrentUserUid()).addValueEventListener(new ValueEventListener() {
@@ -183,34 +197,88 @@ public class HomeFragment extends Fragment implements LoaderManager.LoaderCallba
             }
         });
 
-        initializeNews(view);
+        initializeAdapters();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        mNeighbourhoodImages.clear();
+        mSingaporeImages.clear();
+        retrieveNeighbourhoodNews();
+        retrieveSingaporeNews();
     }
 
     /**
-     * Initialize images and slider dots for neighbourhood and Singapore news
-     *
-     * @param view the view
+     * Initialize view pagers and adapters
      */
-    private void initializeNews(final View view) {
-        // Initialize images
-        ArrayList<Integer> neighbourhoodImages = new ArrayList<>();
-        neighbourhoodImages.add(R.drawable.neighbourhood_sample_image_1);
-        neighbourhoodImages.add(R.drawable.neighbourhood_sample_image_2);
+    private void initializeAdapters() {
+        mNeighbourhoodViewPager = mView.findViewById(R.id.home_neighbourhood_news_view_pager);
+        mNeighbourhoodAdapter = new HomeImagePagerAdapter(mView.getContext(), mNeighbourhoodImages);
+        mNeighbourhoodViewPager.setAdapter(mNeighbourhoodAdapter);
 
-        ArrayList<Integer> localImages = new ArrayList<>();
-        localImages.add(R.drawable.local_sample_image_1);
-        localImages.add(R.drawable.local_sample_image_2);
+        mSingaporeViewPager = mView.findViewById(R.id.home_singapore_news_view_pager);
+        mSingaporeAdapter = new HomeImagePagerAdapter(mView.getContext(), mSingaporeImages);
+        mSingaporeViewPager.setAdapter(mSingaporeAdapter);
+    }
 
-        // Initialize slider dots panel
-        final LinearLayout neighbourhoodSliderDotsPanel = view.findViewById(R.id.home_neighbourhood_news_slider);
-        final int neighbourhoodDotsCount = neighbourhoodImages.size();
+    /**
+     * Retrieve neighbourhood news images from Firebase Storage
+     */
+    private void retrieveNeighbourhoodNews() {
+        // Get user's RC
+        mUserDatabase.child(FirebaseHandler.getCurrentUserUid()).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                User user = dataSnapshot.getValue(User.class);
+                assert user != null;
+                String rc = user.getRc();
+                final StorageReference mNewsStorageRef = mStorageRef.child("neighbourhoodNews").child(rc);
+                mNewsDatabase.child("neighbourhoodNews").child(rc).addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        for (DataSnapshot newsSnapshot : snapshot.getChildren()) {
+                            String id = newsSnapshot.getKey();
+                            assert id != null;
+                            mNewsStorageRef.child(id).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                @Override
+                                public void onSuccess(Uri uri) {
+                                    mNeighbourhoodImages.add(uri);
+                                    createNeighbourhoodNews();
+                                }
+                            });
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+                        // Do nothing
+                    }
+                });
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                // Do nothing
+            }
+        });
+    }
+
+    /**
+     * Create images and slider dots for neighbourhood news
+     */
+    private void createNeighbourhoodNews() {
+        // Create slider dots panel
+        final LinearLayout neighbourhoodSliderDotsPanel = mView.findViewById(R.id.home_neighbourhood_news_slider);
+        neighbourhoodSliderDotsPanel.removeAllViews();
+        final int neighbourhoodDotsCount = mNeighbourhoodImages.size();
         final ImageView[] neighbourhoodDots = new ImageView[neighbourhoodDotsCount];
         for (int i = 0; i < neighbourhoodDotsCount; i++) {
-            neighbourhoodDots[i] = new ImageView(view.getContext());
+            neighbourhoodDots[i] = new ImageView(mView.getContext());
             if (i == 0) {
-                neighbourhoodDots[i].setImageDrawable(view.getContext().getDrawable(R.drawable.slider_dot_active));
+                neighbourhoodDots[i].setImageDrawable(mView.getContext().getDrawable(R.drawable.slider_dot_active));
             } else {
-                neighbourhoodDots[i].setImageDrawable(view.getContext().getDrawable(R.drawable.slider_dot_non_active));
+                neighbourhoodDots[i].setImageDrawable(mView.getContext().getDrawable(R.drawable.slider_dot_non_active));
             }
 
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
@@ -219,34 +287,9 @@ public class HomeFragment extends Fragment implements LoaderManager.LoaderCallba
             neighbourhoodSliderDotsPanel.addView(neighbourhoodDots[i], params);
         }
 
-        LinearLayout localSliderDotsPanel = view.findViewById(R.id.home_local_news_slider);
-        final int localDotsCount = localImages.size();
-        final ImageView[] localDots = new ImageView[localDotsCount];
-        for (int i = 0; i < localDotsCount; i++) {
-            localDots[i] = new ImageView(view.getContext());
-            if (i == 0) {
-                localDots[i].setImageDrawable(view.getContext().getDrawable(R.drawable.slider_dot_active));
-            } else {
-                localDots[i].setImageDrawable(view.getContext().getDrawable(R.drawable.slider_dot_non_active));
-            }
-
-            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-            params.setMargins(8, 0, 8, 0);
-
-            localSliderDotsPanel.addView(localDots[i], params);
-        }
-
-        // Initialize view pagers and adapters
-        ViewPager neighbourhoodViewPager = view.findViewById(R.id.home_neighbourhood_news_view_pager);
-        HomeImagePagerAdapter neighbourhoodAdapter = new HomeImagePagerAdapter(view.getContext(), neighbourhoodImages);
-        neighbourhoodViewPager.setAdapter(neighbourhoodAdapter);
-
-        ViewPager localViewPager = view.findViewById(R.id.home_local_news_view_pager);
-        HomeImagePagerAdapter localAdapter = new HomeImagePagerAdapter(view.getContext(), localImages);
-        localViewPager.setAdapter(localAdapter);
-
         // Set page change listeners
-        neighbourhoodViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+        mNeighbourhoodAdapter.notifyDataSetChanged();
+        mNeighbourhoodViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
                 // Do nothing
@@ -256,9 +299,9 @@ public class HomeFragment extends Fragment implements LoaderManager.LoaderCallba
             public void onPageSelected(int position) {
                 for (int i = 0; i < neighbourhoodDotsCount; i++) {
                     if (i == position) {
-                        neighbourhoodDots[i].setImageDrawable(view.getContext().getDrawable(R.drawable.slider_dot_active));
+                        neighbourhoodDots[i].setImageDrawable(mView.getContext().getDrawable(R.drawable.slider_dot_active));
                     } else {
-                        neighbourhoodDots[i].setImageDrawable(view.getContext().getDrawable(R.drawable.slider_dot_non_active));
+                        neighbourhoodDots[i].setImageDrawable(mView.getContext().getDrawable(R.drawable.slider_dot_non_active));
                     }
                 }
             }
@@ -268,8 +311,62 @@ public class HomeFragment extends Fragment implements LoaderManager.LoaderCallba
                 // Do nothing
             }
         });
+    }
 
-        localViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+    /**
+     * Retrieve Singapore news images from Firebase Storage
+     */
+    private void retrieveSingaporeNews() {
+        final StorageReference mNewsStorageRef = mStorageRef.child("singaporeNews");
+        mNewsDatabase.child("singaporeNews").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot newsSnapshot : snapshot.getChildren()) {
+                    String id = newsSnapshot.getKey();
+                    assert id != null;
+                    mNewsStorageRef.child(id).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                        @Override
+                        public void onSuccess(Uri uri) {
+                            mSingaporeImages.add(uri);
+                            createSingaporeNews();
+                        }
+                    });
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                // Do nothing
+            }
+        });
+    }
+
+    /**
+     * Create images and slider dots for Singapore news
+     */
+    private void createSingaporeNews() {
+        // Create slider dots panel
+        LinearLayout singaporeSliderDotsPanel = mView.findViewById(R.id.home_singapore_news_slider);
+        singaporeSliderDotsPanel.removeAllViews();
+        final int singaporeDotsCount = mSingaporeImages.size();
+        final ImageView[] singaporeDots = new ImageView[singaporeDotsCount];
+        for (int i = 0; i < singaporeDotsCount; i++) {
+            singaporeDots[i] = new ImageView(mView.getContext());
+            if (i == 0) {
+                singaporeDots[i].setImageDrawable(mView.getContext().getDrawable(R.drawable.slider_dot_active));
+            } else {
+                singaporeDots[i].setImageDrawable(mView.getContext().getDrawable(R.drawable.slider_dot_non_active));
+            }
+
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+            params.setMargins(8, 0, 8, 0);
+
+            singaporeSliderDotsPanel.addView(singaporeDots[i], params);
+        }
+
+        // Set page change listeners
+        mSingaporeAdapter.notifyDataSetChanged();
+        mSingaporeViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
                 // Do nothing
@@ -277,11 +374,11 @@ public class HomeFragment extends Fragment implements LoaderManager.LoaderCallba
 
             @Override
             public void onPageSelected(int position) {
-                for (int i = 0; i < localDotsCount; i++) {
+                for (int i = 0; i < singaporeDotsCount; i++) {
                     if (i == position) {
-                        localDots[i].setImageDrawable(view.getContext().getDrawable(R.drawable.slider_dot_active));
+                        singaporeDots[i].setImageDrawable(mView.getContext().getDrawable(R.drawable.slider_dot_active));
                     } else {
-                        localDots[i].setImageDrawable(view.getContext().getDrawable(R.drawable.slider_dot_non_active));
+                        singaporeDots[i].setImageDrawable(mView.getContext().getDrawable(R.drawable.slider_dot_non_active));
                     }
                 }
             }

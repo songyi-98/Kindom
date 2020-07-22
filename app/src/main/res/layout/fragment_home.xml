@@ -134,7 +134,6 @@
                     style="@style/TextAppearance.MaterialComponents.Headline6"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
                     android:drawableStart="@drawable/ic_round_apartment_24"
                     android:drawablePadding="8dp"
                     android:text="@string/home_neighbourhood_news" />
@@ -142,9 +141,7 @@
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginEnd="8dp">
+                    android:layout_marginTop="8dp">
 
                     <androidx.viewpager.widget.ViewPager
                         android:id="@+id/home_neighbourhood_news_view_pager"
@@ -162,7 +159,6 @@
                     android:layout_height="16dp"
                     android:layout_gravity="center_horizontal"
                     android:layout_marginTop="8dp"
-                    android:layout_marginBottom="8dp"
                     android:background="@drawable/slider_container"
                     android:gravity="center_horizontal|center_vertical"
                     android:orientation="horizontal" />
@@ -177,11 +173,10 @@
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/home_local_news"
+                    android:id="@+id/home_singapore_news"
                     style="@style/TextAppearance.MaterialComponents.Headline6"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
                     android:drawableStart="@drawable/ic_round_emoji_flags_24"
                     android:drawablePadding="8dp"
                     android:text="@string/home_singapore_news" />
@@ -189,12 +184,10 @@
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginEnd="8dp">
+                    android:layout_marginTop="8dp">
 
                     <androidx.viewpager.widget.ViewPager
-                        android:id="@+id/home_local_news_view_pager"
+                        android:id="@+id/home_singapore_news_view_pager"
                         android:layout_width="0dp"
                         android:layout_height="0dp"
                         app:layout_constraintDimensionRatio="H,16:9"
@@ -204,12 +197,11 @@
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <LinearLayout
-                    android:id="@+id/home_local_news_slider"
+                    android:id="@+id/home_singapore_news_slider"
                     android:layout_width="wrap_content"
                     android:layout_height="16dp"
                     android:layout_gravity="center_horizontal"
                     android:layout_marginTop="8dp"
-                    android:layout_marginBottom="8dp"
                     android:background="@drawable/slider_container"
                     android:gravity="center_horizontal|center_vertical"
                     android:orientation="horizontal" />
