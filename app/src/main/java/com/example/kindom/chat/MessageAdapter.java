@@ -89,6 +89,12 @@ public class MessageAdapter extends RecyclerView.Adapter {
         return messageList.size();
     }
 
+    @Override
+    public void onViewAttachedToWindow(@NonNull RecyclerView.ViewHolder holder) {
+        super.onViewAttachedToWindow(holder);
+        holder.itemView.setVisibility(View.VISIBLE);
+    }
+
     public class SentMessageViewHolder extends RecyclerView.ViewHolder {
         private TextView mMessage, mTime;
         public ConstraintLayout mLayout;
@@ -105,21 +111,11 @@ public class MessageAdapter extends RecyclerView.Adapter {
         void bind(final MessageObject message) {
             mMessage.setText(message.getMessage());
             SimpleDateFormat dateFormat = new SimpleDateFormat("hh.mm aa");
-            Long timeFromMidnight = (System.currentTimeMillis()) % (24 * 60 * 60 * 1000);
-            Long closestMidnightTime = (System.currentTimeMillis()) - timeFromMidnight;
-            Long closestWeekTime = closestMidnightTime - 7 * 24 * 60 * 60 * 1000;
             String formattedTimeStamp = dateFormat.format(Long.parseLong(message.getTimestamp()));
-            if (Long.parseLong(message.getTimestamp()) < closestMidnightTime) {
-                SimpleDateFormat weekDateFormat = new SimpleDateFormat("EEE hh.mm aa");
-                formattedTimeStamp = weekDateFormat.format(Long.parseLong(message.getTimestamp()));
-            }
-            if (Long.parseLong(message.getTimestamp()) < closestWeekTime) {
-                SimpleDateFormat oldDateFormat = new SimpleDateFormat("dd-MM-YYYY hh.mm aa");
-                formattedTimeStamp = oldDateFormat.format(Long.parseLong(message.getTimestamp()));
-            }
             mTime.setText(formattedTimeStamp);
             if (message.getMessage().isEmpty()) {
                 if (!message.getMediaUrlList().isEmpty()) {
+                    itemView.setVisibility(View.VISIBLE);
                     Glide.with(itemView.getContext())
                             .load(Uri.parse(message.getMediaUrlList().get(0)))
                             .override(400, 400)
@@ -144,6 +140,7 @@ public class MessageAdapter extends RecyclerView.Adapter {
                 }
             } else {
                 if (!message.getMediaUrlList().isEmpty()) {
+                    itemView.setVisibility(View.VISIBLE);
                     Glide.with(itemView.getContext())
                             .load(Uri.parse(message.getMediaUrlList().get(0)))
                             .override(400, 400)
@@ -186,21 +183,11 @@ public class MessageAdapter extends RecyclerView.Adapter {
         void bind(final MessageObject message) {
             mMessage.setText(message.getMessage());
             SimpleDateFormat dateFormat = new SimpleDateFormat("hh.mm aa");
-            Long timeFromMidnight = (System.currentTimeMillis()) % (24 * 60 * 60 * 1000);
-            Long closestMidnightTime = (System.currentTimeMillis()) - timeFromMidnight;
-            Long closestWeekTime = closestMidnightTime - 7 * 24 * 60 * 60 * 1000;
             String formattedTimeStamp = dateFormat.format(Long.parseLong(message.getTimestamp()));
-            if (Long.parseLong(message.getTimestamp()) < closestMidnightTime) {
-                SimpleDateFormat weekDateFormat = new SimpleDateFormat("EEE hh.mm aa");
-                formattedTimeStamp = weekDateFormat.format(Long.parseLong(message.getTimestamp()));
-            }
-            if (Long.parseLong(message.getTimestamp()) < closestWeekTime) {
-                SimpleDateFormat oldDateFormat = new SimpleDateFormat("dd-MM-YYYY hh.mm aa");
-                formattedTimeStamp = oldDateFormat.format(Long.parseLong(message.getTimestamp()));
-            }
             mTime.setText(formattedTimeStamp);
             if (message.getMessage().isEmpty()) {
                 if (!message.getMediaUrlList().isEmpty()) {
+                    itemView.setVisibility(View.VISIBLE);
                     Glide.with(itemView.getContext())
                             .load(Uri.parse(message.getMediaUrlList().get(0)))
                             .override(400, 400)
@@ -225,6 +212,7 @@ public class MessageAdapter extends RecyclerView.Adapter {
                 }
             } else {
                 if (!message.getMediaUrlList().isEmpty()) {
+                    itemView.setVisibility(View.VISIBLE);
                     Glide.with(itemView.getContext())
                             .load(Uri.parse(message.getMediaUrlList().get(0)))
                             .override(600, 600)

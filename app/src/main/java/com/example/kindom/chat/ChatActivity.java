@@ -242,8 +242,13 @@ public class ChatActivity extends AppCompatActivity {
         mMessage.setText(null);
         mediaUriList.clear();
         mediaIdList.clear();
-        mMediaAdapter.notifyDataSetChanged();
-        mChatAdapter.notifyDataSetChanged();
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                mMediaAdapter.notifyDataSetChanged();
+                initializeMessages();
+            }
+        });
     }
 
     /**
@@ -251,6 +256,7 @@ public class ChatActivity extends AppCompatActivity {
      */
     private void initializeMessages() {
         RecyclerView mChat = findViewById(R.id.chat_message_list);
+        mChat.getRecycledViewPool().setMaxRecycledViews(0, 0);
         mChat.setNestedScrollingEnabled(false);
         mChat.setHasFixedSize(false);
         mChatLayoutManager = new LinearLayoutManager(getApplicationContext(), RecyclerView.VERTICAL, false);
