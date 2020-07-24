@@ -174,25 +174,27 @@ public class HomeFragment extends Fragment implements LoaderManager.LoaderCallba
                 User user = dataSnapshot.getValue(User.class);
                 assert user != null;
 
-                // Grant the admin access to manage news
-                if (user.getUserGroup().equals(User.USER_GROUP_ADMIN)) {
-                    IS_ADMIN = true;
-                    FloatingActionButton manageNewsFab = Objects.requireNonNull(getActivity()).findViewById(R.id.home_admin_add_news_fab);
-                    manageNewsFab.setVisibility(View.VISIBLE);
-                    manageNewsFab.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            Context context = getContext();
-                            Intent intent = new Intent(context, HomeAdminAddNewsActivity.class);
-                            assert context != null;
-                            context.startActivity(intent);
-                        }
-                    });
-                }
+                if (getActivity() != null) {
+                    // Grant the admin access to manage news
+                    if (user.getUserGroup().equals(User.USER_GROUP_ADMIN)) {
+                        IS_ADMIN = true;
+                        FloatingActionButton manageNewsFab = getActivity().findViewById(R.id.home_admin_add_news_fab);
+                        manageNewsFab.setVisibility(View.VISIBLE);
+                        manageNewsFab.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                Context context = getContext();
+                                Intent intent = new Intent(context, HomeAdminAddNewsActivity.class);
+                                assert context != null;
+                                context.startActivity(intent);
+                            }
+                        });
+                    }
 
-                // Start loader to query weather information based on the user's region
-                mRegion = Region.getRegion(user.getPostalCode());
-                getLoaderManager().initLoader(0, null, HomeFragment.this);
+                    // Start loader to query weather information based on the user's region
+                    mRegion = Region.getRegion(user.getPostalCode());
+                    getLoaderManager().initLoader(0, null, HomeFragment.this);
+                }
             }
 
             @Override
