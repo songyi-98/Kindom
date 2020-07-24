@@ -84,7 +84,7 @@ public class MessageAdapter extends RecyclerView.Adapter {
             super(view);
             mMessage = view.findViewById(R.id.chat_text_body);
             mTime = view.findViewById(R.id.chat_text_time);
-            mLayout = view.findViewById(R.id.message_received_layout);
+            mLayout = view.findViewById(R.id.message_sent_layout);
             mImageBody = view.findViewById(R.id.chat_image_body);
         }
 
@@ -93,22 +93,54 @@ public class MessageAdapter extends RecyclerView.Adapter {
             SimpleDateFormat dateFormat = new SimpleDateFormat("hh.mm aa");
             String formattedTimeStamp = dateFormat.format(Long.parseLong(message.getTimestamp()));
             mTime.setText(formattedTimeStamp);
-            if (!message.getMediaUrlList().isEmpty()) {
-                Glide.with(itemView.getContext())
-                        .load(Uri.parse(message.getMediaUrlList().get(0)))
-                        .override(400, 400)
-                        .into(mImageBody);
-                mImageBody.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        new ImageViewer.Builder(itemView.getContext(), message.getMediaUrlList())
-                                .setStartPosition(0)
-                                .show();
-                    }
-                });
-                mMessage.setVisibility(View.GONE);
+            if (message.getMessage().isEmpty()) {
+                if (!message.getMediaUrlList().isEmpty()) {
+                    Glide.with(itemView.getContext())
+                            .load(Uri.parse(message.getMediaUrlList().get(0)))
+                            .override(400, 400)
+                            .into(mImageBody);
+                    mImageBody.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            new ImageViewer.Builder(itemView.getContext(), message.getMediaUrlList())
+                                    .setStartPosition(0)
+                                    .show();
+                        }
+                    });
+                    mMessage.setVisibility(View.GONE);
+                    ConstraintLayout.LayoutParams newParams = new ConstraintLayout.LayoutParams(
+                            ConstraintLayout.LayoutParams.WRAP_CONTENT,
+                            ConstraintLayout.LayoutParams.WRAP_CONTENT);
+                    newParams.rightToLeft = R.id.chat_image_body;
+                    newParams.bottomToBottom = R.id.chat_image_body;
+                    mTime.setLayoutParams(newParams);
+                } else {
+                    mImageBody.setVisibility(View.GONE);
+                }
             } else {
-                mImageBody.setVisibility(View.GONE);
+                if (!message.getMediaUrlList().isEmpty()) {
+                    Glide.with(itemView.getContext())
+                            .load(Uri.parse(message.getMediaUrlList().get(0)))
+                            .override(400, 400)
+                            .into(mImageBody);
+                    mImageBody.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            new ImageViewer.Builder(itemView.getContext(), message.getMediaUrlList())
+                                    .setStartPosition(0)
+                                    .show();
+                        }
+                    });
+                    ConstraintLayout.LayoutParams newParams = new ConstraintLayout.LayoutParams(
+                            ConstraintLayout.LayoutParams.MATCH_CONSTRAINT,
+                            ConstraintLayout.LayoutParams.WRAP_CONTENT);
+                    newParams.topToBottom = R.id.chat_image_body;
+                    newParams.rightToRight = R.id.chat_image_body;
+                    newParams.leftToLeft = R.id.chat_image_body;
+                    mMessage.setLayoutParams(newParams);
+                } else {
+                    mImageBody.setVisibility(View.GONE);
+                }
             }
         }
     }
