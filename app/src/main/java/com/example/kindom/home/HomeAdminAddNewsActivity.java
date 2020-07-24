@@ -45,7 +45,7 @@ public class HomeAdminAddNewsActivity extends AppCompatActivity {
     private MaterialButtonToggleGroup mNewsType;
     private MaterialButton mAddNewsButton;
     private boolean isValidImage = false;
-    private boolean isValidType = false;
+    private boolean isCheckedNewsType = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -133,7 +133,8 @@ public class HomeAdminAddNewsActivity extends AppCompatActivity {
         mNewsType.addOnButtonCheckedListener(new MaterialButtonToggleGroup.OnButtonCheckedListener() {
             @Override
             public void onButtonChecked(MaterialButtonToggleGroup group, int checkedId, boolean isChecked) {
-                isValidType = isChecked;
+                isCheckedNewsType = mNewsType.getCheckedButtonId() == R.id.home_admin_news_type_neighbourhood ||
+                        mNewsType.getCheckedButtonId() == R.id.home_admin_news_type_singapore;
             }
         });
     }
@@ -147,7 +148,7 @@ public class HomeAdminAddNewsActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if (!isValidImage) {
                     Alert.showAlertDialog(HomeAdminAddNewsActivity.this, getString(R.string.error_news_image_empty));
-                } else if (!isValidType) {
+                } else if (!isCheckedNewsType) {
                     Alert.showAlertDialog(HomeAdminAddNewsActivity.this, getString(R.string.error_news_type));
                 } else {
                     int checkedId = mNewsType.getCheckedButtonId();

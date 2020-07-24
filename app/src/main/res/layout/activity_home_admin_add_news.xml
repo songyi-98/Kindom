@@ -85,6 +85,7 @@
             android:text="@string/home_admin_news_type_neighbourhood" />
 
         <Button
+            android:id="@+id/home_admin_news_type_singapore"
             style="?attr/materialButtonOutlinedStyle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
