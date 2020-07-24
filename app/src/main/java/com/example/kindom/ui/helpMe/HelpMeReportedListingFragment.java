@@ -163,6 +163,8 @@ public class HelpMeReportedListingFragment extends Fragment {
 
             if (mAdapter.getItemCount() == 0) {
                 mView.findViewById(R.id.help_me_reported_listing_empty).setVisibility(View.VISIBLE);
+            } else {
+                mView.findViewById(R.id.help_me_reported_listing_empty).setVisibility(View.GONE);
             }
 
             Toast.makeText(getContext(), R.string.help_me_all_listing_refresh_toast, Toast.LENGTH_SHORT).show();
