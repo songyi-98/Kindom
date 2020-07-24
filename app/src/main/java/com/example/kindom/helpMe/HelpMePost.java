@@ -19,6 +19,7 @@ public class HelpMePost implements Serializable {
     private String date;
     private String time;
     private String description;
+    private boolean isReported;
 
     public HelpMePost() {
         // Default constructor required for calls to DataSnapshot.getValue(HelpMePost.class)
@@ -35,6 +36,7 @@ public class HelpMePost implements Serializable {
         this.date = date;
         this.time = time;
         this.description = description;
+        this.isReported = false;
     }
 
     public long getTimeCreated() {
@@ -115,5 +117,13 @@ public class HelpMePost implements Serializable {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public boolean isReported() {
+        return isReported;
+    }
+
+    public void setReported(boolean reported) {
+        isReported = reported;
     }
 }

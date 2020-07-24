@@ -8,6 +8,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
@@ -70,7 +71,15 @@ public class HelpMePostDetailsActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == R.id.menu_report_listing) {
-            // TODO: Implement report listing feature
+            mPost.setReported(true);
+            DatabaseReference uploadRef = FirebaseDatabase
+                    .getInstance()
+                    .getReference("helpMe")
+                    .child(mPost.getRc())
+                    .child(mPost.getUserUid())
+                    .child(String.valueOf(mPost.getTimeCreated()));
+            uploadRef.child("reported").setValue(true);
+            Toast.makeText(this, R.string.help_me_post_reported, Toast.LENGTH_SHORT).show();
             return true;
         }
         return super.onOptionsItemSelected(item);

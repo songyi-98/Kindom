@@ -5,14 +5,14 @@
     android:layout_height="match_parent">
 
     <ProgressBar
-        android:id="@+id/help_me_all_listing_progress_circular"
+        android:id="@+id/help_me_reported_listing_progress_circular"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal|center_vertical"
         android:indeterminate="true" />
 
     <TextView
-        android:id="@+id/help_me_all_listing_empty"
+        android:id="@+id/help_me_reported_listing_empty"
         style="@style/TextAppearance.MaterialComponents.Subtitle1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -21,13 +21,13 @@
         android:visibility="invisible" />
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-        android:id="@+id/help_me_all_listing_swipe_container"
+        android:id="@+id/help_me_reported_listing_swipe_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".ui.helpMe.HelpMeAllListingFragment">
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/help_me_all_listing_recycler_view"
+            android:id="@+id/help_me_reported_listing_recycler_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
