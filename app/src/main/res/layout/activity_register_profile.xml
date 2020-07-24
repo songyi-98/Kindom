@@ -102,6 +102,7 @@
             android:text="@string/user_group_admin_button" />
 
         <Button
+            android:id="@+id/user_group_user"
             style="?attr/materialButtonOutlinedStyle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"

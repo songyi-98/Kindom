@@ -88,7 +88,7 @@ public class RegisterProfileActivity extends AppCompatActivity implements Loader
             file = getAssets().open("list_rc.xls");
             HSSFWorkbook workbook = new HSSFWorkbook(file);
             HSSFSheet sheet = workbook.getSheetAt(0);
-            for (Row row: sheet) {
+            for (Row row : sheet) {
                 Cell cell = row.getCell(0, Row.MissingCellPolicy.RETURN_BLANK_AS_NULL);
                 if (cell == null) {
                     break;
@@ -242,7 +242,8 @@ public class RegisterProfileActivity extends AppCompatActivity implements Loader
         mUserGroup.addOnButtonCheckedListener(new MaterialButtonToggleGroup.OnButtonCheckedListener() {
             @Override
             public void onButtonChecked(MaterialButtonToggleGroup group, int checkedId, boolean isChecked) {
-                isCheckedUserGroup = isChecked;
+                isCheckedUserGroup = mUserGroup.getCheckedButtonId() == R.id.user_group_admin ||
+                        mUserGroup.getCheckedButtonId() == R.id.user_group_user;
             }
         });
     }
