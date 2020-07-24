@@ -138,7 +138,7 @@ public class HelpMeReportedListingAdapter extends RecyclerView.Adapter<HelpMeRep
                         .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                mUserPostsRef.child(currPost.getRc()).child(FirebaseHandler.getCurrentUserUid()).child(String.valueOf(currPost.getTimeCreated())).removeValue();
+                                mUserPostsRef.child(currPost.getRc()).child(currPost.getUserUid()).child(String.valueOf(currPost.getTimeCreated())).removeValue();
                                 mFragment.refresh();
                             }
                         })
