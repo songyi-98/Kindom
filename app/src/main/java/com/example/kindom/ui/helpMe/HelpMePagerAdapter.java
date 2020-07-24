@@ -6,20 +6,25 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentStatePagerAdapter;
 
 public class HelpMePagerAdapter extends FragmentStatePagerAdapter {
-    final int mNumOfTabs;
 
-    public HelpMePagerAdapter(@NonNull FragmentManager fm, int behavior, int numOfTabs) {
+    final int mNumOfTabs;
+    private boolean mIsAdmin;
+
+    public HelpMePagerAdapter(@NonNull FragmentManager fm, int behavior, int numOfTabs, boolean isAdmin) {
         super(fm, behavior);
         mNumOfTabs = numOfTabs;
+        mIsAdmin = isAdmin;
     }
 
     @NonNull
     @Override
     public Fragment getItem(int position) {
-        switch (position) {
-            case 0: return new HelpMeAllListingFragment();
-            case 1: return new HelpMeUserListingFragment();
-            default: return new Fragment();
+        if (position == 0) {
+            return new HelpMeAllListingFragment();
+        } else if (position == 1 && mIsAdmin) {
+            return new HelpMeReportedListingFragment();
+        } else {
+            return new HelpMeUserListingFragment();
         }
     }
 
