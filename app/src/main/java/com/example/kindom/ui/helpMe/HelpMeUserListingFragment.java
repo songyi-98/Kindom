@@ -139,6 +139,8 @@ public class HelpMeUserListingFragment extends Fragment {
 
             if (mAdapter.getItemCount() == 0) {
                 mView.findViewById(R.id.help_me_user_listing_empty).setVisibility(View.VISIBLE);
+            } else {
+                mView.findViewById(R.id.help_me_user_listing_empty).setVisibility(View.GONE);
             }
         }
     }
