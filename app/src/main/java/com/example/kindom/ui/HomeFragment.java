@@ -218,11 +218,6 @@ public class HomeFragment extends Fragment implements LoaderManager.LoaderCallba
             Objects.requireNonNull(getActivity()).findViewById(R.id.home_singapore_no_news).setVisibility(View.VISIBLE);
         }
 
-        mNeighbourhoodImages.clear();
-        mSingaporeImages.clear();
-        mNeighbourhoodAdapter.notifyDataSetChanged();
-        mSingaporeAdapter.notifyDataSetChanged();
-
         retrieveNeighbourhoodNews();
         retrieveSingaporeNews();
     }
@@ -261,8 +256,10 @@ public class HomeFragment extends Fragment implements LoaderManager.LoaderCallba
                             mNewsStorageRef.child(id).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                                 @Override
                                 public void onSuccess(Uri uri) {
-                                    mNeighbourhoodImages.add(uri);
-                                    createNeighbourhoodNews();
+                                    if (!mNeighbourhoodImages.contains(uri)) {
+                                        mNeighbourhoodImages.add(uri);
+                                        createNeighbourhoodNews();
+                                    }
                                 }
                             }).addOnFailureListener(new OnFailureListener() {
                                 @Override
@@ -350,8 +347,10 @@ public class HomeFragment extends Fragment implements LoaderManager.LoaderCallba
                     mNewsStorageRef.child(id).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                         @Override
                         public void onSuccess(Uri uri) {
-                            mSingaporeImages.add(uri);
-                            createSingaporeNews();
+                            if (!mSingaporeImages.contains(uri)) {
+                                mSingaporeImages.add(uri);
+                                createSingaporeNews();
+                            }
                         }
                     }).addOnFailureListener(new OnFailureListener() {
                         @Override
