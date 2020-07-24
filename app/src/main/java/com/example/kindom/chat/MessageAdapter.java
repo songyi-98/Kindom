@@ -1,11 +1,13 @@
 package com.example.kindom.chat;
 
+import android.annotation.SuppressLint;
 import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -18,11 +20,13 @@ import com.stfalcon.frescoimageviewer.ImageViewer;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 public class MessageAdapter extends RecyclerView.Adapter {
 
     private static final int VIEW_TYPE_MESSAGE_SENT = 1;
     private static final int VIEW_TYPE_MESSAGE_RECEIVED = 2;
+    private static final int VIEW_TYPE_MESSAGE_TIME = 3;
 
     ArrayList<MessageObject> messageList;
 
@@ -37,6 +41,9 @@ public class MessageAdapter extends RecyclerView.Adapter {
         if (message.getSenderId().equals(FirebaseAuth.getInstance().getUid())) {
             // If the current user is the sender of the message
             return VIEW_TYPE_MESSAGE_SENT;
+        } else if (message.getSenderId().equals("Time")) {
+            // The message is a time divider
+            return VIEW_TYPE_MESSAGE_TIME;
         } else {
             // If some other user sent the message
             return VIEW_TYPE_MESSAGE_RECEIVED;
@@ -54,6 +61,10 @@ public class MessageAdapter extends RecyclerView.Adapter {
             View view = LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.item_message_received, parent, false);
             return new ReceivedMessageViewHolder(view);
+        } else if (viewType == VIEW_TYPE_MESSAGE_TIME) {
+            View view = LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.item_timestamp, parent, false);
+            return new TimeMessageViewHolder(view);
         }
         return null;
     }
@@ -67,6 +78,9 @@ public class MessageAdapter extends RecyclerView.Adapter {
                 break;
             case VIEW_TYPE_MESSAGE_RECEIVED:
                 ((ReceivedMessageViewHolder) holder).bind(message);
+                break;
+            case VIEW_TYPE_MESSAGE_TIME:
+                ((TimeMessageViewHolder) holder).bind(message);
         }
     }
 
@@ -85,13 +99,24 @@ public class MessageAdapter extends RecyclerView.Adapter {
             mMessage = view.findViewById(R.id.chat_text_body);
             mTime = view.findViewById(R.id.chat_text_time);
             mLayout = view.findViewById(R.id.message_sent_layout);
-            mImageBody = view.findViewById(R.id.chat_image_body);
+            mImageBody = view.findViewById(R.id.chat_image_sent_body);
         }
 
         void bind(final MessageObject message) {
             mMessage.setText(message.getMessage());
             SimpleDateFormat dateFormat = new SimpleDateFormat("hh.mm aa");
+            Long timeFromMidnight = (System.currentTimeMillis()) % (24 * 60 * 60 * 1000);
+            Long closestMidnightTime = (System.currentTimeMillis()) - timeFromMidnight;
+            Long closestWeekTime = closestMidnightTime - 7 * 24 * 60 * 60 * 1000;
             String formattedTimeStamp = dateFormat.format(Long.parseLong(message.getTimestamp()));
+            if (Long.parseLong(message.getTimestamp()) < closestMidnightTime) {
+                SimpleDateFormat weekDateFormat = new SimpleDateFormat("EEE hh.mm aa");
+                formattedTimeStamp = weekDateFormat.format(Long.parseLong(message.getTimestamp()));
+            }
+            if (Long.parseLong(message.getTimestamp()) < closestWeekTime) {
+                SimpleDateFormat oldDateFormat = new SimpleDateFormat("dd-MM-YYYY hh.mm aa");
+                formattedTimeStamp = oldDateFormat.format(Long.parseLong(message.getTimestamp()));
+            }
             mTime.setText(formattedTimeStamp);
             if (message.getMessage().isEmpty()) {
                 if (!message.getMediaUrlList().isEmpty()) {
@@ -111,8 +136,8 @@ public class MessageAdapter extends RecyclerView.Adapter {
                     ConstraintLayout.LayoutParams newParams = new ConstraintLayout.LayoutParams(
                             ConstraintLayout.LayoutParams.WRAP_CONTENT,
                             ConstraintLayout.LayoutParams.WRAP_CONTENT);
-                    newParams.rightToLeft = R.id.chat_image_body;
-                    newParams.bottomToBottom = R.id.chat_image_body;
+                    newParams.rightToLeft = R.id.chat_image_sent_body;
+                    newParams.bottomToBottom = R.id.chat_image_sent_body;
                     mTime.setLayoutParams(newParams);
                 } else {
                     mImageBody.setVisibility(View.GONE);
@@ -134,9 +159,9 @@ public class MessageAdapter extends RecyclerView.Adapter {
                     ConstraintLayout.LayoutParams newParams = new ConstraintLayout.LayoutParams(
                             ConstraintLayout.LayoutParams.MATCH_CONSTRAINT,
                             ConstraintLayout.LayoutParams.WRAP_CONTENT);
-                    newParams.topToBottom = R.id.chat_image_body;
-                    newParams.rightToRight = R.id.chat_image_body;
-                    newParams.leftToLeft = R.id.chat_image_body;
+                    newParams.topToBottom = R.id.chat_image_sent_body;
+                    newParams.rightToRight = R.id.chat_image_sent_body;
+                    newParams.leftToLeft = R.id.chat_image_sent_body;
                     mMessage.setLayoutParams(newParams);
                 } else {
                     mImageBody.setVisibility(View.GONE);
@@ -155,38 +180,105 @@ public class MessageAdapter extends RecyclerView.Adapter {
             mMessage = view.findViewById(R.id.chat_text_body);
             mTime = view.findViewById(R.id.chat_text_time);
             mLayout = view.findViewById(R.id.message_received_layout);
-            mImageBody = view.findViewById(R.id.chat_image_body);
+            mImageBody = view.findViewById(R.id.chat_image_received_body);
         }
 
         void bind(final MessageObject message) {
-            if (message.getMessage().equals("")) {
-                mMessage.setVisibility(View.GONE);
-            } else {
-                mMessage.setText(message.getMessage());
+            mMessage.setText(message.getMessage());
+            SimpleDateFormat dateFormat = new SimpleDateFormat("hh.mm aa");
+            Long timeFromMidnight = (System.currentTimeMillis()) % (24 * 60 * 60 * 1000);
+            Long closestMidnightTime = (System.currentTimeMillis()) - timeFromMidnight;
+            Long closestWeekTime = closestMidnightTime - 7 * 24 * 60 * 60 * 1000;
+            String formattedTimeStamp = dateFormat.format(Long.parseLong(message.getTimestamp()));
+            if (Long.parseLong(message.getTimestamp()) < closestMidnightTime) {
+                SimpleDateFormat weekDateFormat = new SimpleDateFormat("EEE hh.mm aa");
+                formattedTimeStamp = weekDateFormat.format(Long.parseLong(message.getTimestamp()));
             }
-            if (!message.getTimestamp().equals("")) {
-                SimpleDateFormat dateFormat = new SimpleDateFormat("hh.mm aa");
-                String formattedTimeStamp = dateFormat.format(Long.parseLong(message.getTimestamp()));
-                mTime.setText(formattedTimeStamp);
-            } else {
-                mTime.setVisibility(View.GONE);
+            if (Long.parseLong(message.getTimestamp()) < closestWeekTime) {
+                SimpleDateFormat oldDateFormat = new SimpleDateFormat("dd-MM-YYYY hh.mm aa");
+                formattedTimeStamp = oldDateFormat.format(Long.parseLong(message.getTimestamp()));
             }
-            if (!message.getMediaUrlList().isEmpty()) {
-                Glide.with(itemView.getContext())
-                        .load(Uri.parse(message.getMediaUrlList().get(0)))
-                        .override(400, 400)
-                        .into(mImageBody);
-                mImageBody.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        new ImageViewer.Builder(itemView.getContext(), message.getMediaUrlList())
-                                .setStartPosition(0)
-                                .show();
-                    }
-                });
-                mMessage.setVisibility(View.GONE);
+            mTime.setText(formattedTimeStamp);
+            if (message.getMessage().isEmpty()) {
+                if (!message.getMediaUrlList().isEmpty()) {
+                    Glide.with(itemView.getContext())
+                            .load(Uri.parse(message.getMediaUrlList().get(0)))
+                            .override(400, 400)
+                            .into(mImageBody);
+                    mImageBody.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            new ImageViewer.Builder(itemView.getContext(), message.getMediaUrlList())
+                                    .setStartPosition(0)
+                                    .show();
+                        }
+                    });
+                    mMessage.setVisibility(View.GONE);
+                    ConstraintLayout.LayoutParams newParams = new ConstraintLayout.LayoutParams(
+                            ConstraintLayout.LayoutParams.WRAP_CONTENT,
+                            ConstraintLayout.LayoutParams.WRAP_CONTENT);
+                    newParams.leftToRight = R.id.chat_image_received_body;
+                    newParams.bottomToBottom = R.id.chat_image_received_body;
+                    mTime.setLayoutParams(newParams);
+                } else {
+                    mImageBody.setVisibility(View.GONE);
+                }
             } else {
-                mImageBody.setVisibility(View.GONE);
+                if (!message.getMediaUrlList().isEmpty()) {
+                    Glide.with(itemView.getContext())
+                            .load(Uri.parse(message.getMediaUrlList().get(0)))
+                            .override(600, 600)
+                            .into(mImageBody);
+                    mImageBody.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            new ImageViewer.Builder(itemView.getContext(), message.getMediaUrlList())
+                                    .setStartPosition(0)
+                                    .show();
+                        }
+                    });
+                    ConstraintLayout.LayoutParams newParams = new ConstraintLayout.LayoutParams(
+                            ConstraintLayout.LayoutParams.MATCH_CONSTRAINT,
+                            ConstraintLayout.LayoutParams.WRAP_CONTENT);
+                    newParams.topToBottom = R.id.chat_image_received_body;
+                    newParams.rightToRight = R.id.chat_image_received_body;
+                    newParams.leftToLeft = R.id.chat_image_received_body;
+                    mMessage.setLayoutParams(newParams);
+                } else {
+                    mImageBody.setVisibility(View.GONE);
+                }
+            }
+        }
+    }
+
+    public class TimeMessageViewHolder extends RecyclerView.ViewHolder {
+        private TextView mTimestamp;
+        private ConstraintLayout mLayout;
+
+        public TimeMessageViewHolder(View view) {
+            super(view);
+            mTimestamp = view.findViewById(R.id.chat_time_body);
+            mLayout = view.findViewById(R.id.item_timestamp_layout);
+        }
+
+        @SuppressLint("SetTextI18n")
+        void bind(final MessageObject message) {
+            Long timeFromMidnight = (System.currentTimeMillis()) % (24 * 60 * 60 * 1000);
+            Long closestMidnightTime = (System.currentTimeMillis()) - timeFromMidnight;
+            Long closestWeekTime = closestMidnightTime - 7 * 24 * 60 * 60 * 1000;
+            mTimestamp.setText("Today");
+            if (Long.parseLong(message.getTimestamp()) < closestMidnightTime) {
+                mTimestamp.setText("Yesterday");
+            }
+            if (Long.parseLong(message.getTimestamp()) < closestWeekTime) {
+                SimpleDateFormat oldDateFormat = new SimpleDateFormat("MMM dd");
+                String formattedTimeStamp = oldDateFormat.format(Long.parseLong(message.getTimestamp()));
+                mTimestamp.setText(formattedTimeStamp);
+            } else if (Long.parseLong(message.getTimestamp()) < closestWeekTime - closestWeekTime % 365 * 24 * 60 * 60 * 1000) {
+                SimpleDateFormat olderDateFormat = new SimpleDateFormat("MMM dd YYYY");
+                String formattedTimeStamp = olderDateFormat.format(Long.parseLong(message.getTimestamp()));
+                mTimestamp.setText(formattedTimeStamp);
+                mTimestamp.setVisibility(View.GONE);
             }
         }
     }
