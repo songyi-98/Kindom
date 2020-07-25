@@ -60,6 +60,11 @@
             android:parentActivityName=".HomeActivity"
             android:screenOrientation="portrait" />
         <activity
+            android:name=".helpMe.HelpMeOfferActivity"
+            android:label="@string/help_me_view_offer_label"
+            android:parentActivityName=".HomeActivity"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".chat.ChatActivity"
             android:screenOrientation="portrait" />
     </application>

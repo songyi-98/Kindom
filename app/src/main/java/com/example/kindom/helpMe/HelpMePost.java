@@ -1,8 +1,10 @@
 package com.example.kindom.helpMe;
 
+import com.example.kindom.User;
 import com.example.kindom.utils.FirebaseHandler;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 /**
  * Represent a Help Me post
@@ -20,6 +22,7 @@ public class HelpMePost implements Serializable {
     private String time;
     private String description;
     private boolean isReported;
+    private ArrayList<String> usersOfferingHelp;
 
     public HelpMePost() {
         // Default constructor required for calls to DataSnapshot.getValue(HelpMePost.class)
@@ -37,6 +40,8 @@ public class HelpMePost implements Serializable {
         this.time = time;
         this.description = description;
         this.isReported = false;
+        this.usersOfferingHelp = new ArrayList<>();
+        this.usersOfferingHelp.add("list");
     }
 
     public long getTimeCreated() {
@@ -125,5 +130,13 @@ public class HelpMePost implements Serializable {
 
     public void setReported(boolean reported) {
         isReported = reported;
+    }
+
+    public ArrayList<String> getUsersOfferingHelp() {
+        return usersOfferingHelp;
+    }
+
+    public void setUsersOfferingHelp(ArrayList<String> usersOfferingHelp) {
+        this.usersOfferingHelp = usersOfferingHelp;
     }
 }
