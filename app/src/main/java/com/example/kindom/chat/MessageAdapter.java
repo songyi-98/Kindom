@@ -6,11 +6,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -32,6 +34,11 @@ public class MessageAdapter extends RecyclerView.Adapter {
 
     public MessageAdapter(ArrayList<MessageObject> Message) {
         this.messageList = Message;
+    }
+
+    @Override
+    public long getItemId(int position) {
+        return position;
     }
 
     @Override
@@ -72,6 +79,8 @@ public class MessageAdapter extends RecyclerView.Adapter {
     @Override
     public void onBindViewHolder(@NonNull final RecyclerView.ViewHolder holder, final int position) {
         final MessageObject message = (MessageObject) messageList.get(position);
+        //bad fix
+        holder.setIsRecyclable(false);
         switch (holder.getItemViewType()) {
             case VIEW_TYPE_MESSAGE_SENT:
                 ((SentMessageViewHolder) holder).bind(message);
@@ -82,6 +91,7 @@ public class MessageAdapter extends RecyclerView.Adapter {
             case VIEW_TYPE_MESSAGE_TIME:
                 ((TimeMessageViewHolder) holder).bind(message);
         }
+        LinearLayoutManager debugLayoutManager = new LinearLayoutManager(holder.itemView.getContext());
     }
 
     @Override
@@ -95,7 +105,7 @@ public class MessageAdapter extends RecyclerView.Adapter {
         holder.itemView.setVisibility(View.VISIBLE);
     }
 
-    public class SentMessageViewHolder extends RecyclerView.ViewHolder {
+    public static class SentMessageViewHolder extends RecyclerView.ViewHolder {
         private TextView mMessage, mTime;
         public ConstraintLayout mLayout;
         private ImageView mImageBody;
@@ -167,7 +177,7 @@ public class MessageAdapter extends RecyclerView.Adapter {
         }
     }
 
-    public class ReceivedMessageViewHolder extends RecyclerView.ViewHolder {
+    public static class ReceivedMessageViewHolder extends RecyclerView.ViewHolder {
         private TextView mMessage, mTime;
         private ImageView mImageBody;
         public ConstraintLayout mLayout;
@@ -239,7 +249,7 @@ public class MessageAdapter extends RecyclerView.Adapter {
         }
     }
 
-    public class TimeMessageViewHolder extends RecyclerView.ViewHolder {
+    public static class TimeMessageViewHolder extends RecyclerView.ViewHolder {
         private TextView mTimestamp;
         private ConstraintLayout mLayout;
 
