@@ -35,8 +35,8 @@
         android:id="@+id/my_profile_user_group"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/my_profile_name"
         tools:text="User" />
 
@@ -87,4 +87,28 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/my_profile_postal_code_header"
         tools:text="123456" />
+
+    <TextView
+        android:id="@+id/my_profile_rc_header"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:drawableStart="@drawable/ic_round_group_24"
+        android:drawablePadding="8dp"
+        android:text="@string/my_profile_rc_header"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/my_profile_postal_code" />
+
+    <TextView
+        android:id="@+id/my_profile_rc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/my_profile_rc_header"
+        tools:text="ABC" />
 </androidx.constraintlayout.widget.ConstraintLayout>
