@@ -34,6 +34,7 @@ public class MyProfileActivity extends AppCompatActivity {
     private Chip mUserGroupChip;
     private TextView mEmailField;
     private TextView mPostalCodeField;
+    private TextView mRcField;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,8 +63,7 @@ public class MyProfileActivity extends AppCompatActivity {
         mUserGroupChip = findViewById(R.id.my_profile_user_group);
         mEmailField = findViewById(R.id.my_profile_email);
         mPostalCodeField = findViewById(R.id.my_profile_postal_code);
-
-        // TODO: Allow user to edit profile and password
+        mRcField = findViewById(R.id.my_profile_rc);
 
         populateFields();
     }
@@ -112,6 +112,7 @@ public class MyProfileActivity extends AppCompatActivity {
                 mUserGroupChip.setText(user.getUserGroup());
                 mEmailField.setText(user.getEmail());
                 mPostalCodeField.setText(String.valueOf(user.getPostalCode()));
+                mRcField.setText(user.getRc());
             }
 
             @Override
