@@ -15,7 +15,7 @@ public class Connection {
 
     public static String makeHttpRequest(URL url) {
         HttpURLConnection connection = null;
-        InputStream inputStream =null;
+        InputStream inputStream = null;
         String jsonResponse = "";
 
         // If the url is null, return early

@@ -15,7 +15,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.kindom.R;
 import com.example.kindom.ui.helpMe.HelpMeReportedListingFragment;
-import com.example.kindom.utils.FirebaseHandler;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.chip.Chip;
 import com.google.firebase.database.DatabaseReference;
@@ -127,7 +126,7 @@ public class HelpMeReportedListingAdapter extends RecyclerView.Adapter<HelpMeRep
                                 // Do nothing
                             }
                         })
-                .show();
+                        .show();
             }
         });
         holder.deleteButton.setOnClickListener(new View.OnClickListener() {

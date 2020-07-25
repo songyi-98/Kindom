@@ -6,9 +6,10 @@ public class ChatObject {
     private String title;
     private String chatUserId;
 
-    public ChatObject() {}
+    public ChatObject() {
+    }
 
-    public ChatObject(String chatId, String title,  String chatUserId) {
+    public ChatObject(String chatId, String title, String chatUserId) {
         this.chatId = chatId;
         this.title = title;
         this.chatUserId = chatUserId;

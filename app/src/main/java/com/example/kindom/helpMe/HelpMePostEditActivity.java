@@ -1,11 +1,5 @@
 package com.example.kindom.helpMe;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.fragment.app.DialogFragment;
-
 import android.app.Activity;
 import android.os.Bundle;
 import android.text.Editable;
@@ -15,11 +9,17 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.DialogFragment;
+
+import com.example.kindom.R;
 import com.example.kindom.User;
 import com.example.kindom.utils.Alert;
 import com.example.kindom.utils.CalendarHandler;
 import com.example.kindom.utils.DatePickerFragment;
-import com.example.kindom.R;
 import com.example.kindom.utils.FirebaseHandler;
 import com.example.kindom.utils.TimePickerFragment;
 import com.example.kindom.utils.Validation;
