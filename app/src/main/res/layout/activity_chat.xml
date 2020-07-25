@@ -10,12 +10,21 @@
         android:id="@+id/toolbar_main"
         layout="@layout/toolbar_main" />
 
+    <ImageView
+        android:id="@+id/chat_back"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:tint="@android:color/white"
+        android:src="@drawable/ic_round_arrow_back_24"/>
+
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/chat_profile_image"
         android:layout_width="32dp"
         android:layout_height="32dp"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginStart="56dp"
+        android:layout_marginTop="12dp"
         tools:src="@drawable/blank_profile_picture" />
 
     <TextView
@@ -23,7 +32,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="12dp"
         android:layout_toEndOf="@id/chat_profile_image"
         android:textColor="#ffffff"
         android:textSize="24sp"
