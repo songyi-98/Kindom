@@ -1,12 +1,10 @@
 package com.example.kindom.helpMe;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -16,11 +14,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import com.example.kindom.R;
-import com.example.kindom.chat.ChatActivity;
+import com.example.kindom.User;
+import com.example.kindom.chat.ChatHandler;
 import com.example.kindom.utils.FirebaseHandler;
-import com.example.kindom.utils.FirebasePushIdGenerator;
+import com.google.android.material.button.MaterialButton;
 import com.google.android.material.chip.Chip;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -28,13 +26,11 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
 
 public class HelpMePostDetailsActivity extends AppCompatActivity {
 
-    HelpMePost mPost;
+    private HelpMePost mPost;
+    private DatabaseReference mUserRef;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +52,9 @@ public class HelpMePostDetailsActivity extends AppCompatActivity {
         if (getIntent().getExtras() != null) {
             mPost = (HelpMePost) getIntent().getSerializableExtra("Post");
         }
+
+        // Initialize Firebase Database
+        mUserRef = FirebaseDatabase.getInstance().getReference("users").child(FirebaseHandler.getCurrentUserUid());
 
         // Set the texts for the post
         setText();
@@ -99,7 +98,8 @@ public class HelpMePostDetailsActivity extends AppCompatActivity {
         TextView timeTextView = findViewById(R.id.help_me_post_time);
         TextView userTextView = findViewById(R.id.help_me_post_user);
         TextView descriptionTextView = findViewById(R.id.help_me_post_description);
-        Button chatButton = findViewById(R.id.help_me_post_chat_button);
+        MaterialButton offerHelpButton = findViewById(R.id.help_me_post_offer_help_button);
+        MaterialButton chatButton = findViewById(R.id.help_me_post_chat_button);
 
         categoryChip.setText(mPost.getCategory());
         titleTextView.setText(mPost.getTitle());
@@ -108,68 +108,43 @@ public class HelpMePostDetailsActivity extends AppCompatActivity {
         timeTextView.setText(mPost.getTime());
         userTextView.setText(mPost.getUser());
         descriptionTextView.setText(mPost.getDescription());
+        offerHelpButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mUserRef.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        User user = snapshot.getValue(User.class);
+                        assert user != null;
+                        String rc = user.getRc();
+                        ArrayList<String> usersOfferingHelp = mPost.getUsersOfferingHelp();
+                        if (!usersOfferingHelp.contains(user.getUid())) {
+                            usersOfferingHelp.add(user.getUid());
+                            DatabaseReference uploadRef = FirebaseDatabase.getInstance()
+                                    .getReference("helpMe")
+                                    .child(rc)
+                                    .child(mPost.getUserUid())
+                                    .child(String.valueOf(mPost.getTimeCreated()));
+                            uploadRef.child("usersOfferingHelp").setValue(usersOfferingHelp);
+                            Toast.makeText(HelpMePostDetailsActivity.this, R.string.help_me_post_offer_received, Toast.LENGTH_SHORT).show();
+
+                        } else {
+                            Toast.makeText(HelpMePostDetailsActivity.this, R.string.help_me_post_offer_received_already, Toast.LENGTH_SHORT).show();
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+                        // Do nothing
+                    }
+                });
+            }
+        });
         chatButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View v) {
-                final Intent intent = new Intent(v.getContext(), ChatActivity.class);
-
-                final ArrayList<String> possibleKey = new ArrayList<>();
-
-                final DatabaseReference postUserDb = FirebaseDatabase.getInstance().getReference().child("users").child(mPost.getUserUid()).child("chatListKeys");
-                final DatabaseReference currentUserDb = FirebaseDatabase.getInstance().getReference().child("users").child(FirebaseHandler.getCurrentUserUid()).child("chatListKeys");
-
-                // Check if a current chat already exists between the two users
-                currentUserDb.addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        if (dataSnapshot.exists()) {
-                            Map<String, Object> newMap = (Map<String, Object>) dataSnapshot.getValue();
-                            if (newMap.containsValue(mPost.getUserUid())) {
-                                String correctKey = null;
-                                for (String key : newMap.keySet()) {
-                                    if (newMap.get(key).equals(mPost.getUserUid())) {
-                                        correctKey = key;
-                                    }
-                                }
-                                if (correctKey != null) {
-                                    possibleKey.add(correctKey);
-                                }
-                            }
-                        }
-
-                        Map<String, Object> newMapCurrentUser = new HashMap<>();
-                        Map<String, Object> newMapPostUser = new HashMap<>();
-                        String chatId = "";
-                        if (possibleKey.isEmpty()) {
-                            // No chat exists yet between the two, create a new chat
-                            chatId = FirebasePushIdGenerator.generatePushId();
-                            newMapCurrentUser.put(chatId, mPost.getUserUid());
-                            newMapPostUser.put(chatId, Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid());
-                            currentUserDb.updateChildren(newMapCurrentUser);
-                            postUserDb.updateChildren(newMapPostUser);
-                        } else {
-                            for (int k = 0; k < possibleKey.size(); k++) {
-                                if (Objects.requireNonNull(dataSnapshot.child(possibleKey.get(k)).getValue()).toString().equals(mPost.getUserUid())) {
-                                    chatId = possibleKey.get(k);
-                                    break;
-                                }
-                            }
-                        }
-
-                        // Start chat activity for user
-                        Bundle bundle = new Bundle();
-                        bundle.putString("CHAT_ID", chatId);
-                        bundle.putString("CHAT_USER_UID", mPost.getUserUid());
-                        bundle.putString("CHAT_USER", mPost.getUser());
-                        intent.putExtras(bundle);
-                        v.getContext().startActivity(intent);
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                    }
-                });
+                new ChatHandler(FirebaseHandler.getCurrentUserUid(), mPost.getUserUid(), mPost.getUser())
+                        .createChat(v);
             }
         });
     }

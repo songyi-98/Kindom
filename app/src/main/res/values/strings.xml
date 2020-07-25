@@ -103,6 +103,14 @@
     <string name="help_me_post_reported">Post is successfully reported</string>
     <string name="list_item_help_me_listing_ignore">Ignore</string>
     <string name="help_me_post_ignore">Are you sure you want to ignore this reported post?</string>
+    <string name="help_me_view_offer_label">View Offer</string>
+    <string name="help_me_post_offer_help">Offer help</string>
+    <string name="help_me_post_offer_received">Thanks for offering to help</string>
+    <string name="help_me_post_offer_received_already">You have already applied to offer help</string>
+    <string name="list_item_help_me_offer_accept_help">Accept</string>
+    <string name="list_item_help_me_offer_decline_help">Decline</string>
+    <string name="help_me_offer_decline">Are you sure you want to decline this user\'s help?</string>
+    <string name="help_me_offer_accept">Are you sure you want to accept this user\'s help?</string>
     <string name="blk">Blk </string>
     <string name="yes">Yes</string>
     <string name="no">No</string>

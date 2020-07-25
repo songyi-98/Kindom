@@ -40,6 +40,8 @@ public class HelpMeUserListingAdapter extends RecyclerView.Adapter<HelpMeUserLis
         public final TextView timeTextView;
         public final MaterialButton editButton;
         public final MaterialButton deleteButton;
+        public final TextView offerHeader;
+        public final MaterialButton offerButton;
 
         public HelpMePostViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -49,6 +51,8 @@ public class HelpMeUserListingAdapter extends RecyclerView.Adapter<HelpMeUserLis
             timeTextView = itemView.findViewById(R.id.list_item_help_me_user_listing_time);
             editButton = itemView.findViewById(R.id.list_item_help_me_user_listing_edit);
             deleteButton = itemView.findViewById(R.id.list_item_help_me_user_listing_delete);
+            offerHeader = itemView.findViewById(R.id.list_item_help_me_user_listing_offer_header);
+            offerButton = itemView.findViewById(R.id.list_item_help_me_user_listing_offer);
         }
     }
 
@@ -93,7 +97,11 @@ public class HelpMeUserListingAdapter extends RecyclerView.Adapter<HelpMeUserLis
                         .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                mUserPostsRef.child(currPost.getRc()).child(FirebaseHandler.getCurrentUserUid()).child(String.valueOf(currPost.getTimeCreated())).removeValue();
+                                mUserPostsRef
+                                        .child(currPost.getRc())
+                                        .child(FirebaseHandler.getCurrentUserUid())
+                                        .child(String.valueOf(currPost.getTimeCreated()))
+                                        .removeValue();
                                 mFragment.refresh();
                             }
                         })
@@ -107,6 +115,26 @@ public class HelpMeUserListingAdapter extends RecyclerView.Adapter<HelpMeUserLis
 
             }
         });
+        int numOfOffers = currPost.getUsersOfferingHelp().size();
+        if (numOfOffers > 1) {
+            holder.offerHeader.setVisibility(View.VISIBLE);
+            String offerText = "";
+            if (numOfOffers == 2) {
+                offerText = "You have 1 offer for help!";
+            } else {
+                offerText = "You have " + (numOfOffers - 1) + "offers for help!";
+            }
+            holder.offerHeader.setText(offerText);
+            holder.offerButton.setVisibility(View.VISIBLE);
+            holder.offerButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(mContext, HelpMeOfferActivity.class);
+                    intent.putExtra("Post", currPost);
+                    mContext.startActivity(intent);
+                }
+            });
+        }
     }
 
     @Override
