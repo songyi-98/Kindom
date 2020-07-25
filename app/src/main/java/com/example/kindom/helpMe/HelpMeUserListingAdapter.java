@@ -35,6 +35,7 @@ public class HelpMeUserListingAdapter extends RecyclerView.Adapter<HelpMeUserLis
     static class HelpMePostViewHolder extends RecyclerView.ViewHolder {
 
         public final Chip categoryChip;
+        public final TextView expiredTextView;
         public final TextView titleTextView;
         public final TextView dateTextView;
         public final TextView timeTextView;
@@ -46,6 +47,7 @@ public class HelpMeUserListingAdapter extends RecyclerView.Adapter<HelpMeUserLis
         public HelpMePostViewHolder(@NonNull View itemView) {
             super(itemView);
             categoryChip = itemView.findViewById(R.id.list_item_help_me_user_listing_category);
+            expiredTextView = itemView.findViewById(R.id.list_item_help_me_user_listing_expired);
             titleTextView = itemView.findViewById(R.id.list_item_help_me_user_listing_title);
             dateTextView = itemView.findViewById(R.id.list_item_help_me_user_listing_date);
             timeTextView = itemView.findViewById(R.id.list_item_help_me_user_listing_time);
@@ -75,12 +77,20 @@ public class HelpMeUserListingAdapter extends RecyclerView.Adapter<HelpMeUserLis
     public void onBindViewHolder(@NonNull HelpMeUserListingAdapter.HelpMePostViewHolder holder, int position) {
         final HelpMePost currPost = mPostList.get(position);
 
-        // TODO: Mark expired posts and allow auto-renew
+        // Check if post is expired
+        String date = currPost.getDate();
+        String time = currPost.getTime();
+        if (CalendarHandler.checkIfExpired(date, time)) {
+            holder.expiredTextView.setVisibility(View.VISIBLE);
+            int color = holder.expiredTextView.getCurrentTextColor();
+            holder.dateTextView.setTextColor(color);
+            holder.timeTextView.setTextColor(color);
+        }
 
         holder.categoryChip.setText(currPost.getCategory());
         holder.titleTextView.setText(currPost.getTitle());
-        holder.dateTextView.setText(CalendarHandler.getSimplifiedDateString(currPost.getDate()));
-        holder.timeTextView.setText(currPost.getTime());
+        holder.dateTextView.setText(CalendarHandler.getSimplifiedDateString(date));
+        holder.timeTextView.setText(time);
         holder.editButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -118,7 +128,7 @@ public class HelpMeUserListingAdapter extends RecyclerView.Adapter<HelpMeUserLis
         int numOfOffers = currPost.getUsersOfferingHelp().size();
         if (numOfOffers > 1) {
             holder.offerHeader.setVisibility(View.VISIBLE);
-            String offerText = "";
+            String offerText;
             if (numOfOffers == 2) {
                 offerText = "You have 1 offer for help!";
             } else {

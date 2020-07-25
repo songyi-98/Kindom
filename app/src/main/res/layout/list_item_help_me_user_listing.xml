@@ -29,6 +29,19 @@
             tools:text="Category" />
 
         <TextView
+            android:id="@+id/list_item_help_me_user_listing_expired"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:text="@string/list_item_help_me_user_listing_expired"
+            android:textColor="@android:color/holo_red_dark"
+            android:textSize="18sp"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
             android:id="@+id/list_item_help_me_user_listing_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

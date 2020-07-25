@@ -116,4 +116,5 @@
     <string name="no">No</string>
     <string name="chat_user_name">Name</string>
     <string name="chat_message_hint">Message</string>
+    <string name="list_item_help_me_user_listing_expired">EXPIRED</string>
 </resources>

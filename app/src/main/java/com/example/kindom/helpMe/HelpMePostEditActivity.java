@@ -91,8 +91,6 @@ public class HelpMePostEditActivity extends AppCompatActivity {
         mDateString = mPost.getDate();
         mTimeString = mPost.getTime();
 
-        // TODO: Check if post is expired
-
         // Initialize user's inputs
         setCategoryDropdownMenu();
         populateInputs();
