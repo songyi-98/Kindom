@@ -41,11 +41,12 @@ public class ChatActivity extends AppCompatActivity {
     private RecyclerView.Adapter mChatAdapter, mMediaAdapter;
     private RecyclerView.LayoutManager mChatLayoutManager;
 
-    ArrayList<MessageObject> messageList;
+    ArrayList<MessageObject> messageList = new ArrayList<>();
 
     private String mChatID;
     private String mChatUserUid;
     private String mChatUser;
+    Long nextMidnightTime = 0L;
 
     DatabaseReference mChatDb;
 
@@ -141,6 +142,11 @@ public class ChatActivity extends AppCompatActivity {
                     if (dataSnapshot.child("timestamp").getValue() != null) {
                         timestamp = Objects.requireNonNull(dataSnapshot.child("timestamp").getValue()).toString();
                     }
+                    if (Long.parseLong(timestamp) > nextMidnightTime) {
+                        Long midnightTimestamp = Long.parseLong(timestamp) - (Long.parseLong(timestamp) % (24 * 60 * 60 * 1000));
+                        messageList.add(new MessageObject("Time", "Time", "Time", midnightTimestamp.toString(), new ArrayList<String>()));
+                        nextMidnightTime = midnightTimestamp + 24 * 60 * 60 * 1000;
+                    }
                     MessageObject mMessage = new MessageObject(dataSnapshot.getKey(), sender, text, timestamp, mediaUrlList);
                     messageList.add(mMessage);
                     mChatLayoutManager.scrollToPosition(messageList.size() - 1);
@@ -207,7 +213,6 @@ public class ChatActivity extends AppCompatActivity {
                             @Override
                             public void onSuccess(Uri uri) {
                                 newMessageMap.put("/media/" + mediaIdList.get(totalMediaUploaded) + "/", uri.toString());
-
                                 totalMediaUploaded++;
                                 if (totalMediaUploaded == mediaUriList.size()) {
                                     updateDatabaseWithNewMessage(newMessageDb, newMessageMap);
@@ -237,19 +242,23 @@ public class ChatActivity extends AppCompatActivity {
         mMessage.setText(null);
         mediaUriList.clear();
         mediaIdList.clear();
-        mMediaAdapter.notifyDataSetChanged();
-        mChatAdapter.notifyDataSetChanged();
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                mMediaAdapter.notifyDataSetChanged();
+                initializeMessages();
+            }
+        });
     }
 
     /**
      * Initialize messages objects with recycler view
      */
     private void initializeMessages() {
-        messageList = new ArrayList<>();
         RecyclerView mChat = findViewById(R.id.chat_message_list);
+        mChat.getRecycledViewPool().setMaxRecycledViews(0, 0);
         mChat.setNestedScrollingEnabled(false);
         mChat.setHasFixedSize(false);
-        //this line below could cause problems
         mChatLayoutManager = new LinearLayoutManager(getApplicationContext(), RecyclerView.VERTICAL, false);
         mChat.setLayoutManager(mChatLayoutManager);
         mChatAdapter = new MessageAdapter(messageList);
