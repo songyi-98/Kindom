@@ -11,7 +11,9 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -63,6 +65,14 @@ public class ChatActivity extends AppCompatActivity {
             mChatUser = intent.getExtras().getString("CHAT_USER");
             mChatDb = FirebaseDatabase.getInstance().getReference("chat").child(mChatID);
         }
+
+        // Enable up navigation
+        findViewById(R.id.chat_back).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
 
         // Set the layout for chat activity
         TextView mChatTitle = findViewById(R.id.chat_user_name);
