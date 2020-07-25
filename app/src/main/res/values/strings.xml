@@ -66,7 +66,7 @@
     <string name="error_news_type">Please select the type of news</string>
     <string name="error_news_image_upload">Upload of image failed. Please try again.</string>
     <string name="help_me_all_listing_tab">All Listing</string>
-    <string name="help_me_all_listing_refresh_toast">Swipe down to refresh</string>
+    <string name="help_me_refresh_toast">Swipe down to refresh</string>
     <string name="help_me_listing_empty">There is currently no listing available.</string>
     <string name="help_me_my_listing_tab">My Listing</string>
     <string name="help_me_user_listing_empty">You have not posted any listing. Add one today!</string>
