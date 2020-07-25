@@ -17,6 +17,7 @@ import com.example.kindom.R;
 import com.example.kindom.User;
 import com.example.kindom.helpMe.HelpMeAllListingAdapter;
 import com.example.kindom.helpMe.HelpMePost;
+import com.example.kindom.utils.CalendarHandler;
 import com.example.kindom.utils.FirebaseHandler;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -104,7 +105,8 @@ public class HelpMeAllListingFragment extends Fragment {
                                 for (DataSnapshot postSnapshot : userSnapshot.getChildren()) {
                                     HelpMePost post = postSnapshot.getValue(HelpMePost.class);
                                     assert post != null;
-                                    if (!post.isReported()) {
+                                    // Retrieve only posts which are not reported and expired
+                                    if (!post.isReported() && !CalendarHandler.checkIfExpired(post.getDate(), post.getTime())) {
                                         mHelpMePosts.add(post);
                                     }
                                 }
