@@ -22,6 +22,8 @@ import com.example.kindom.utils.Validation;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.button.MaterialButtonToggleGroup;
 import com.google.android.material.textfield.TextInputLayout;
+import com.theartofdev.edmodo.cropper.CropImage;
+import com.theartofdev.edmodo.cropper.CropImageView;
 
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
@@ -36,8 +38,7 @@ import java.util.Objects;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class RegisterProfileActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<String> {
-
-    public static final int PICK_IMAGE = 1;
+    
     public static final String USER_PROFILE_IMAGE_TAG = "USER_PROFILE_IMAGE";
     public static final String USER_NAME_TAG = "USER_NAME";
     public static final String USER_POSTAL_CODE_TAG = "USER_POSTAL_CODE";
@@ -120,12 +121,11 @@ public class RegisterProfileActivity extends AppCompatActivity implements Loader
         mProfileImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent();
-                intent.setType("image/*");
-                intent.setAction(Intent.ACTION_GET_CONTENT);
-                if (intent.resolveActivity(getPackageManager()) != null) {
-                    startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE);
-                }
+                CropImage.activity()
+                        .setCropShape(CropImageView.CropShape.OVAL)
+                        .setFixAspectRatio(true)
+                        .setGuidelines(CropImageView.Guidelines.ON)
+                        .start(RegisterProfileActivity.this);
             }
         });
     }
@@ -133,13 +133,16 @@ public class RegisterProfileActivity extends AppCompatActivity implements Loader
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == PICK_IMAGE && resultCode == RESULT_OK) {
-            assert data != null;
-            mProfileImageUri = data.getData();
-            isValidProfileImage = true;
-            Glide.with(this)
-                    .load(mProfileImageUri)
-                    .into(mProfileImage);
+        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
+            CropImage.ActivityResult result = CropImage.getActivityResult(data);
+            if (resultCode == RESULT_OK) {
+                assert result != null;
+                mProfileImageUri = result.getUri();
+                isValidProfileImage = true;
+                Glide.with(this)
+                        .load(mProfileImageUri)
+                        .into(mProfileImage);
+            }
         }
     }
 
