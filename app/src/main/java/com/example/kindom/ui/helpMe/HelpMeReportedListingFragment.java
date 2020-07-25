@@ -16,7 +16,6 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.example.kindom.R;
 import com.example.kindom.User;
-import com.example.kindom.helpMe.HelpMeAllListingAdapter;
 import com.example.kindom.helpMe.HelpMePost;
 import com.example.kindom.helpMe.HelpMeReportedListingAdapter;
 import com.example.kindom.utils.FirebaseHandler;
@@ -167,7 +166,7 @@ public class HelpMeReportedListingFragment extends Fragment {
                 mView.findViewById(R.id.help_me_reported_listing_empty).setVisibility(View.GONE);
             }
 
-            Toast.makeText(getContext(), R.string.help_me_all_listing_refresh_toast, Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), R.string.help_me_refresh_toast, Toast.LENGTH_SHORT).show();
         }
     }
 }

@@ -156,7 +156,7 @@ public class HelpMeAllListingFragment extends Fragment {
                 mView.findViewById(R.id.help_me_all_listing_empty).setVisibility(View.GONE);
             }
 
-            Toast.makeText(getContext(), R.string.help_me_all_listing_refresh_toast, Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), R.string.help_me_refresh_toast, Toast.LENGTH_SHORT).show();
         }
     }
 }

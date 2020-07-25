@@ -2,7 +2,8 @@
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    tools:context=".ui.helpMe.HelpMeAllListingFragment">
 
     <ProgressBar
         android:id="@+id/help_me_all_listing_progress_circular"
@@ -23,8 +24,7 @@
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/help_me_all_listing_swipe_container"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:context=".ui.helpMe.HelpMeAllListingFragment">
+        android:layout_height="match_parent">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/help_me_all_listing_recycler_view"

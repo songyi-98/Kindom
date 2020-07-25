@@ -22,10 +22,16 @@
         android:text="@string/help_me_user_listing_empty"
         android:visibility="invisible" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/help_me_user_listing_recycler_view"
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/help_me_user_listing_swipe_container"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/help_me_user_listing_recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/help_me_add_fab"
