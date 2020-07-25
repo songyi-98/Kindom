@@ -22,8 +22,8 @@ public class Region {
         if (firstTwoDigits == 53 || firstTwoDigits == 54 || firstTwoDigits == 55 ||
                 firstTwoDigits == 72 || firstTwoDigits == 73 ||
                 firstTwoDigits == 75 || firstTwoDigits == 76 ||
-                firstTwoDigits == 79 ||firstTwoDigits == 80 ||
-                firstTwoDigits ==82) {
+                firstTwoDigits == 79 || firstTwoDigits == 80 ||
+                firstTwoDigits == 82) {
             return NORTH;
         } else if ((firstTwoDigits >= 1 && firstTwoDigits <= 10) ||
                 (firstTwoDigits >= 14 && firstTwoDigits <= 30)) {

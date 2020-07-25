@@ -6,13 +6,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -22,7 +19,6 @@ import com.stfalcon.frescoimageviewer.ImageViewer;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 
 public class MessageAdapter extends RecyclerView.Adapter {
 
@@ -30,7 +26,7 @@ public class MessageAdapter extends RecyclerView.Adapter {
     private static final int VIEW_TYPE_MESSAGE_RECEIVED = 2;
     private static final int VIEW_TYPE_MESSAGE_TIME = 3;
 
-    ArrayList<MessageObject> messageList;
+    final ArrayList<MessageObject> messageList;
 
     public MessageAdapter(ArrayList<MessageObject> Message) {
         this.messageList = Message;
@@ -106,9 +102,10 @@ public class MessageAdapter extends RecyclerView.Adapter {
     }
 
     public static class SentMessageViewHolder extends RecyclerView.ViewHolder {
-        private TextView mMessage, mTime;
-        public ConstraintLayout mLayout;
-        private ImageView mImageBody;
+        private final TextView mMessage;
+        private final TextView mTime;
+        public final ConstraintLayout mLayout;
+        private final ImageView mImageBody;
 
         public SentMessageViewHolder(View view) {
             super(view);
@@ -178,9 +175,10 @@ public class MessageAdapter extends RecyclerView.Adapter {
     }
 
     public static class ReceivedMessageViewHolder extends RecyclerView.ViewHolder {
-        private TextView mMessage, mTime;
-        private ImageView mImageBody;
-        public ConstraintLayout mLayout;
+        private final TextView mMessage;
+        private final TextView mTime;
+        private final ImageView mImageBody;
+        public final ConstraintLayout mLayout;
 
         public ReceivedMessageViewHolder(View view) {
             super(view);
@@ -250,13 +248,12 @@ public class MessageAdapter extends RecyclerView.Adapter {
     }
 
     public static class TimeMessageViewHolder extends RecyclerView.ViewHolder {
-        private TextView mTimestamp;
-        private ConstraintLayout mLayout;
+        private final TextView mTimestamp;
 
         public TimeMessageViewHolder(View view) {
             super(view);
             mTimestamp = view.findViewById(R.id.chat_time_body);
-            mLayout = view.findViewById(R.id.item_timestamp_layout);
+            ConstraintLayout mLayout = view.findViewById(R.id.item_timestamp_layout);
         }
 
         @SuppressLint("SetTextI18n")

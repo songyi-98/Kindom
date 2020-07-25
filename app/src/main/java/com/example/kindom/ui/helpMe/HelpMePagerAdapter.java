@@ -8,7 +8,7 @@ import androidx.fragment.app.FragmentStatePagerAdapter;
 public class HelpMePagerAdapter extends FragmentStatePagerAdapter {
 
     final int mNumOfTabs;
-    private boolean mIsAdmin;
+    private final boolean mIsAdmin;
 
     public HelpMePagerAdapter(@NonNull FragmentManager fm, int behavior, int numOfTabs, boolean isAdmin) {
         super(fm, behavior);

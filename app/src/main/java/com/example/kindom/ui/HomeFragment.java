@@ -55,8 +55,8 @@ public class HomeFragment extends Fragment implements LoaderManager.LoaderCallba
     private ViewPager mSingaporeViewPager;
     private HomeImagePagerAdapter mNeighbourhoodAdapter;
     private HomeImagePagerAdapter mSingaporeAdapter;
-    private ArrayList<Uri> mNeighbourhoodImages = new ArrayList<>();
-    private ArrayList<Uri> mSingaporeImages = new ArrayList<>();
+    private final ArrayList<Uri> mNeighbourhoodImages = new ArrayList<>();
+    private final ArrayList<Uri> mSingaporeImages = new ArrayList<>();
 
     public HomeFragment() {
         // Required empty public constructor

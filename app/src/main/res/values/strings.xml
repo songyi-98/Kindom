@@ -94,6 +94,7 @@
     <string name="error_time">Time cannot be in the past</string>
     <string name="error_empty_time">Please select a time</string>
     <string name="error_description">Description cannot be empty</string>
+    <string name="list_item_help_me_user_listing_expired">EXPIRED</string>
     <string name="list_item_help_me_user_listing_edit">Edit</string>
     <string name="list_item_help_me_listing_delete">Delete</string>
     <string name="help_me_edit_post_label">Edit post</string>
@@ -116,5 +117,4 @@
     <string name="no">No</string>
     <string name="chat_user_name">Name</string>
     <string name="chat_message_hint">Message</string>
-    <string name="list_item_help_me_user_listing_expired">EXPIRED</string>
 </resources>

@@ -1,6 +1,5 @@
 package com.example.kindom.helpMe;
 
-import com.example.kindom.User;
 import com.example.kindom.utils.FirebaseHandler;
 
 import java.io.Serializable;

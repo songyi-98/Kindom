@@ -41,7 +41,7 @@ public class ChatActivity extends AppCompatActivity {
     private RecyclerView.Adapter mChatAdapter, mMediaAdapter;
     private RecyclerView.LayoutManager mChatLayoutManager;
 
-    ArrayList<MessageObject> messageList = new ArrayList<>();
+    final ArrayList<MessageObject> messageList = new ArrayList<>();
 
     private String mChatID;
     private String mChatUserUid;

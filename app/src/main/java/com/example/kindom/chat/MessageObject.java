@@ -13,7 +13,7 @@ public class MessageObject {
         this.messageId = messageId;
         this.senderId = senderId;
         this.message = message;
-        this.timestamp= timestamp;
+        this.timestamp = timestamp;
         this.mediaUrlList = mediaUrlList;
     }
 

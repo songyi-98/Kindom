@@ -23,9 +23,9 @@ import java.util.Objects;
  */
 public class ChatHandler {
 
-    private String currUserUid;
-    private String otherUserUid;
-    private String otherUserName;
+    private final String currUserUid;
+    private final String otherUserUid;
+    private final String otherUserName;
 
     public ChatHandler(String currUserUid, String otherUserUid, String otherUserName) {
         this.currUserUid = currUserUid;
@@ -35,7 +35,7 @@ public class ChatHandler {
 
     /**
      * Create a chat between two users
-     * 
+     *
      * @param view the view
      */
     public void createChat(final View view) {

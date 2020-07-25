@@ -28,7 +28,7 @@ public class AddressQuery {
 
         URL url = null;
         try {
-            url =new URL(builtUri.toString());
+            url = new URL(builtUri.toString());
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }
