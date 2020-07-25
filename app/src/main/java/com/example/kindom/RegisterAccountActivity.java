@@ -116,7 +116,6 @@ public class RegisterAccountActivity extends AppCompatActivity {
                     isValidEmail = false;
                     mEmailField.setError(getString(R.string.error_email));
                 } else {
-                    // TODO: Check if email has been registered before
                     isValidEmail = true;
                     mEmailField.setError(null);
                 }
