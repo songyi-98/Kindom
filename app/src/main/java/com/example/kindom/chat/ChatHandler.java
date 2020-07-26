@@ -72,8 +72,8 @@ public class ChatHandler {
                 if (possibleKey.isEmpty()) {
                     // No chat exists yet between the two, create a new chat
                     chatId = FirebasePushIdGenerator.generatePushId();
-                    currUserNewMap.put(chatId, currUserUid);
-                    otherUserNewMap.put(chatId, otherUserUid);
+                    currUserNewMap.put(chatId, otherUserUid);
+                    otherUserNewMap.put(chatId, currUserUid);
                     currUserRef.updateChildren(currUserNewMap);
                     otherUserRef.updateChildren(otherUserNewMap);
                 } else {
