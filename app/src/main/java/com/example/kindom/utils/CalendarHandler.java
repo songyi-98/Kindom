@@ -80,7 +80,7 @@ public class CalendarHandler {
      * @return String representing a time
      */
     public static String getTimeString(int hourOfDay, int minute) {
-        int hour = hourOfDay <= 12 ? hourOfDay : hourOfDay - 12;
+        int hour = hourOfDay < 12 ? hourOfDay : hourOfDay - 12;
         String hourString = Integer.toString(hour);
         String minuteString = Integer.toString(minute);
         if (hourString.equals("0")) {
@@ -94,7 +94,7 @@ public class CalendarHandler {
             // Append a zero in front if minute is 1 digit
             minuteString = "0" + minuteString;
         }
-        String am_pm_string = hourOfDay <= 12 ? "AM" : "PM";
+        String am_pm_string = hourOfDay < 12 ? "AM" : "PM";
         return hourString + ":" + minuteString + " " + am_pm_string;
     }
 
