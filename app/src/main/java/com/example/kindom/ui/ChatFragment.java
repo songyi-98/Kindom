@@ -47,16 +47,18 @@ public class ChatFragment extends Fragment {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_chat, container, false);
         mChatList = rootView.findViewById(R.id.chatList);
-        initializeRecyclerView();
-        getUserChatList();
+        initializeRecyclerView(rootView);
+        getUserChatList(rootView);
 
         return rootView;
     }
 
     /**
      * Retrieve the users' chatList from the database
+     *
+     * @param view the view
      */
-    private void getUserChatList() {
+    private void getUserChatList(final View view) {
         final DatabaseReference mUserChatDB = FirebaseDatabase.getInstance().getReference("users").child(FirebaseHandler.getCurrentUserUid()).child("chatListKeys");
 
         mUserChatDB.addValueEventListener(new ValueEventListener() {
@@ -71,6 +73,7 @@ public class ChatFragment extends Fragment {
                                 if (snapshot.exists()) {
                                     ChatObject mChat = new ChatObject(childSnapshot.getKey(), snapshot.getValue().toString(), chatUserId);
                                     chatList.add(mChat);
+                                    view.findViewById(R.id.chat_empty).setVisibility(View.GONE);
                                     mChatListAdapter.notifyDataSetChanged();
                                 }
                             }
@@ -93,13 +96,21 @@ public class ChatFragment extends Fragment {
 
     /**
      * Initialize chat list with recycler view of Chat Objects
+     *
+     * @param view the view
      */
-    private void initializeRecyclerView() {
+    private void initializeRecyclerView(View view) {
         mChatList.setNestedScrollingEnabled(false);
         mChatList.setHasFixedSize(false);
         RecyclerView.LayoutManager mChatListLayoutManager = new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false);
         mChatList.setLayoutManager(mChatListLayoutManager);
         mChatListAdapter = new ChatListAdapter(this.getContext(), chatList);
         mChatList.setAdapter(mChatListAdapter);
+
+        if (chatList.size() == 0) {
+            view.findViewById(R.id.chat_empty).setVisibility(View.VISIBLE);
+        } else {
+            view.findViewById(R.id.chat_empty).setVisibility(View.GONE);
+        }
     }
 }
