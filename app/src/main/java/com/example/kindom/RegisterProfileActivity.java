@@ -38,7 +38,7 @@ import java.util.Objects;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class RegisterProfileActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<String> {
-    
+
     public static final String USER_PROFILE_IMAGE_TAG = "USER_PROFILE_IMAGE";
     public static final String USER_NAME_TAG = "USER_NAME";
     public static final String USER_POSTAL_CODE_TAG = "USER_POSTAL_CODE";

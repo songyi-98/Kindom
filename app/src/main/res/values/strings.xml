@@ -116,6 +116,7 @@
     <string name="blk">Blk </string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
+    <string name="chat_empty">You do not have any chat.</string>
     <string name="chat_user_name">Name</string>
     <string name="chat_message_hint">Message</string>
 </resources>
