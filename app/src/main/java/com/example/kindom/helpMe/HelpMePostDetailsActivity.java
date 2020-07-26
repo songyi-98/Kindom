@@ -117,17 +117,28 @@ public class HelpMePostDetailsActivity extends AppCompatActivity {
                         User user = snapshot.getValue(User.class);
                         assert user != null;
                         String rc = user.getRc();
-                        ArrayList<String> usersOfferingHelp = mPost.getUsersOfferingHelp();
+                        final ArrayList<String> usersOfferingHelp = mPost.getUsersOfferingHelp();
                         if (!usersOfferingHelp.contains(user.getUid())) {
                             usersOfferingHelp.add(user.getUid());
-                            DatabaseReference uploadRef = FirebaseDatabase.getInstance()
+                            final DatabaseReference uploadRef = FirebaseDatabase.getInstance()
                                     .getReference("helpMe")
                                     .child(rc)
                                     .child(mPost.getUserUid())
                                     .child(String.valueOf(mPost.getTimeCreated()));
-                            uploadRef.child("usersOfferingHelp").setValue(usersOfferingHelp);
-                            Toast.makeText(HelpMePostDetailsActivity.this, R.string.help_me_post_offer_received, Toast.LENGTH_SHORT).show();
+                            uploadRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                    if (snapshot.hasChild("usersOfferingHelp")) {
+                                        uploadRef.child("usersOfferingHelp").setValue(usersOfferingHelp);
+                                        Toast.makeText(HelpMePostDetailsActivity.this, R.string.help_me_post_offer_received, Toast.LENGTH_SHORT).show();
+                                    }
+                                }
 
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError error) {
+                                    // Do nothing
+                                }
+                            });
                         } else {
                             Toast.makeText(HelpMePostDetailsActivity.this, R.string.help_me_post_offer_received_already, Toast.LENGTH_SHORT).show();
                         }
