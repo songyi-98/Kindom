@@ -75,9 +75,6 @@ public class MessageAdapter extends RecyclerView.Adapter {
     @Override
     public void onBindViewHolder(@NonNull final RecyclerView.ViewHolder holder, final int position) {
         final MessageObject message = (MessageObject) messageList.get(position);
-        if (!message.getMediaUrlList().isEmpty()) {
-            holder.setIsRecyclable(false);
-        }
         switch (holder.getItemViewType()) {
             case VIEW_TYPE_MESSAGE_SENT:
                 ((SentMessageViewHolder) holder).bind(message);
@@ -88,6 +85,8 @@ public class MessageAdapter extends RecyclerView.Adapter {
             case VIEW_TYPE_MESSAGE_TIME:
                 ((TimeMessageViewHolder) holder).bind(message);
         }
+        holder.setIsRecyclable(false);
+
     }
 
     @Override

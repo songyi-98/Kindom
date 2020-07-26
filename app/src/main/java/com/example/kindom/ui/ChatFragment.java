@@ -68,9 +68,11 @@ public class ChatFragment extends Fragment {
                         mUserChatDB.getParent().getParent().child(chatUserId).child("name").addValueEventListener(new ValueEventListener() {
                             @Override
                             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                ChatObject mChat = new ChatObject(childSnapshot.getKey(), snapshot.getValue().toString(), chatUserId);
-                                chatList.add(mChat);
-                                mChatListAdapter.notifyDataSetChanged();
+                                if (snapshot.exists()) {
+                                    ChatObject mChat = new ChatObject(childSnapshot.getKey(), snapshot.getValue().toString(), chatUserId);
+                                    chatList.add(mChat);
+                                    mChatListAdapter.notifyDataSetChanged();
+                                }
                             }
 
                             @Override
