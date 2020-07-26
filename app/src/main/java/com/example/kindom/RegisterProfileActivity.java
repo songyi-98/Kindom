@@ -38,7 +38,7 @@ import java.util.Objects;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class RegisterProfileActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<String> {
-    
+
     public static final String USER_PROFILE_IMAGE_TAG = "USER_PROFILE_IMAGE";
     public static final String USER_NAME_TAG = "USER_NAME";
     public static final String USER_POSTAL_CODE_TAG = "USER_POSTAL_CODE";
@@ -258,39 +258,43 @@ public class RegisterProfileActivity extends AppCompatActivity implements Loader
         mNextButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Check postal code validity
-                if (mBlkNo.equals("") || mBlkNo.equals("invalid")) {
-                    Alert.showAlertDialog(RegisterProfileActivity.this, getString(R.string.error_postal_code));
-                } else {
-                    isValidPostalCode = true;
-                }
-
                 if (!isValidProfileImage) {
                     Alert.showAlertDialog(RegisterProfileActivity.this, getString(R.string.error_profile_image));
                 } else if (!isValidName) {
                     Alert.showAlertDialog(RegisterProfileActivity.this, getString(R.string.error_name));
                 } else if (!isValidPostalCode) {
-                    Alert.showAlertDialog(RegisterProfileActivity.this, getString(R.string.error_postal_code));
-                } else if (!isValidRc) {
-                    Alert.showAlertDialog(RegisterProfileActivity.this, getString(R.string.error_rc));
-                } else if (!isCheckedUserGroup) {
-                    Alert.showAlertDialog(RegisterProfileActivity.this, getString(R.string.error_user_group));
-                } else {
-                    Intent intent = new Intent(RegisterProfileActivity.this, RegisterAccountActivity.class);
-                    intent.putExtra(USER_PROFILE_IMAGE_TAG, mProfileImageUri.toString());
-                    intent.putExtra(USER_NAME_TAG, Objects.requireNonNull(mNameField.getEditText()).getText().toString());
-                    intent.putExtra(USER_POSTAL_CODE_TAG, Integer.parseInt(Objects.requireNonNull(mPostalCodeField.getEditText()).getText().toString()));
-                    intent.putExtra(USER_RC_TAG, Objects.requireNonNull(mRcField.getEditText()).getText().toString());
-                    intent.putExtra(USER_BLK_NO_TAG, mBlkNo);
-                    int checkedId = mUserGroup.getCheckedButtonId();
-                    if (checkedId == R.id.user_group_admin) {
-                        intent.putExtra(USER_GROUP_TAG, User.USER_GROUP_ADMIN);
+                    if (mBlkNo.equals("") || mBlkNo.equals("invalid")) {
+                        Alert.showAlertDialog(RegisterProfileActivity.this, getString(R.string.error_postal_code));
                     } else {
-                        intent.putExtra(USER_GROUP_TAG, User.USER_GROUP_USER);
+                        isValidPostalCode = true;
+                        continueCheck();
                     }
-                    startActivity(intent);
+                } else {
+                    continueCheck();
                 }
             }
         });
+    }
+
+    private void continueCheck() {
+        if (!isValidRc) {
+            Alert.showAlertDialog(RegisterProfileActivity.this, getString(R.string.error_rc));
+        } else if (!isCheckedUserGroup) {
+            Alert.showAlertDialog(RegisterProfileActivity.this, getString(R.string.error_user_group));
+        } else {
+            Intent intent = new Intent(RegisterProfileActivity.this, RegisterAccountActivity.class);
+            intent.putExtra(USER_PROFILE_IMAGE_TAG, mProfileImageUri.toString());
+            intent.putExtra(USER_NAME_TAG, Objects.requireNonNull(mNameField.getEditText()).getText().toString());
+            intent.putExtra(USER_POSTAL_CODE_TAG, Integer.parseInt(Objects.requireNonNull(mPostalCodeField.getEditText()).getText().toString()));
+            intent.putExtra(USER_RC_TAG, Objects.requireNonNull(mRcField.getEditText()).getText().toString());
+            intent.putExtra(USER_BLK_NO_TAG, mBlkNo);
+            int checkedId = mUserGroup.getCheckedButtonId();
+            if (checkedId == R.id.user_group_admin) {
+                intent.putExtra(USER_GROUP_TAG, User.USER_GROUP_ADMIN);
+            } else {
+                intent.putExtra(USER_GROUP_TAG, User.USER_GROUP_USER);
+            }
+            startActivity(intent);
+        }
     }
 }
