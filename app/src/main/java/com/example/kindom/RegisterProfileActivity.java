@@ -212,7 +212,7 @@ public class RegisterProfileActivity extends AppCompatActivity implements Loader
                     mPostalCodeField.setError(getString(R.string.error_postal_code_length));
                 } else {
                     // Start loader to query postal code received from the intent
-                    getSupportLoaderManager().initLoader(0, null, RegisterProfileActivity.this);
+                    getSupportLoaderManager().restartLoader(0, null, RegisterProfileActivity.this);
 
                     mPostalCodeField.setError(null);
                 }
