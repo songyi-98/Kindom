@@ -8,6 +8,11 @@
 
 After a long hard day in school, you walk wearily to the lift lobby of your flat. As you and the other residents enter the lift, an eerie silence falls upon the four walls. Everyone is glued to their phone screens and the only sound audible is the whirring of the lift machinery. As you step home, you realise that you have forgotten to get the eggs your mum has tasked you to buy.  Dread takes over as you imagine another trip down the grocery store with long queues caused by the COVID-19 pandemic. Just then, you remember that Uncle Chen from next door has gone to the supermarket just as you left. Maybe he can help you get the eggs?
 
+**Frameworks used**:
+
+Android
+Firebase
+
 **User stories**:
 1. As a helpful resident, I want to be able to assist my fellow neighbours in simple tasks. The Help Me feature of the app allows users to request and offer help from other residents.
 2. As an engaged citizen, I want to be kept updated on the happenings of my community. The Home page of the app shows the news occurring in the neighbourhood and in Singapore.
@@ -120,12 +125,19 @@ In the home page, an add floating action button at the bottom right side of the 
 
 <details>
   <summary>*View image of admin's home page*</summary>
-  <img src="https://github.com/SONGYI98/Kindom/blob/master/screenshots/11%20-%20Chat%20list.jpg" width="256"/>
+  <img src="https://github.com/SONGYI98/Kindom/blob/master/screenshots/12%20-%20Admin%20Home%20page.jpg" width="256"/>
 </details>
 
 <details>
   <summary>*View image of admin adding a news*</summary>
-  <img src="https://github.com/SONGYI98/Kindom/blob/master/screenshots/11%20-%20Chat%20list.jpg" width="256"/>
+  <img src="https://github.com/SONGYI98/Kindom/blob/master/screenshots/13%20-%20Admin%20add%20news.jpg" width="256"/>
+</details>
+
+The admin can scroll through the images and tap on any image to delete the news.
+
+<details>
+  <summary>*View image of admin deleting a news*</summary>
+  <img src="https://github.com/SONGYI98/Kindom/blob/master/screenshots/14%20-%20Admin%20delete%20news.jpg" width="256"/>
 </details>
 
 #### 6. Others
@@ -136,7 +148,7 @@ When the user is navigating between any of the three buttons in the bottom navig
 
 <details>
   <summary>*View image of My Profile page*</summary>
-  <img src="https://github.com/SONGYI98/Kindom/blob/master/screenshots/14%20-%20My%20Profile%20page.jpg" width="256"/>
+  <img src="https://github.com/SONGYI98/Kindom/blob/master/screenshots/15%20-%20My%20Profile%20page.jpg" width="256"/>
 </details>
 
 "Sign Out" signs the user out and brings him/her to the main screen.
@@ -144,9 +156,6 @@ When the user is navigating between any of the three buttons in the bottom navig
 ## Development Stage
 
 For **Milestone 2** of Orbital, we have implemented core features as stated below:
-
-<details>
-  <summary>Click to expand!</summary>
 
 1. **Home page**
 
@@ -160,12 +169,7 @@ Users can add / delete / view Help Me posts.
 
 Users can chat with other users.
 
-</details>
-
 For **Milestone 3** of Orbital, we have implemented more edge features as stated below:
-
-<details>
-  <summary>Click to expand!</summary>
 
 1. **Admin features**
 
@@ -184,8 +188,6 @@ This allows users to offer help and for the poster to manage the list of people 
 4. **Improved Chat page**
 
 5. **Miscellaneous visual polish and bug fixes**
-
-</details>
 
 ## Problems Encountered
 
@@ -223,6 +225,20 @@ Testing has been done to ensure functionalities work correctly. The following sc
 * Adding / Editing / Deleting Help Me! requests
 * Viewing the list of chat messages
 * Input validation (any incorrect inputs will prompt an alert dialogs for users to fix them)
+
+**Local unit tests**
+
+Local unit tests have been written to validate the CalendarHandler java class and the input of password.
+
+This is important as the CalendarHandler java class is extensively used to handle the date and time logic of Help Me posts. Any wrong date and time will have a knock on effect on the display of accurate Help Me posts being displayed to other users. This also forces users to renew their expired Help Me posts.
+
+**Manual UI tests**
+
+Manual UI tests are conducted to ensure that data fetched from the Internet and Firebase shows up accurately in the app.
+
+**User Acceptance Testing**
+
+We have tested the app with our friends and family members who gave us feedback on visual UI changes and bugs that need to be fixed.
 
 ## Bugs
 
