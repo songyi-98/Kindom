@@ -1,6 +1,20 @@
 # Kindom
 
-## Project Information
+<img src="https://github.com/SONGYI98/Kindom/blob/master/app/src/main/res/mipmap-hdpi/ic_launcher_round.png"/>
+
+## Table of Contents
+
+1. [Project Information](https://github.com/SONGYI98/Kindom/blob/master/README.md#project-information-)  
+2. [UI](https://github.com/SONGYI98/Kindom/blob/master/README.md#ui-)  
+3. [Features](https://github.com/SONGYI98/Kindom/blob/master/README.md#features)  
+4. [Summary of Features](https://github.com/SONGYI98/Kindom/blob/master/README.md#summary-of-features)  
+5. [Development Stage](https://github.com/SONGYI98/Kindom/blob/master/README.md#development-stage)  
+6. [Problems Encountered](https://github.com/SONGYI98/Kindom/blob/master/README.md#problems-encountered)  
+7. [Testing](https://github.com/SONGYI98/Kindom/blob/master/README.md#testing)  
+8. [Security](https://github.com/SONGYI98/Kindom/blob/master/README.md#security)  
+9. [Bugs](https://github.com/SONGYI98/Kindom/blob/master/README.md#bugs)  
+
+## 1 - Project Information
 
 **Proposed level of achievement**: Apollo 11
 
@@ -10,15 +24,27 @@ After a long hard day in school, you walk wearily to the lift lobby of your flat
 
 **Frameworks used**:
 
-Android
-Firebase
+<img src="https://github.com/SONGYI98/Kindom/blob/master/screenshots/android_logo.png" width="256"/>
+<img src="https://github.com/SONGYI98/Kindom/blob/master/screenshots/firebase_logo.png" width="256"/>
+
+**APK Install**:
+
+The APK file can be downloaded at https://drive.google.com/file/d/1O3BjwFsFO9zdRrRjlKumRNx7kIMIFiZ4/view?usp=sharing
+
+Compatibility: Android 8.0+
+
+NOTE: Please select the first RC (Acacia RC @ Sengkang South) from the dropdown menu when registering to see pre-loaded data for evaluation.
 
 **User stories**:
-1. As a helpful resident, I want to be able to assist my fellow neighbours in simple tasks. The Help Me feature of the app allows users to request and offer help from other residents.
-2. As an engaged citizen, I want to be kept updated on the happenings of my community. The Home page of the app shows the news occurring in the neighbourhood and in Singapore.
-3. As an administrator, I want to be able to push out timely announcements to all users by adding / deleting news in the app and also keep track of any disputes arising from the application by managing reported Help Me posts.
+1. As a helpful resident, I want to be able to assist my fellow neighbours in simple tasks. The Help Me feature of the app allows users to request and also offer help to other residents.
+2. As an engaged citizen, I want to be kept updated on the happenings of my community. The Home page of the app shows the news occurring in my neighbourhood and in Singapore.
+3. As an administrator, I want to be able to push out timely announcements to all users by adding / deleting news in the Home page and also keep track of any disputes arising from the application by managing reported Help Me posts.
 
-## Features Developed
+## 2 - UI
+
+Material Design by Google is adopted in the design of this app.
+
+## 3 - Features
 
 #### 1. Registration / Sign-in
 
@@ -31,16 +57,12 @@ When the user first launches the app, he/she is brought to the main page where t
 
 Alternatively, the user can click on the "Not registered yet? Click here!" to register an account with Kindom.
 
-This brings the user to a 2-part registration process.
-
-The first part includes filling personal details of the user as shown below.
+This brings the user to a 2-part registration process. The first part includes filling personal details of the user as shown below. The second part includes using an email and password for user identification.
 
 <details>
   <summary>*View image of registration (part 1)*</summary>
   <img src="https://github.com/SONGYI98/Kindom/blob/master/screenshots/2%20-%20Registartion%20Part%201.jpg" width="256"/>
 </details>
-
-The second part includes using an email and password for user identification.
 
 <details>
   <summary>*View image of registration (part 2)*</summary>
@@ -49,9 +71,7 @@ The second part includes using an email and password for user identification.
 
 #### 2. Home (News)
 
-A digital community notice board replaces the traditional ones found in the void decks of HDB flats. It provides updates on issues within the community (e.g. dengue cluster) and at the national level (e.g. COVID-19).
-
-The images of the news can be scrolled (left and right) and a dot indicator indicates the position of the image the user is currently viewing.
+A digital community notice board replaces the traditional ones found in the void decks of HDB flats. It provides updates on issues within the community (e.g. dengue cluster) and at the national level (e.g. COVID-19). The images of the news can be scrolled (left and right) and a dot indicator indicates the position of the image the user is currently viewing.
 
 Weather and PSI information is also provided at the top of the screen based on the region the user is in (from the postal code inputted during registration).
 
@@ -66,21 +86,21 @@ This core feature provides a platform for neighbours to send in or accept reques
 
 Upon clicking on the "Help Me!" button at the bottom navigation menu, the user is brought to a listing page. There are two types of listings - "All Listing" and "My Listing". A toast message appears to inform users that they can swipe down to refresh the list.
 
-The All Listing tab shows all the listings from neighbours who are staying in the same RC as the user.
+The All Listing tab shows all the posts from neighbours who are staying in the same RC as the user.
 
 <details>
   <summary>*View image of Help Me All Listing*</summary>
   <img src="https://github.com/SONGYI98/Kindom/blob/master/screenshots/5%20-%20Help%20Me!%20page%20all%20listing.jpg" width="256"/>
 </details>
 
-Clicking on the details button allows the user to view detailed information of the Help Me! request. User can then offer help or chat with the person who posted the request to ask for more details.
+Clicking on the details button for any post allows the user to view detailed information of the Help Me request. User can then offer help or chat with the person who posted the request to enquire more.
 
 <details>
   <summary>*View image of a Help Me post details*</summary>
   <img src="https://github.com/SONGYI98/Kindom/blob/master/screenshots/6%20-%20Help%20Me!%20request%20details.jpg" width="256"/>
 </details>
 
-A toast message appears at the bottom of the screen if the user clicks on the offer help button for the first time or repeatedly.
+A toast message appears at the bottom of the screen if the user clicks on the "Offer Help" button for the first time or repeatedly.
 
 <details>
   <summary>*View toast message*</summary>
@@ -92,29 +112,39 @@ A toast message appears at the bottom of the screen if the user clicks on the of
   <img src="https://github.com/SONGYI98/Kindom/blob/master/screenshots/8%20-%20Toast%20message%20(repeated).jpg" width="256"/>
 </details>
 
-The My Listing tab shows the user's listings. User can add a new Help Me! request or edit / delete existing requests.
+The My Listing tab shows the user's posts. User can add a new Help Me request or edit / delete existing requests.
 
 <details>
   <summary>*View image of Help Me My Listing*</summary>
   <img src="https://github.com/SONGYI98/Kindom/blob/master/screenshots/9%20-%20Help%20Me!%20page%20my%20listing.jpg" width="256"/>
 </details>
 
-An add floating action button at the bottom right side of the screen allows user to add a Help Me! request. Adding a request requires the user to fill up information about the request.
+An add floating action button at the bottom right side of the screen allows user to add a Help Me post. Adding a post requires the user to fill up information about the request.
 
 <details>
   <summary>*View image of adding a Help Me post*</summary>
   <img src="https://github.com/SONGYI98/Kindom/blob/master/screenshots/10%20-%20Help%20Me!%20add%20post.jpg" width="256"/>
 </details>
 
-#### 4. Chat
-
-The chat feature allows neighbours to communicate with one another.
-
-Upon clicking on the "Chat" button at the bottom navigation menu, the user is brought to a list of existing chat with other neighbours. From here, users can view the chat conversation history or send messages and/or media.
+If a user's Help Me post has expired, a tag will be attached to the post and the post is hidden from public view till it is either renewed or deleted.
 
 <details>
-  <summary>*View image chat list*</summary>
+  <summary>*View image of an expired Help Me post*</summary>
+  <img src="https://github.com/SONGYI98/Kindom/blob/master/screenshots/9a%20-%20Help%20Me!%20expired%20post.jpg" width="256"/>
+</details>
+
+#### 4. Chat
+
+The chat feature allows neighbours to communicate with one another. Upon clicking on the "Chat" button at the bottom navigation menu, the user is brought to a list of existing chat with other neighbours. From here, users can view the chat conversation history or send messages and/or media.
+
+<details>
+  <summary>*View image of chat list*</summary>
   <img src="https://github.com/SONGYI98/Kindom/blob/master/screenshots/11%20-%20Chat%20list.jpg" width="256"/>
+</details>
+
+<details>
+  <summary>*View image of chat history*</summary>
+  <img src="https://github.com/SONGYI98/Kindom/blob/master/screenshots/11a%20-%20Chat%20history.jpg" width="256"/>
 </details>
 
 #### 5. Admin
@@ -140,6 +170,13 @@ The admin can scroll through the images and tap on any image to delete the news.
   <img src="https://github.com/SONGYI98/Kindom/blob/master/screenshots/14%20-%20Admin%20delete%20news.jpg" width="256"/>
 </details>
 
+The admin can also manage reported Help Me posts.
+
+<details>
+  <summary>*View image of admin managing a reported Help Me post*</summary>
+  <img src="https://github.com/SONGYI98/Kindom/blob/master/screenshots/15%20-%20Admin%20manage%20Help%20Me%20post.jpg" width="256"/>
+</details>
+
 #### 6. Others
 
 When the user is navigating between any of the three buttons in the bottom navigation menu, a menu icon is consistently shown in the top app bar. Clicking on the menu options shows a "My Profile" and "Sign Out" option.
@@ -148,12 +185,22 @@ When the user is navigating between any of the three buttons in the bottom navig
 
 <details>
   <summary>*View image of My Profile page*</summary>
-  <img src="https://github.com/SONGYI98/Kindom/blob/master/screenshots/15%20-%20My%20Profile%20page.jpg" width="256"/>
+  <img src="https://github.com/SONGYI98/Kindom/blob/master/screenshots/16%20-%20My%20Profile%20page.jpg" width="256"/>
 </details>
 
 "Sign Out" signs the user out and brings him/her to the main screen.
 
-## Development Stage
+## 4 - Summary of Features
+
+|Features|User|Admin|Remarks|
+|---|---|---|---|
+|**Home (News)**|View news and weather data|Add / Delete news|Core feature|
+|**Help Me**|Add / Edit own requests||Core feature|
+||View / Report other users requests|Manage reported requests||
+|**Chat**|View chat list and chat with others|View chat list and chat with others|Core feature|
+|**My Profile**|View own profile page|View own profile page||
+
+## 5 - Development Stage
 
 For **Milestone 2** of Orbital, we have implemented core features as stated below:
 
@@ -189,7 +236,13 @@ This allows users to offer help and for the poster to manage the list of people 
 
 5. **Miscellaneous visual polish and bug fixes**
 
-## Problems Encountered
+**Future extensions**:
+
+1. View other user's profile page
+
+2. Add clickable URLs to news
+
+## 6 - Problems Encountered
 
 1. **Integrating Help Me! feature with Chat feature**
 
@@ -215,31 +268,50 @@ As such, we decided to let users input their RCs manually during the registratio
 
 It was initially intended to include Espresso framework for the UI test. However, due to the large amount of data that is fetched from the Internet (e.g. weather, PSI data) and Firebase (e.g. Help Me posts, chats), it was extremely difficult to write a large-scale test for the UI test. Instead manual UI testing is done instead.
 
-## Testing
+## 7 - Testing
 
-Testing has been done to ensure functionalities work correctly. The following scenarios have been tested:
-
-* Registering an account
-* Swiping through the notice images in the Home page
-* Viewing only posts from neighbours in the same RC as the current users and chatting with them
-* Adding / Editing / Deleting Help Me! requests
-* Viewing the list of chat messages
-* Input validation (any incorrect inputs will prompt an alert dialogs for users to fix them)
+Testing has been done to ensure functionalities work correctly. The following types of tests have been conducted:
 
 **Local unit tests**
 
-Local unit tests have been written to validate the CalendarHandler java class and the input of password.
+Local unit tests have been written to validate the CalendarHandler java class and the input of password. These tests are found in the test branch in GitHub.
 
 This is important as the CalendarHandler java class is extensively used to handle the date and time logic of Help Me posts. Any wrong date and time will have a knock on effect on the display of accurate Help Me posts being displayed to other users. This also forces users to renew their expired Help Me posts.
 
-**Manual UI tests**
+**Manual UI tests (Cognitive walkthrough)**
 
-Manual UI tests are conducted to ensure that data fetched from the Internet and Firebase shows up accurately in the app.
+Manual UI tests through the use of cognitive walkthroughs are conducted to ensure that data fetched from the Internet and Firebase shows up accurately in the app.
 
-**User Acceptance Testing**
+The following scenarios as a user have been tested:
+
+* Registering an account
+* Viewing own profile
+* Viewing weather and PSI data in the Home page
+* Swiping through the news images in the Home page
+* Viewing only posts from neighbours in the same RC as the current users and chatting with them
+* Offering help to other users' Help Me posts
+* Adding / Editing / Deleting Help Me! posts
+* Viewing offers from other users for own Help Me post
+* Reporting other users' inappropriate Help Me posts
+* Viewing the list of chat messages
+* Chatting with another user
+* Input validation (any incorrect inputs will prompt an alert dialogs for users to fix them)
+
+The following *additional* scenarios as an admin have been tested:
+
+* Adding / Deleting news images in the Home page
+* Managing reported Help Me posts
+
+**User Acceptance Test**
 
 We have tested the app with our friends and family members who gave us feedback on visual UI changes and bugs that need to be fixed.
 
-## Bugs
+## 8 - Security
 
-There is currently no known bugs that we know of. However, if you encounter a bug, please do tell us in the peer evaluation!
+The app uses Firebase Authentication to only allow authenticated users to use the app. Security rules have been defined within Firebase Database to ensure user's data is protected. The read and write values to different locations in the database are only set to authenticated users.
+
+Three APIs have been used where all come from government agencies. The weather and PSI API originates from Data.gov.sg while the postal code query API comes from URA OneMap.
+
+## 9 - Bugs
+
+There is currently no known bugs that we know of. However, if you encounter a bug, please do open an issue on GitHub!

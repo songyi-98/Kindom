@@ -272,7 +272,7 @@ public class MessageAdapter extends RecyclerView.Adapter {
                 String formattedTimeStamp = oldDateFormat.format(Long.parseLong(message.getTimestamp()));
                 mTimestamp.setText(formattedTimeStamp);
             }
-            if (Long.parseLong(message.getTimestamp()) < closestMidnightTime - 365 * 24 * 60 * 60 *1000) {
+            if (Long.parseLong(message.getTimestamp()) < closestMidnightTime - 365 * 24 * 60 * 60 * 1000) {
                 SimpleDateFormat olderDateFormat = new SimpleDateFormat("MMM dd YYYY");
                 String formattedTimeStamp = olderDateFormat.format(Long.parseLong(message.getTimestamp()));
                 mTimestamp.setText(formattedTimeStamp);

@@ -6,6 +6,7 @@
     <solid android:color="#147efb"></solid>
 
     <!-- The radius makes the corners rounded -->
-    <corners android:topLeftRadius="20dp"
-        android:topRightRadius="20dp" ></corners>
+    <corners
+        android:topLeftRadius="20dp"
+        android:topRightRadius="20dp"></corners>
 </shape>

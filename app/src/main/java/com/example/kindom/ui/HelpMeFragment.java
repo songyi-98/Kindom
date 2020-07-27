@@ -67,7 +67,7 @@ public class HelpMeFragment extends Fragment {
                         assert user != null;
                         boolean isAdmin = user.getUserGroup().equals(User.USER_GROUP_ADMIN);
 
-                        if(tabLayout.getTabCount() < 2) {
+                        if (tabLayout.getTabCount() < 2) {
                             // Set text for each tab
                             tabLayout.addTab(tabLayout.newTab().setText(R.string.help_me_all_listing_tab));
                             if (isAdmin) {
