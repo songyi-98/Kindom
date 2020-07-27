@@ -39,7 +39,7 @@ public class MessageAdapter extends RecyclerView.Adapter {
 
     @Override
     public int getItemViewType(int position) {
-        MessageObject message = (MessageObject) messageList.get(position);
+        MessageObject message = messageList.get(position);
 
         if (message.getSenderId().equals(FirebaseAuth.getInstance().getUid())) {
             // If the current user is the sender of the message
@@ -74,7 +74,7 @@ public class MessageAdapter extends RecyclerView.Adapter {
 
     @Override
     public void onBindViewHolder(@NonNull final RecyclerView.ViewHolder holder, final int position) {
-        final MessageObject message = (MessageObject) messageList.get(position);
+        final MessageObject message = messageList.get(position);
         switch (holder.getItemViewType()) {
             case VIEW_TYPE_MESSAGE_SENT:
                 ((SentMessageViewHolder) holder).bind(message);
