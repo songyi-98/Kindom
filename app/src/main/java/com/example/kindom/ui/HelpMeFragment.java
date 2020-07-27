@@ -67,25 +67,29 @@ public class HelpMeFragment extends Fragment {
                         assert user != null;
                         boolean isAdmin = user.getUserGroup().equals(User.USER_GROUP_ADMIN);
 
-                        // Set text for each tab
-                        tabLayout.addTab(tabLayout.newTab().setText(R.string.help_me_all_listing_tab));
-                        if (isAdmin) {
-                            // Add Reported Listing tab for admin
-                            tabLayout.addTab(tabLayout.newTab().setText(R.string.help_me_reported_listing_tab));
-                        } else {
-                            // Add My Listing tab for user
-                            tabLayout.addTab(tabLayout.newTab().setText(R.string.help_me_my_listing_tab));
+                        if(tabLayout.getTabCount() < 2) {
+                            // Set text for each tab
+                            tabLayout.addTab(tabLayout.newTab().setText(R.string.help_me_all_listing_tab));
+                            if (isAdmin) {
+                                // Add Reported Listing tab for admin
+                                tabLayout.addTab(tabLayout.newTab().setText(R.string.help_me_reported_listing_tab));
+                            } else {
+                                // Add My Listing tab for user
+                                tabLayout.addTab(tabLayout.newTab().setText(R.string.help_me_my_listing_tab));
+                            }
                         }
 
                         // Use PagerAdapter to manage page views in fragments.
                         // Each page is represented by its own fragment.
                         final ViewPager viewPager = view.findViewById(R.id.help_me_pager);
-                        final HelpMePagerAdapter adapter = new HelpMePagerAdapter(
-                                getChildFragmentManager(),
-                                FragmentStatePagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT,
-                                tabLayout.getTabCount(),
-                                isAdmin);
-                        viewPager.setAdapter(adapter);
+                        if (isAdded()) {
+                            final HelpMePagerAdapter adapter = new HelpMePagerAdapter(
+                                    getChildFragmentManager(),
+                                    FragmentStatePagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT,
+                                    tabLayout.getTabCount(),
+                                    isAdmin);
+                            viewPager.setAdapter(adapter);
+                        }
 
                         // Sett page change listener
                         viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
