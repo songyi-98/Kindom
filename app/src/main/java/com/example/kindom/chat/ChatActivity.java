@@ -250,6 +250,7 @@ public class ChatActivity extends AppCompatActivity {
         mMessage.setText(null);
         mediaUriList.clear();
         mediaIdList.clear();
+        totalMediaUploaded = 0;
         runOnUiThread(new Runnable() {
             @Override
             public void run() {

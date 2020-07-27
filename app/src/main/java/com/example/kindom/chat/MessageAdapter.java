@@ -147,6 +147,7 @@ public class MessageAdapter extends RecyclerView.Adapter {
             } else {
                 if (!message.getMediaUrlList().isEmpty()) {
                     itemView.setVisibility(View.VISIBLE);
+                    mImageBody.setBackgroundResource(R.drawable.message_sent_image_bubble_upper);
                     Glide.with(itemView.getContext())
                             .load(Uri.parse(message.getMediaUrlList().get(0)))
                             .override(400, 400)
@@ -166,6 +167,7 @@ public class MessageAdapter extends RecyclerView.Adapter {
                     newParams.rightToRight = R.id.chat_image_sent_body;
                     newParams.leftToLeft = R.id.chat_image_sent_body;
                     mMessage.setLayoutParams(newParams);
+                    mMessage.setBackgroundResource(R.drawable.message_sent_image_bubble_lower);
                 } else {
                     mImageBody.setVisibility(View.GONE);
                 }
@@ -220,6 +222,7 @@ public class MessageAdapter extends RecyclerView.Adapter {
             } else {
                 if (!message.getMediaUrlList().isEmpty()) {
                     itemView.setVisibility(View.VISIBLE);
+                    mImageBody.setBackgroundResource(R.drawable.message_received_image_bubble_upper);
                     Glide.with(itemView.getContext())
                             .load(Uri.parse(message.getMediaUrlList().get(0)))
                             .override(600, 600)
@@ -238,6 +241,7 @@ public class MessageAdapter extends RecyclerView.Adapter {
                     newParams.topToBottom = R.id.chat_image_received_body;
                     newParams.rightToRight = R.id.chat_image_received_body;
                     newParams.leftToLeft = R.id.chat_image_received_body;
+                    mMessage.setBackgroundResource(R.drawable.message_received_image_bubble_lower);
                     mMessage.setLayoutParams(newParams);
                 } else {
                     mImageBody.setVisibility(View.GONE);
@@ -259,20 +263,19 @@ public class MessageAdapter extends RecyclerView.Adapter {
         void bind(final MessageObject message) {
             Long timeFromMidnight = (System.currentTimeMillis()) % (24 * 60 * 60 * 1000);
             Long closestMidnightTime = (System.currentTimeMillis()) - timeFromMidnight;
-            Long closestWeekTime = closestMidnightTime - 7 * 24 * 60 * 60 * 1000;
             mTimestamp.setText("Today");
             if (Long.parseLong(message.getTimestamp()) < closestMidnightTime) {
                 mTimestamp.setText("Yesterday");
             }
-            if (Long.parseLong(message.getTimestamp()) < closestWeekTime) {
+            if (Long.parseLong(message.getTimestamp()) < closestMidnightTime - 24 * 60 * 60 * 1000) {
                 SimpleDateFormat oldDateFormat = new SimpleDateFormat("MMM dd");
                 String formattedTimeStamp = oldDateFormat.format(Long.parseLong(message.getTimestamp()));
                 mTimestamp.setText(formattedTimeStamp);
-            } else if (Long.parseLong(message.getTimestamp()) < closestWeekTime - closestWeekTime % 365 * 24 * 60 * 60 * 1000) {
+            }
+            if (Long.parseLong(message.getTimestamp()) < closestMidnightTime - 365 * 24 * 60 * 60 *1000) {
                 SimpleDateFormat olderDateFormat = new SimpleDateFormat("MMM dd YYYY");
                 String formattedTimeStamp = olderDateFormat.format(Long.parseLong(message.getTimestamp()));
                 mTimestamp.setText(formattedTimeStamp);
-                mTimestamp.setVisibility(View.GONE);
             }
         }
     }
