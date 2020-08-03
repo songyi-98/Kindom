@@ -29,7 +29,7 @@ After a long hard day in school, you walk wearily to the lift lobby of your flat
 
 **APK Install**:
 
-The APK file can be downloaded at https://drive.google.com/file/d/1O3BjwFsFO9zdRrRjlKumRNx7kIMIFiZ4/view?usp=sharing
+The APK file can be downloaded at https://drive.google.com/file/d/1wiFXw_l0_U97dKh9PPURryzesBi_dNOQ/view?usp=sharing
 
 Compatibility: Android 8.0+
 
